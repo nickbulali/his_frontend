@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Dashboard from './views/Dashboard.vue'
-import Projects from './views/Projects.vue'
-import Team from './views/Team.vue'
 import Login from './components/login.vue'
 import Register from './components/register.vue'
 import store from './store/index'
@@ -47,17 +45,5 @@ export default new Router({
       component: Dashboard,
       beforeEnter: ifAuthenticated,
     },
-    {
-      path: '/projects',
-      name: 'projects',
-      component: Projects,
-      beforeEnter: ifAuthenticated,
-    },
-    {
-      path: '/team',
-      name: 'team',
-      component: Team,
-      beforeEnter: ifAuthenticated,
-    }
   ]
 })

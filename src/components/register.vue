@@ -12,7 +12,7 @@
 		</v-snackbar>
 		<Loading v-if='authLoading'/>
 		<v-toolbar class="elevation-0">
-        <v-toolbar-title>R-Placement</v-toolbar-title>
+        <v-toolbar-title>@iLabAfrica HIS</v-toolbar-title>
         <v-spacer></v-spacer>
       	</v-toolbar>
 		  <v-form class="px-3"

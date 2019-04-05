@@ -1,65 +1,61 @@
 <template>
-	
-	<div id="inspire"> 
-	<v-card class="elevation-3" id="login-card">
+	<div class="login my-5"> 
 		<v-snackbar v-model="errorsnackbar" :timeout="4000" top color="error">
-			<span>Email/Password wrong or Account is not activated</span>
-			<v-btn flat color="white" @click="errorsnackbar = false">Close</v-btn>
+			<span>Email/Password wrong</span>
 		</v-snackbar>
-		<Loading v-if='authLoading'/>
-		<v-toolbar class="elevation-0">
-        <v-toolbar-title>R-Placement</v-toolbar-title>
-        <v-spacer></v-spacer>
-      	</v-toolbar>
-		  <v-form class="px-3"
-		    ref="form"
-		    v-model="valid"
-		    lazy-validation
-		  >
-			  <v-card-text>
-			    <v-text-field
-			      v-model="username"
-			      :rules="emailRules"
-			      prepend-icon="person"
-			      name="username"
-			      label="E-mail"
-			      required
-			    ></v-text-field>
-			    <v-text-field
-			    	v-model="password"
-				    prepend-icon="lock"
-				    :rules="passwordRules"
-				    name="password"
-				    label="Password"
-				    type="password"
-				  ></v-text-field>
-				</v-card-text>
-				<v-card-actions>
-					<div>
-				        <v-btn flat small to="register">Create an account</v-btn>
-				      </div>
-		        	<v-spacer></v-spacer>
-					<v-btn color="primary" round :disabled="!valid" @click="login" :loading="loading">
-				          Login
-				    </v-btn>
-				</v-card-actions>
-		  </v-form>
-	</v-card>
+		<v-layout
+			justify-center
+			row 
+			wrap>
+			<v-flex
+		        primary
+		        xs12 md6
+		      >
+				<v-card
+					class="elevation-3" 
+					>
+					<Loading v-if='authLoading'/>
+					<v-toolbar class="elevation-0">
+				        <v-toolbar-title>@iLabAfrica HIS</v-toolbar-title>
+				        <v-spacer></v-spacer>
+			      	</v-toolbar>
+				  	<v-form class="px-3"
+				    	ref="form"
+				    	v-model="valid"
+				    	lazy-validation>
+						<v-card-text>
+						    <v-text-field
+						      	v-model="username"
+						      	:rules="emailRules"
+						      	prepend-icon="person"
+						      	name="username"
+						      	label="E-mail"
+						      	required>
+						    </v-text-field>
+						    <v-text-field
+						    	v-model="password"
+							    prepend-icon="lock"
+							    :rules="passwordRules"
+							    name="password"
+							    label="Password"
+							    type="password">
+							</v-text-field>
+						</v-card-text>
+						<v-card-actions>
+							<!-- <div>
+						        <v-btn flat small to="register">Create an account</v-btn>
+						    </div> -->
+				        	<v-spacer></v-spacer>
+							<v-btn color="primary" round :disabled="!valid" @click="login" :loading="loading">
+						        Login
+						    </v-btn>
+						</v-card-actions>
+				  	</v-form>
+				</v-card>
+			</v-flex>
+		</v-layout>
 	</div>
 </template>
-<style>
-  main{
-    padding-top:0px !important;
-  }
-  #login-card{
-    position: absolute;
-    top:20vh;
-    right:30vw;
-    min-width: 400px;
-    width:40vw;
-    max-width: 800px;
-  }
-</style>
 <script>
   import {AUTH_REQUEST} from '../store/actions/auth'
   import Loading from './loading'
