@@ -29,8 +29,14 @@
 				</v-list>
 			</v-menu>
 		</v-toolbar>
-
 		<v-navigation-drawer
+			app
+			v-model="drawer"
+			absolute
+			temporary>
+			<sidebar></sidebar>
+		</v-navigation-drawer>
+		<!-- <v-navigation-drawer
 			app
 			v-model="drawer"
 			absolute
@@ -64,16 +70,17 @@
 		          </v-list-tile-content>
 		        </v-list-tile>
 		      </v-list>
-		</v-navigation-drawer>
+		</v-navigation-drawer> -->
 	</nav>
 	
 </template>
 
 <script>
+	import Sidebar from './Sidebar'
   	import { AUTH_LOGOUT } from '../store/actions/auth'
 export default {
 	components: {
-		
+		Sidebar
 	},
 	data(){
 		return{
