@@ -2,7 +2,7 @@
   <div class="dashboard">
     
   	<v-container class="my-5">
-  		
+  		<p>home</p>
   		
   	</v-container>
 
@@ -13,7 +13,7 @@
 
   export default {
     mounted(){
-      console.log(this.$state)
+      
     }
   }
 </script>

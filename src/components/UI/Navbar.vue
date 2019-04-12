@@ -36,48 +36,14 @@
 			temporary>
 			<sidebar></sidebar>
 		</v-navigation-drawer>
-		<!-- <v-navigation-drawer
-			app
-			v-model="drawer"
-			absolute
-			temporary>
-			<v-toolbar flat>
-		      <v-list>
-		        <v-list-tile>
-		          <v-list-tile-title class="title">
-		            Menu
-		          </v-list-tile-title>
-		        </v-list-tile>
-		      </v-list>
-		    </v-toolbar>
 
-		    <v-divider></v-divider>
-			
-			<v-list class="pt-0" dense>
-		        <v-divider></v-divider>
-
-		        <v-list-tile
-		          v-for="item in items"
-		          :key="item.title"
-		          @click=""
-		        >
-		          <v-list-tile-action>
-		            <v-icon>{{ item.icon }}</v-icon>
-		          </v-list-tile-action>
-
-		          <v-list-tile-content>
-		            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-		          </v-list-tile-content>
-		        </v-list-tile>
-		      </v-list>
-		</v-navigation-drawer> -->
 	</nav>
 	
 </template>
 
 <script>
-	import Sidebar from './Sidebar'
-  	import { AUTH_LOGOUT } from '../store/actions/auth'
+	import Sidebar from '@/components/UI/Sidebar'
+  	import { AUTH_LOGOUT } from '../../store/actions/auth'
 export default {
 	components: {
 		Sidebar
@@ -87,9 +53,6 @@ export default {
 			drawer: false,
 			snackbar: false,
 			message: '',
-			items: [
-	          { title: 'Home', icon: 'dashboard' }
-	        ]
 		}
 	},
 	methods: {

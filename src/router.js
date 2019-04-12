@@ -1,9 +1,15 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Dashboard from './views/Dashboard.vue'
-import Login from './components/login.vue'
-import Register from './components/register.vue'
 import store from './store/index'
+import Router from 'vue-router'
+
+import Login from './components/Auth/login.vue'
+import Register from './components/Auth/register.vue'
+
+import Dashboard from './views/Dashboard.vue'
+
+import Invoice from './components/Billing/index.vue'
+import CreateInvoice from './components/Billing/form.vue'
+import ChargeSheet from './components/Billing/chargesheet.vue'
 
 Vue.use(Router)
 
@@ -43,6 +49,25 @@ export default new Router({
       path: '/',
       name: 'dashboard',
       component: Dashboard,
+      beforeEnter: ifAuthenticated,
+    },
+    //Billing
+    {
+      path: '/billing/invoice',
+      name: 'Invoice',
+      component: Invoice,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/billing/invoice/create',
+      name: 'CreateInvoice',
+      component: CreateInvoice,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/billing/chargesheet',
+      name: 'ChargeSheet',
+      component: ChargeSheet,
       beforeEnter: ifAuthenticated,
     },
   ]
