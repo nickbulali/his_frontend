@@ -53,8 +53,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" :loading="loading" flat @click="dialog = false">Close</v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" flat @click="saveCategory">Save
+            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+              Cancel
+              <v-icon right dark>close</v-icon>
+            </v-btn>
+            <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="saveCategory">Save
               <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -125,22 +128,41 @@
     </v-dialog>
   	<v-container class="my-5">
       <span class="title">Charge Sheet</span>
-        <v-layout row justify-left>
-          <v-flex sm4>
-            <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Category
-              <v-icon right dark>playlist_add</v-icon>
-            </v-btn>
+        <v-layout row justify-right>
+          <v-flex sm12 md6>
+            <v-layout row wrap>
+              <v-flex sm12 md6>
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Category
+                  <v-icon right dark>playlist_add</v-icon>
+                </v-btn>
+              </v-flex>
+              <v-flex sm12 md6>
+                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
+                  New Item
+                  <v-icon right dark>playlist_add</v-icon>
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </v-flex>
-          <v-flex sm4>
-            <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
-              New Item
-              <v-icon right dark>playlist_add</v-icon>
-            </v-btn>
+          <v-flex sm12 md6 offset-md2 text-xs-right>
+            <v-toolbar
+              dense
+              floating
+            >
+            <v-text-field
+              hide-details
+              prepend-icon="search"
+              single-line
+              v-model="search"
+              label="Search"
+              v-on:keyup.enter="initialize()"
+            ></v-text-field>
+             </v-toolbar>
           </v-flex>
         </v-layout>
     		<v-data-table
           :headers="headers"
-          :items="products"
+          :items="item"
           :loading="loader"
           class="elevation-1"
         >
@@ -148,7 +170,7 @@
           <td>{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.item_code }}</td>
           <td class="text-xs-left">{{ props.item.description }}</td>
-          <td class="text-xs-left">{{ props.item.product_category.name }}</td>
+          <td class="text-xs-left">{{ props.item.item_category.name }}</td>
           <td class="text-xs-left">{{ props.item.unit_price }}</td>
           <td class="justify-center layout px-0">
           <v-btn
@@ -174,6 +196,15 @@
         </td>
         </template>
       </v-data-table>
+      <div v-if="length" class="text-xs-center">
+        <v-pagination
+          :length="length"
+          :total-visible="pagination.visible"
+          v-model="pagination.page"
+          @input="initialize"
+          circle>
+        </v-pagination>
+      </div>
   	</v-container>
 
   </div>
@@ -185,6 +216,8 @@
   export default {
     data () {
       return {
+        search: '',
+        query: '',
         snackbar: false,
         message:'',
         y: 'top',
@@ -222,7 +255,7 @@
           { text: 'Unit Price', align: 'left', value: 'unit_price' },
           { text: 'Actions', align: 'center', value: 'actions' },
         ],
-        products: [],
+        item: [],
         categories: [],
         editedIndex: -1,
         category: {
@@ -240,7 +273,13 @@
           item_code: '',
           description: '',
           unit_price: '',
-        }
+        },
+        pagination: {
+          page: 1,
+          per_page: 0,
+          total: 0,
+          visible: 10
+        },
       }
     },
     created() {
@@ -253,19 +292,25 @@
       },
       initialize() {
         this.loader=true
-        apiCall({ url: "/api/products", method: "GET" })
+        this.query = 'page='+ this.pagination.page;
+        if (this.search != '') {
+            this.query = this.query+'&search='+this.search;
+        }
+        apiCall({ url: "/api/item?" + this.query, method: "GET" })
           .then(resp => {
-            console.log(resp);
-            this.products = resp.data;
+            console.log("item is",resp);
+            this.item = resp.data;
             this.loader=false
+            this.pagination.total = resp.total;
+            this.pagination.per_page = resp.per_page;
           })
           .catch(error => {
             console.log(error.response);
           });
 
-          apiCall({ url: "/api/product-category", method: "GET" })
+          apiCall({ url: "/api/item-category", method: "GET" })
           .then(resp => {
-            console.log("product",resp);
+            console.log("item",resp);
             this.categories = resp.data;
           })
           .catch(error => {
@@ -280,7 +325,7 @@
         }
       },
       editItem (item) {
-        this.editedIndex = this.products.indexOf(item)
+        this.editedIndex = this.item.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.productDialog = true
       },
@@ -295,10 +340,10 @@
           this.loadingMethod(true, "Updating Chargesheet")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/products/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+            apiCall({url: '/api/item/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
               this.loading = false
-              Object.assign(this.products[this.editedIndex], this.editedItem)
+              Object.assign(this.item[this.editedIndex], this.editedItem)
               console.log(resp)
               this.productDialog = false
               this.resetDialogReferences();
@@ -319,10 +364,10 @@
           this.loadingMethod(true, "Adding Chargesheet Entry")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/products', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/item', data: this.editedItem, method: 'POST' })
             .then(resp => {
               this.loading = false
-              this.products.push(resp)
+              this.item.push(resp)
               console.log(this.editedItem)
               this.productDialog = false
               this.resetDialogReferences();
@@ -345,9 +390,9 @@
         confirm('Are you sure you want to delete this item?') && (this.delete = true)
 
         if (this.delete) {
-          const index = this.products.indexOf(item)
-          this.products.splice(index, 1)
-          apiCall({url: '/api/products/'+item.id, method: 'DELETE' })
+          const index = this.item.indexOf(item)
+          this.item.splice(index, 1)
+          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
           .then(resp => {
             console.log(resp)
           })
@@ -361,12 +406,14 @@
         if(this.$refs.form.validate()){
             this.loadingMethod(true, "Posting Category")
             this.loading = true
-            apiCall({url: '/api/product-category', data: this.category, method: 'POST' })
+            apiCall({url: '/api/item-category', data: this.category, method: 'POST' })
             .then(resp => {
               this.loading = false
-              this.saving = false;
-              this.message = 'Category Added Succesfully';
-              this.snackbar = true;
+              this.saving = false
+              this.categories.push(resp)
+              this.dialog = false
+              this.message = 'Category Added Succesfully'
+              this.snackbar = true
               this.loadingMethod(false)
             })
             .catch(error => {

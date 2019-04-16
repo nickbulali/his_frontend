@@ -6,7 +6,7 @@
   		      <span class="title">Invoices</span>
           </v-flex>
           <v-flex sm12>
-            <v-btn color="primary" router to = "/billing/invoice/create">Create New Invoice</v-btn>
+            <v-btn outline color="primary" router to = "/billing/invoice/create">Print Invoice</v-btn>
           </v-flex>
         </v-layout>
     		<v-data-table
@@ -19,7 +19,7 @@
           <td>{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.date }}</td>
           <td class="text-xs-left">{{ props.item.number }}</td>
-          <td class="text-xs-left">{{ props.item.customer.firstname }} {{ props.item.customer.lastname }}</td>
+          <td class="text-xs-left">{{ props.item.patient.name.text }} {{ props.item.patient.name.family }}</td>
           <td class="text-xs-left">{{ props.item.due_date }}</td>
           <td class="text-xs-right">{{ props.item.total }}</td>
         </template>
@@ -32,6 +32,15 @@
           </td>
         </template>
       </v-data-table>
+      <div v-if="length" class="text-xs-center">
+        <v-pagination
+          :length="length"
+          :total-visible="pagination.visible"
+          v-model="pagination.page"
+          @input="initialize"
+          circle>
+        </v-pagination>
+      </div>
   	</v-container>
 
   </div>
@@ -43,6 +52,8 @@
   export default {
     data () {
       return {
+        search: '',
+        query: '',
         valid: true,
         loader: false,
 
@@ -65,7 +76,7 @@
               },
               { text: 'Date', align: 'left', value: 'date' },
               { text: 'Number', align: 'left', value: 'number' },
-              { text: 'Customer', align: 'left', value: 'customer' },
+              { text: 'Patient', align: 'left', value: 'customer' },
               { text: 'Due Date', align: 'left', value: 'due_date' },
               { text: 'Total', align: 'right', value: 'total' },
             ],
@@ -80,7 +91,13 @@
               { text: 'Quantity', align: 'left', value: 'quantity' },
               { text: 'Total', align: 'left', value: 'total' },
         ],
-        data: []
+        data: [],
+        pagination: {
+          page: 1,
+          per_page: 0,
+          total: 0,
+          visible: 10
+        },
       }
     },
     created() {
@@ -89,12 +106,17 @@
     methods: {
       initialize() {
         this.loader=true
-        apiCall({ url: "/api/invoices", method: "GET" })
+        this.query = 'page='+ this.pagination.page;
+        if (this.search != '') {
+            this.query = this.query+'&search='+this.search;
+        }
+        apiCall({ url: "/api/invoice?" + this.query, method: "GET" })
           .then(resp => {
             console.log(resp);
-            this.data = resp.results.data;
+            this.data = resp.data;
             this.loader=false
-
+            this.pagination.total = resp.total;
+            this.pagination.per_page = resp.per_page;
           })
           .catch(error => {
             console.log(error.response);
@@ -113,7 +135,10 @@
         },
         formattedDueDate(){
           return this.invoice.due ? format(this.invoice.due, 'Do MMM YYYY') : ''
-        }
+        },
+        length: function() {
+          return Math.ceil(this.pagination.total / this.pagination.per_page);
+        },
       }
   }
 </script>

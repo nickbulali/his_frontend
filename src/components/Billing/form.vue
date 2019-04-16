@@ -19,9 +19,11 @@
                   <v-flex xs12 sm6 md6>
                     <v-autocomplete
                       :rules="inputRules"
-                      :items = "customers"
+                      :items = "patients"
                       v-model="invoice.patient"
                       outline
+                      item-text="name.text"
+                      item-value="id"
                       label="Patient"
                       required>
                     </v-autocomplete>
@@ -76,8 +78,13 @@
             </v-card-text>        
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary darken-1" flat @click="dialog = false">Close</v-btn>
-              <v-btn :disabled="!valid" color="primary darken-1" flat @click="dialog = false">Save</v-btn>
+                <v-btn round outline color="blue lighten-1" flat router to = "/billing/invoice">
+                Cancel
+                <v-icon right dark>close</v-icon>
+              </v-btn>
+              <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="" :loading="loading">
+              Save <v-icon right dark>cloud_upload</v-icon>
+            </v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -120,6 +127,7 @@
         completed: false,
         valid: true,
         loader: false,
+        loading:false,
         dialog: false,
         invoice: {
           patient: '',
@@ -156,7 +164,7 @@
               { text: 'Quantity', align: 'left', value: 'quantity' },
               { text: 'Total', align: 'left', value: 'total' },
         ],
-        customers: [],
+        patients: [],
         products: []
       }
     },
@@ -166,20 +174,20 @@
     methods: {
       initialize() {
         /*this.loader=true*/
-        apiCall({ url: "/api/customers", method: "GET" })
+        apiCall({ url: "/api/patient", method: "GET" })
           .then(resp => {
             console.log(resp);
-            this.customers = resp.results;
+            this.patients = resp.data;
             /*this.loader=false*/
           })
           .catch(error => {
             console.log(error.response);
           });
 
-          apiCall({ url: "/api/products", method: "GET" })
+          apiCall({ url: "/api/item", method: "GET" })
           .then(resp => {
             console.log(resp);
-            this.products = resp.results;
+            this.products = resp.data;
             /*this.loader=false*/
           })
           .catch(error => {
