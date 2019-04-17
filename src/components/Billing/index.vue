@@ -1,12 +1,29 @@
 <template>
   <div class="invoice">
   	<v-container class="my-5">
-        <v-layout column justify-center>
-          <v-flex sm12>
-  		      <span class="title">Invoices</span>
+      <span class="title">Invoices</span>
+        <v-layout row justify-right>
+          <v-flex sm12 md6>
+            <v-layout row wrap>
+              <v-flex sm12 md6>
+                <v-btn outline color="primary" router to = "/billing/invoice/create">Print Invoice</v-btn>
+              </v-flex>
+            </v-layout>
           </v-flex>
-          <v-flex sm12>
-            <v-btn outline color="primary" router to = "/billing/invoice/create">Print Invoice</v-btn>
+          <v-flex sm12 md6 offset-md2 text-xs-right>
+            <v-toolbar
+              dense
+              floating
+            >
+            <v-text-field
+              hide-details
+              prepend-icon="search"
+              single-line
+              v-model="search"
+              label="Search"
+              v-on:keyup.enter="initialize()"
+            ></v-text-field>
+             </v-toolbar>
           </v-flex>
         </v-layout>
     		<v-data-table
