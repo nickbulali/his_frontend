@@ -40,8 +40,8 @@
 
 <script>
   import { mapGetters, mapState } from 'vuex'
-  import { USER_REQUEST } from '../store/actions/user'
-  import apiCall from '../utils/api'
+  import { USER_REQUEST } from '../../store/actions/user'
+  import apiCall from '../../utils/api'
   export default {
     name: 'Sidebar',
     data: () => ({
@@ -49,9 +49,14 @@
       organization: [],
       billings: [
         {
-          path: '/billing/invoices',
+          path: '/billing/invoice',
           label: 'Invoices',
           icon: 'insert_drive_file'
+        },
+        {
+          path: '/billing/chargesheet',
+          label: 'Charge Sheet',
+          icon: 'local_atm'
         },
       ],
     }),

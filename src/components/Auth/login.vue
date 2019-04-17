@@ -57,7 +57,7 @@
 	</div>
 </template>
 <script>
-  import {AUTH_REQUEST} from '../store/actions/auth'
+  import {AUTH_REQUEST} from '../../store/actions/auth'
   import Loading from './loading'
   import { mapState } from 'vuex'
   export default {

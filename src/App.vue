@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import Navbar from '@/components/UI/Navbar'
+import Footer from '@/components/UI/Footer'
 
 export default {
   name: 'App',
