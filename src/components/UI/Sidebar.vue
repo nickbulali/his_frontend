@@ -22,6 +22,18 @@
         </v-list-tile-action>
         <v-list-tile-title>Home</v-list-tile-title>
       </v-list-tile>
+      <v-list-tile to="/queue">
+        <v-list-tile-action>
+          <v-icon>list</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-title>Queue</v-list-tile-title>
+      </v-list-tile>
+      <v-list-tile to="/patients">
+        <v-list-tile-action>
+          <v-icon>assignment_ind</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-title>Patients</v-list-tile-title>
+      </v-list-tile>
       <v-list-group prepend-icon="attach_money" no-action>
         <v-list-tile slot="activator">
           <v-list-tile-title>Billing</v-list-tile-title>

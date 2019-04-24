@@ -7,6 +7,10 @@ import Register from './components/Auth/register.vue'
 
 import Dashboard from './views/Dashboard.vue'
 
+import Patient from './components/Patient/index.vue'
+
+import Queue from './components/Queue/index.vue'
+
 import Invoice from './components/Billing/index.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
@@ -49,6 +53,20 @@ export default new Router({
       path: '/',
       name: 'dashboard',
       component: Dashboard,
+      beforeEnter: ifAuthenticated,
+    },
+    //Queue
+    {
+      path: '/queue',
+      name: 'queue',
+      component: Queue,
+      beforeEnter: ifAuthenticated,
+    },
+    //Billing
+    {
+      path: '/patients',
+      name: 'Patient',
+      component: Patient,
       beforeEnter: ifAuthenticated,
     },
     //Billing
