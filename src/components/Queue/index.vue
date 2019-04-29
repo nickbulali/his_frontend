@@ -1,5 +1,5 @@
 <template>
-  <div class="invoice">
+  <div class="queue">
   	<v-snackbar
       v-model="snackbar"
       :color="color"
@@ -56,7 +56,7 @@
 			      >
 			        <v-timeline-item
 			          v-for="item in queue" :key="item.id"
-			          color="pink"
+			          :color="item.queue_status.color"
 			          small
 			        >
 			          <v-layout pt-3>
@@ -120,7 +120,7 @@
 <script>
 	import apiCall from '../../utils/api'
 	import VueMoment from 'vue-moment'
-  Vue.use(VueMoment);
+  	Vue.use(VueMoment);
 	import Vue from 'vue'
 	export default {
   		data () {

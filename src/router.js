@@ -8,6 +8,7 @@ import Register from './components/Auth/register.vue'
 import Dashboard from './views/Dashboard.vue'
 
 import Patient from './components/Patient/index.vue'
+import patientProfile from './components/Patient/patientProfile.vue'
 
 import Queue from './components/Queue/index.vue'
 
@@ -62,11 +63,17 @@ export default new Router({
       component: Queue,
       beforeEnter: ifAuthenticated,
     },
-    //Billing
+    //Patient
     {
       path: '/patients',
       name: 'Patient',
       component: Patient,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/patient/:id',
+      name: 'patientProfile',
+      component: patientProfile,
       beforeEnter: ifAuthenticated,
     },
     //Billing

@@ -90,11 +90,11 @@
 		        </div>
 		      </div>
 		    </v-flex>
-		    <v-flex sm12 md6 lg4 v-for="patient in patient" :key="patient.id">
+		    <v-flex sm12 md6 lg4 v-for="(patient,index) in patient" :key="patient.id">
 		      <div class="his_card">
 		        <div class="his_card_top_right">
-		          <v-btn outline fab small title="View History" color="green"  @click="">
-		            <v-icon dark>description</v-icon>
+		          <v-btn outline fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
+		            <v-icon dark>visibility</v-icon>
 		          </v-btn>
 		        </div>
 		        <p class="his_card_main_heading">{{ patient.name.given }} {{ patient.name.family }}</p>
