@@ -8,6 +8,116 @@
       >
         {{ message }}
     </v-snackbar>
+     <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          {{ loadingDialog.message }}
+          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="vt" max-width="600px">
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template>
+      <v-card>
+        <v-toolbar dark color="primary" class="elevation-0">
+          <v-spacer></v-spacer>
+            <v-toolbar-title>Add Vitals</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model="vitals.body_temperature"
+                    :rules="[v => !!v || 'Body Temparature is Required']"
+                    outline
+                    label="Body Temparature"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                    <v-flex xs12>
+                  <v-text-field
+                    v-model="vitals.respiratory_rate"
+                    :rules="[v => !!v || 'Respiratory Rate is Required']"
+                    outline
+                    label="Respiratory Rate"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                   <v-flex xs12>
+                  <v-text-field
+                    v-model="vitals.heart_rate"
+                    :rules="[v => !!v || 'Heart Rate is Required']"
+                    outline
+                    label="Heart Rate"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                   <v-flex xs12>
+                  <v-text-field
+                    v-model="vitals.blood_pressure"
+                    :rules="[v => !!v || 'Blood Pressure is Required']"
+                    outline
+                    label="Blood Pressure"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                  <v-flex xs12>
+                  <v-text-field
+                    v-model="vitals.height"
+                    :rules="[v => !!v || 'Height is Required']"
+                    outline
+                    label="Height"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                 <v-flex xs12>
+                  <v-text-field
+                    v-model="vitals.weight"
+                    :rules="[v => !!v || 'Weight is Required']"
+                    outline
+                    label="Weight"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                   <v-flex xs12>
+                  <v-text-field
+                    v-model="vitals.body_mass_index"
+                    :rules="[v => !!v || 'Body Mass Index is Required']"
+                    outline
+                    label="Body Mass Index"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                   <v-flex xs12>
+                  <v-text-field
+                    v-model="vitals.body_surface_area"
+                    :rules="[v => !!v || 'Body Surface Area is Required']"
+                    outline
+                    label="Body Surface Area"
+                    required>
+                  </v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+              Cancel
+              <v-icon right dark>close</v-icon>
+            </v-btn>
+            <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="savevitals(patient)">Save
+              <v-icon right dark>cloud_upload</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
     <v-layout
     	class="mt-5"
     	row
@@ -100,16 +210,11 @@
 		        <p class="his_card_title">Number of Visits</p>
 		        <p class="his_card_description">!!x visits!!</p>
 		        <div class="his_card_footer">
-		          <v-btn dark class="his_card_button" small title="Edit" color="green" :loading="queueLoader" round @click="">
-		            <v-icon left dark>launch</v-icon>
-		            Button 1
-		          </v-btn>
-		          <div class="his_card_footer_right">
-		            <v-btn dark class="his_card_button" small title="Edit" color="blue" round @click="">
-			        	<v-icon left dark>add_circle</v-icon>
-			            Button 2
-			        </v-btn>
-		          </div>
+		          
+		          <v-btn class="his_card_button" small title="Edit" color="green" @click ="vit(patient)">   Enter Vitals
+                  <v-icon right dark>playlist_add</v-icon>
+                </v-btn>
+		        
 		        </div>
 		      </div>
     	</v-flex>
@@ -127,6 +232,15 @@
       		return {
       			DetailsVue: false,
       			snackbar: false,
+      			valid: true,
+                delete: false,
+		        loader: false,
+		        loading: false,
+		        loadingDialog: {
+		        loading: false,
+		          message: ""
+		        },
+		        vt: false,
       			message:'',
 	    		y: 'top',
 	    		color: 'success',
@@ -136,21 +250,51 @@
 	    		monthNames: [
 	    			'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 	    		],
+	    		 inputRules: [
+                v => v.length >= !v  || 'Field is required'
+     		     ],
 	    		time: '',
 	    		queue:[],
-	    		patient:{}
+	    		vitals:{
+		    	patient_id:'',
+		        body_temperature: '',
+		    	respiratory_rate: '',
+		    	heart_rate: '',
+		    	blood_pressure: '',
+		    	height:'',
+		    	weight:'',
+		    	body_mass_index:'',
+		    	body_surface_area:'',
+		    
+		    		},
+		    		
+
       		}
   		},
   		created () {
 	      this.updateTime()
 	      this.initialize()
 	    },
+	     
+
+
   		methods: {
+
+  		
+  			  loadingMethod(load, message="") {
+        this.loadingDialog.loading = load;
+        this.loadingDialog.message = message
+      },
+         
   			updateTime() {
   				this.intervalid1 = setInterval(() => {
 				    var cd = new Date();
 				    this.time = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2);
 				}, 1000);
+			},
+			vit(patient){
+				this.vt = true
+				this.vitals.patient_id = patient.id
 			},
 			zeroPadding(num, digit) {
 			    var zero = '';
@@ -173,7 +317,28 @@
 				this.patient = patient
 				this.DetailsVue = true
 				console.log(this.patient)
-			}
+			},
+			savevitals(patient){
+        if(this.$refs.form.validate()){
+            this.loadingMethod(true, "Posting Vitals")
+            this.loading = true
+            apiCall({url: '/api/vitalsigns', data: this.vitals, method: 'POST' })
+            .then(resp => {
+              this.loading = false
+              this.saving = false
+              this.vt = false
+              this.message = 'Vitals Added Succesfully'
+              this.snackbar = true
+              this.loadingMethod(false)
+            })
+            .catch(error => {
+              this.loading = false
+              console.log(error.response)
+              this.loadingMethod(false)
+            })
+            this.close()
+          }
+      }
   		}
   	}
 

@@ -15,6 +15,7 @@ import Invoice from './components/Billing/index.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
 
+
 Vue.use(Router)
 
 const ifNotAuthenticated = (to, from, next) => {
@@ -69,6 +70,8 @@ export default new Router({
       component: Patient,
       beforeEnter: ifAuthenticated,
     },
+
+
     //Billing
     {
       path: '/billing/invoice',
