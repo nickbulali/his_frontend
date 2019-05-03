@@ -8,6 +8,7 @@
       >
         {{ message }}
     </v-snackbar>
+    <v-container class="my-5">
      <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
       <v-card color="primary" dark>
         <v-card-text>
@@ -17,9 +18,6 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="vt" max-width="600px">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-      </template>
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
@@ -118,80 +116,10 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-layout
-    	class="mt-5"
-    	row
-    	wrap>
-    	<v-flex sm12 md4>
-    		<v-card
-    			class="mx-auto mt-5"
-				max-width="400"
-		      	dark
-		      	flat
-		    >
-		      <v-card-title class="pa-2 primary lighten-2">
-		        <v-btn icon>
-		          <v-icon>mdi-menu</v-icon>
-		        </v-btn>
-		        <h3 class="title font-weight-light text-xs-center grow">{{time}}</h3>
-		        <v-btn icon>
-		          <v-icon>mdi-menu</v-icon>
-		        </v-btn>
-		      </v-card-title>
-		      <v-img
-		        src="https://cdn.vuetifyjs.com/images/cards/forest.jpg"
-		        gradient="to top, rgba(0,0,0,.44), rgba(0,0,0,.44)"
-		      >
-		        <v-container fill-height>
-		          <v-layout align-center>
-		            <strong class="display-4 font-weight-regular mr-4">{{ new Date().getUTCDate() }}</strong>
-		            <v-layout column justify-end>
-		              <div class="headline font-weight-light">{{dayNames[new Date().getDay()]}}</div>
-		              <div class="text-uppercase font-weight-light">{{ monthNames[new Date().getMonth()] }} {{ new Date().getFullYear() }}</div>
-		            </v-layout>
-		          </v-layout>
-		        </v-container>
-		      </v-img>
-		    </v-card>
-    	</v-flex>
-    	<v-flex sm12 md4>
-    		<v-card
-				class="mx-auto mt-5"
-			>
-			    
-			    <v-card-text class="py-0">
-			      <v-timeline
-			        align-top
-			        dense
-			      >
-			        <v-timeline-item
-			          v-for="item in queue" :key="item.id"
-			          :color="item.queue_status.color"
-			          small
-			        >
-			          <v-layout pt-3>
-			            <v-flex xs3>
-			              <strong>{{item.created_at | moment("h:mm a")}}</strong>
-			            </v-flex>
-			            <v-flex @click="patientDetails(item.patient)">
-			              <strong>{{item.patient.name.given}} {{item.patient.name.family}}</strong>
-			              <div class="caption green--text" v-if="item.queue_status.display=='Complete'">{{item.queue_status.display}}</div>
-			              <div class="caption red--text" v-if="item.queue_status.display=='Pending'">{{item.queue_status.display}}</div>
-			              <div class="caption brown--text" v-if="item.queue_status.display=='Triage'">{{item.queue_status.display}}</div>
-			              <div class="caption blue--text" v-if="item.queue_status.display=='Consultation'">{{item.queue_status.display}}</div>
-			              <div class="caption purple--text" v-if="item.queue_status.display=='Pharmacy'">{{item.queue_status.display}}</div>
-			              <div class="caption teal--text" v-if="item.queue_status.display=='Labs'">{{item.queue_status.display}}</div>
-			            </v-flex>
-			          </v-layout>
-			        </v-timeline-item>
-
-			     
-			      </v-timeline>
-			    </v-card-text>
-			</v-card>
-    	</v-flex>
-    	<v-flex sm12 md4>
-    		<div v-if="DetailsVue == true" class="his_card mt-5">
+    <v-dialog v-model="DetailsVue" max-width="600px">
+    	<div v-if="DetailsVue == true">
+    		<v-card class="pa-3">
+    			<v-card-text>
 		        <div class="his_card_top_right">
 		          <v-btn outline fab small title="View History" color="green"  @click="">
 		            <v-icon dark>description</v-icon>
@@ -212,24 +140,177 @@
 		        <div class="his_card_footer">
 		          
 		          <v-btn class="his_card_button" small title="Edit" color="green" @click ="vit(patient)">   Enter Vitals
-                  <v-icon right dark>playlist_add</v-icon>
-                </v-btn>
+		          <v-icon right dark>playlist_add</v-icon>
+		        </v-btn>
 		        
 		        </div>
-		      </div>
+		    	</v-card-text>
+			</v-card>
+	      </div>
+    </v-dialog>
+    <v-layout
+    	class="mt-5"
+    	row
+    	wrap>
+    	<v-flex sm12 md6>
+    		<div class="his_card_no_shadow">
+    			<v-layout
+			    	row
+			    	wrap>
+			    	<v-flex sm12 md3>
+			    		<h3 class="title text-xs-left grow mx-3 mt-4">{{dayNames[new Date().getDay()]}}</h3>
+			    		<h3 class="body-2 font-weight-light text-xs-left grow my-1 mx-3 mb-4 grey--text">{{time}}</h3>
+			    		<v-divider></v-divider>
+			    		<h3 class="body-2 font-weight-light text-xs-left grow my-1 mx-3 mt-4 grey--text">Date</h3>
+			    		<h3 class="title text-xs-left grow mx-3">{{ new Date().getUTCDate() }} {{ monthNames[new Date().getMonth()] }} {{ new Date().getFullYear() }}</h3>
+			    	</v-flex>
+			    	<v-flex sm12 md9>
+		    			<v-card-text class="py-0">
+					      <v-timeline
+					        align-top
+					        dense
+					      >
+					      	<v-timeline-item
+					          color="yellow"
+					          small
+					        >
+					        <v-layout pt-1>
+					            <v-flex xs8>
+					              <strong>Add Patient to Queue</strong>
+					              <div class="caption orange--text" >Pending</div>
+					            </v-flex>
+					            <v-flex xs4>
+					              <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" round @click="">
+						            <v-icon left dark>add_circle</v-icon>
+						            Add
+						          </v-btn>
+					            </v-flex>
+					          </v-layout>
+					         </v-timeline-item>
+					        <v-timeline-item
+					          v-for="item in queue" :key="item.id"
+					          :color="item.queue_status.color"
+					          small
+					        >
+					        <v-divider></v-divider>
+					          <v-layout pt-3>
+					            <v-flex xs3>
+					              <strong>{{item.created_at | moment("h:mm a")}}</strong>
+					              <div class="caption grey--text">{{item.created_at | moment("from", true)}}</div>
+					            </v-flex>
+					            <v-flex xs7>
+					              <strong>{{item.patient.name.given}} {{item.patient.name.family}}</strong>
+					              <div class="caption green--text" v-if="item.queue_status.display=='Complete'">{{item.queue_status.display}}</div>
+					              <div class="caption red--text" v-if="item.queue_status.display=='Pending'">{{item.queue_status.display}}</div>
+					              <div class="caption brown--text" v-if="item.queue_status.display=='Triage'">{{item.queue_status.display}}</div>
+					              <div class="caption blue--text" v-if="item.queue_status.display=='Consultation'">{{item.queue_status.display}}</div>
+					              <div class="caption purple--text" v-if="item.queue_status.display=='Pharmacy'">{{item.queue_status.display}}</div>
+					              <div class="caption teal--text" v-if="item.queue_status.display=='Labs'">{{item.queue_status.display}}</div>
+					            </v-flex>
+					            <v-flex xs2>
+					            	<v-btn outline fab small color="brown" @click="patientDetails(item.patient)">
+						            <v-icon dark>visibility</v-icon>
+						          </v-btn>
+					            </v-flex>
+					          </v-layout>
+					        </v-timeline-item>			     
+					      </v-timeline>
+					    </v-card-text>
+					    <infinite-loading @distance="20" @infinite="infiniteHandler"></infinite-loading>
+					</v-flex>
+				</v-layout>
+		    </v-card>
+			</div>
+    	</v-flex>
+    	<v-flex sm12 md6>
+    		<v-layout
+		    	row
+		    	wrap>
+		    	<v-flex sm12 md12>
+	    			<div class="his_card_no_shadow mx-2">
+	    				<v-card-title>
+		                  <p class="headline">
+		                    Total on Queue
+		                  </p>
+		                  <v-spacer></v-spacer>
+		                </v-card-title>
+	    				<patient-queue
+	    					v-if="dataready"
+		                  :dataset="dataset"
+		                />
+	    			</div>
+	    		</v-flex>
+	    		<v-flex sm12 md12>
+	    			<v-layout
+				    	row
+				    	wrap>
+				    	<v-flex sm12 md6>
+		    				<div class="his_card_no_shadow text-xs-center mt-3 mx-2">
+		    					<p class="his_card_title">Statistic by Status</p>
+					            <p class="his_card_description">Number of Total</p>
+					            <v-progress-circular
+					                :rotate="-90"
+					                :size="130"
+					                :width="20"
+					                :value="stat1"
+					                color="primary"
+					              >
+					              </v-progress-circular>
+					            <div class="his_card_footer">
+					              <v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
+					                <v-icon left dark>directions_walk</v-icon>
+					                  View All Visits
+					              </v-btn>
+					            </div>
+		    				</div>
+		    			</v-flex>
+		    			<v-flex sm12 md6>
+		    				<div class="his_card_no_shadow text-xs-center mt-3 mx-3">
+		    					<p class="his_card_title">Statistic by Location</p>
+					            <p class="his_card_description">Number of Total</p>
+					            <v-progress-circular
+					                :rotate="-90"
+					                :size="130"
+					                :width="20"
+					                :value="stat2"
+					                color="primary"
+					              >
+					              </v-progress-circular>
+					            <div class="his_card_footer">
+					              <v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
+					                <v-icon left dark>directions_walk</v-icon>
+					                  View All Visits
+					              </v-btn>
+					            </div>
+		    				</div>
+		    			</v-flex>
+			    	</v-layout>
+	    		</v-flex>
+	    	</v-layout>
     	</v-flex>
 	</v-layout>
+</v-container>
   </div>
 </template>
 
 <script>
 	import apiCall from '../../utils/api'
+	import PatientQueue from '@/components/Charts/PatientQueue.vue'
+	import Vue from 'vue'
 	import VueMoment from 'vue-moment'
   	Vue.use(VueMoment);
-	import Vue from 'vue'
+  	import InfiniteLoading from 'vue-infinite-loading'
 	export default {
+		components: {
+			InfiniteLoading,
+			PatientQueue
+		},
   		data () {
       		return {
+      			dataready: false,
+      			dataset: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      			stat1: 10,
+      			stat2: 30,
       			DetailsVue: false,
       			snackbar: false,
       			valid: true,
@@ -250,45 +331,37 @@
 	    		monthNames: [
 	    			'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 	    		],
-	    		 inputRules: [
-                v => v.length >= !v  || 'Field is required'
-     		     ],
+	    		inputRules: [
+                	v => v.length >= !v  || 'Field is required'
+     		    ],
 	    		time: '',
 	    		queue:[],
+	    		page: 1,
 	    		vitals:{
-		    	patient_id:'',
-		        body_temperature: '',
-		    	respiratory_rate: '',
-		    	heart_rate: '',
-		    	blood_pressure: '',
-		    	height:'',
-		    	weight:'',
-		    	body_mass_index:'',
-		    	body_surface_area:'',
-		    
-		    		},
-		    		
-
+			    	patient_id:'',
+			        body_temperature: '',
+			    	respiratory_rate: '',
+			    	heart_rate: '',
+			    	blood_pressure: '',
+			    	height:'',
+			    	weight:'',
+			    	body_mass_index:'',
+			    	body_surface_area:'',
+		    	},
       		}
   		},
   		created () {
 	      this.updateTime()
 	      this.initialize()
 	    },
-	     
-
-
-  		methods: {
-
-  		
-  			  loadingMethod(load, message="") {
-        this.loadingDialog.loading = load;
-        this.loadingDialog.message = message
-      },
-         
+  		methods: {  		
+  			loadingMethod(load, message="") {
+		        this.loadingDialog.loading = load;
+		        this.loadingDialog.message = message
+		    },
   			updateTime() {
   				this.intervalid1 = setInterval(() => {
-				    var cd = new Date();
+					var cd = new Date();
 				    this.time = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2);
 				}, 1000);
 			},
@@ -304,14 +377,39 @@
 			    return (zero + num).slice(-digit);
 			},
 			initialize () {
-				apiCall({url: '/api/queue', method: 'GET' })
+
+			    apiCall({url: '/api/queuestats', method: 'GET' })
 			        .then(resp => {
-			          console.log(resp)
-			          this.queue = resp;
+			          this.queuestats = resp;
+			          var i;
+		                for (i = 0; i < Object.keys(this.queuestats).length; i++) {
+		                    this.dataset[Object.keys(this.queuestats)[i].replace(/^0/, '')] = this.queuestats[Object.keys(this.queuestats)[i]].length;
+		                    console.log(this.queuestats[Object.keys(this.queuestats)[i]].length)
+		                }
+		                console.log("dataset", this.dataset)
+		                this.dataready = true
 			        })
 			        .catch(error => {
 			          console.log(error.response)
 			        })
+			},
+			infiniteHandler($state) {
+				apiCall({url: '/api/queue?page='+this.page, method: 'GET' })
+			        .then(response => {
+			          	if (response.data.length) {
+		                  this.queue = this.queue.concat(response.data);
+		                  $state.loaded();
+		                  if (this.queue.length / 20 === 10) {
+		                    $state.complete();
+		                  }
+		                } else {
+		                  $state.complete();
+		                }
+			        })
+			        .catch(error => {
+			          console.log(error.response)
+			        })
+			        this.page = this.page + 1;
 			},
 			patientDetails(patient){
 				this.patient = patient
@@ -319,26 +417,26 @@
 				console.log(this.patient)
 			},
 			savevitals(patient){
-        if(this.$refs.form.validate()){
-            this.loadingMethod(true, "Posting Vitals")
-            this.loading = true
-            apiCall({url: '/api/vitalsigns', data: this.vitals, method: 'POST' })
-            .then(resp => {
-              this.loading = false
-              this.saving = false
-              this.vt = false
-              this.message = 'Vitals Added Succesfully'
-              this.snackbar = true
-              this.loadingMethod(false)
-            })
-            .catch(error => {
-              this.loading = false
-              console.log(error.response)
-              this.loadingMethod(false)
-            })
-            this.close()
-          }
-      }
+		        if(this.$refs.form.validate()){
+		            this.loadingMethod(true, "Posting Vitals")
+		            this.loading = true
+		            apiCall({url: '/api/vitalsigns', data: this.vitals, method: 'POST' })
+		            .then(resp => {
+		              this.loading = false
+		              this.saving = false
+		              this.vt = false
+		              this.message = 'Vitals Added Succesfully'
+		              this.snackbar = true
+		              this.loadingMethod(false)
+		            })
+		            .catch(error => {
+		              this.loading = false
+		              console.log(error.response)
+		              this.loadingMethod(false)
+		            })
+		            this.close()
+		          }
+		      }
   		}
   	}
 

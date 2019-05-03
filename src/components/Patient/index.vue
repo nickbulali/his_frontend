@@ -110,7 +110,7 @@
 		        <p class="his_card_title">Number of Visits</p>
 		        <p class="his_card_description">!!x visits!!</p>
 		        <div class="his_card_footer">
-		          <v-btn dark class="his_card_button" small title="Edit" color="green" :loading="queueLoader" round @click="addToQueue(patient)">
+		          <v-btn dark class="his_card_button" small title="Edit" color="green" round @click="addToQueue(patient)">
 		            <v-icon left dark>launch</v-icon>
 		            New Visit
 		          </v-btn>
@@ -151,7 +151,6 @@
         valid: true,
       	loading: false,
       	snackbar: false,
-      	queueLoader: false,
 	    loadingDialog: {
 	        loading: false,
 	    	message: ""
@@ -250,16 +249,13 @@
 	      	this.newpatient = this.defaultpatient
 	      },
 	      addToQueue(patient){
-	      	this.queueLoader = true
 	      	apiCall({url: '/api/queue', data: patient, method: 'POST' })
 	            .then(resp => {
 	              console.log(resp)
-	              this.queueLoader = false
 	              this.message = 'Patient Sent to Queue Succesfully';
 	              this.snackbar = true;
 	            })
 	            .catch(error => {
-	              this.queueLoader = false
 	              console.log(error.response)
 	            })
 	      }
