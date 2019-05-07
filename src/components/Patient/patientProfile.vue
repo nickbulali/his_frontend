@@ -348,7 +348,23 @@
             </v-tab>
             <v-tab-item
             >
-
+              <div class="his_card_no_shadow mt-3 pa-2">
+                <v-layout
+                  row
+                  wrap>
+                  <v-flex xs12 sm12 md4 v-for="(medication,index) in patient.medications" :key="medication.id">
+                    <div class="his_card">
+                      <p class="his_card_main_heading">{{ medication.drugs.trade_name }}</p>
+                      <p class="his_card_title">Description</p>
+                      <p class="his_card_description">{{ medication.dosage.description }}</p>
+                      <p class="his_card_title">Start Date</p>
+                      <p class="his_card_description">{{medication.start_time | moment("MMMM Do YYYY, h:mm:ss a")}}</p>
+                      <p class="his_card_title">End Date</p>
+                      <p class="his_card_description">{{medication.end_time | moment("MMMM Do YYYY")}}</p>
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </div>
             </v-tab-item>
             <v-tab
               ripple
