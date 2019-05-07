@@ -224,8 +224,8 @@
 	        })
 	      },
 	      save () {
-	          // this.loadingMethod(true, "Adding Patient")
-	          if(this.$refs.form.validate()){
+	        // this.loadingMethod(true, "Adding Patient")
+	        if(this.$refs.form.validate()){
 	            this.loading = true
 	            apiCall({url: '/api/patient', data: this.newpatient, method: 'POST' })
 	            .then(resp => {

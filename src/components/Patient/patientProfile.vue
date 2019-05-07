@@ -301,24 +301,24 @@
                 </div>
               </v-flex>
               <v-flex sm12 md2>
-                <div class="his_card_no_shadow mt-3 text-xs-center mx-2">
-                  <p class="his_card_title">Total</p>
-                  <p class="his_card_description">{{patient.encounter.length}} Visits</p>
-                  <v-progress-circular
-                      :rotate="-90"
-                      :size="130"
-                      :width="20"
-                      :value="visits"
-                      color="primary"
-                    >
-                    </v-progress-circular>
-                  <div class="his_card_footer">
-                    <v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
-                      <v-icon left dark>directions_walk</v-icon>
-                        View All Visits
-                    </v-btn>
+                  <div class="his_card_no_shadow mt-3 text-xs-center mx-2">
+                    <p class="his_card_title">Total</p>
+                    <p class="his_card_description">{{patient.encounter.length}} Visits</p>
+                    <v-progress-circular
+                        :rotate="-90"
+                        :size="130"
+                        :width="20"
+                        :value="visits"
+                        color="primary"
+                      >
+                      </v-progress-circular>
+                    <div class="his_card_footer">
+                      <v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
+                        <v-icon left dark>directions_walk</v-icon>
+                          View All Visits
+                      </v-btn>
+                    </div>
                   </div>
-                </div>
               </v-flex>
             </v-layout>
               
@@ -350,6 +350,58 @@
             >
 
             </v-tab-item>
+            <v-tab
+              ripple
+            >
+              Allergies
+            </v-tab>
+            <v-tab-item
+            >
+              <div class="his_card_no_shadow mt-3 pa-2">
+                <v-layout
+                  row
+                  wrap>
+                  <v-flex sm12 md4 lg4>
+                    <div class="his_card_new_patient">
+                      <p class="his_card_main_heading">Add New</p>
+                        <v-form
+                            ref="form"
+                            v-model="valid"
+                            lazy-validation
+                        >
+                          <v-layout row wrap>
+                            <v-flex sm12 md12>
+                              <v-select
+                                :items="allergies"
+                                v-model="newallergy"
+                                item-value="id"
+                                item-text="substance"
+                                label="Allergy"
+                              ></v-select>
+                            </v-flex>
+                          </v-layout>
+                      </v-form>
+                      <div class="his_card_footer">
+                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="saveAllergy">
+                          <v-icon left dark>add_circle</v-icon>
+                          Add
+                        </v-btn>
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 sm12 md4 v-for="(allergy,index) in patient.allergies" :key="allergy.id">
+                    <div class="his_card">
+                      <p class="his_card_main_heading">{{ allergy.substance }}</p>
+                      <p class="his_card_title">Type</p>
+                      <p class="his_card_description" v-if="allergy.is_drug == 1">Drug</p>
+                      <p class="his_card_description" v-if="allergy.is_drug == 0">Other</p>
+                      <p class="his_card_title">Date Added</p>
+                      <p class="his_card_description">{{allergy.created_at | moment("from", true)}}</p>
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </div>
+            </v-tab-item>
           </v-tabs>
         </v-flex>
       </v-layout>
@@ -380,6 +432,7 @@
     },
     data () {
       return {
+        allergyloading: false,
         visitQuery: '',
         active: null,
         bodyTemperature: [36.1, 36.0, 36.8, 38, 37, 36.9],
@@ -396,6 +449,8 @@
         message: '',
         screenDialog: false,
         patient:{},
+        allergies: [],
+        newallergy: '',
         visitsPagination: {
           page: 1,
           per_page: 0,
@@ -422,6 +477,14 @@
           console.log(error.response)
           this.screenDialog = false
         })
+        apiCall({url: '/api/allergy', method: 'GET' })
+        .then(resp => {
+          console.log("allergies", resp)
+          this.allergies = resp;
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
       },
       getVisits(){
         this.visitQuery = 'page='+ this.visitsPagination.page;
@@ -436,6 +499,23 @@
         .catch(error => {
           console.log(error.response)
         })
+      },
+      saveAllergy(){
+        if(this.$refs.form.validate()){
+            this.allergyloading = true
+            apiCall({url: '/api/patient/'+this.patient.id+'/allergy/'+this.newallergy, method: 'GET' })
+            .then(resp => {
+              console.log("allergy response", resp)
+              this.patient.allergies =resp.allergies
+              this.allergyloading = false
+              this.message = 'Allergy Added Succesfully';
+              this.snackbar = true;
+            })
+            .catch(error => {
+              this.allergyloading = false
+              console.log(error.response)
+            })
+        }
       }
     },
     computed: {
