@@ -18,7 +18,7 @@
     </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+   <!--      <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
       </template>
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
