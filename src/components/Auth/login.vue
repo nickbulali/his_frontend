@@ -1,56 +1,33 @@
 <template>
-	<div class="login my-5"> 
+	<div class="login" style="margin-top:25vh;"> 
 		<v-snackbar v-model="errorsnackbar" :timeout="4000" top color="error">
 			<span>Email/Password wrong</span>
 		</v-snackbar>
-		<v-layout
-			justify-center
-			row 
-			wrap>
-			<v-flex
-		        primary
-		        xs12 md6
-		      >
-				<v-card
-					class="elevation-3" 
-					>
-					<Loading v-if='authLoading'/>
-					<v-toolbar class="elevation-0">
-				        <v-toolbar-title>@iLabAfrica HIS</v-toolbar-title>
-				        <v-spacer></v-spacer>
-			      	</v-toolbar>
-				  	<v-form class="px-3"
-				    	ref="form"
-				    	v-model="valid"
-				    	lazy-validation>
+		<v-layout justify-center row wrap mb-4>
+			<img src="logo.svg" alt="" style="height:50px; width:auto;">
+		</v-layout>
+		<v-layout justify-center row wrap>			
+			<v-flex xs12 md6 class="radius20">
+				<v-card class="elevation-3 radius20">
+					<Loading success v-if='authLoading'/>
+					<v-form class="px-3" ref="form" v-model="valid" lazy-validation>
 						<v-card-text>
-						    <v-text-field
-						      	v-model="username"
-						      	:rules="emailRules"
-						      	prepend-icon="person"
-						      	name="username"
-						      	label="E-mail"
-						      	required>
-						    </v-text-field>
-						    <v-text-field
-						    	v-model="password"
-							    prepend-icon="lock"
-							    :rules="passwordRules"
-							    name="password"
-							    label="Password"
-							    type="password">
+							<v-text-field v-model="username" :rules="emailRules" prepend-icon="person" name="username" label="E-mail" required>
+							</v-text-field>
+							<v-text-field v-model="password" prepend-icon="lock" :rules="passwordRules" name="password" label="Password" type="password">
 							</v-text-field>
 						</v-card-text>
 						<v-card-actions>
 							<!-- <div>
-						        <v-btn flat small to="register">Create an account</v-btn>
-						    </div> -->
-				        	<v-spacer></v-spacer>
+								<v-btn flat small to="register">Create an account</v-btn>
+							</div> -->
+							<v-spacer></v-spacer>
 							<v-btn color="primary" round :disabled="!valid" @click="login" :loading="loading">
-						        Login
-						    </v-btn>
+								Login
+								<v-icon dark right>arrow_forward</v-icon>
+							</v-btn>
 						</v-card-actions>
-				  	</v-form>
+					</v-form>
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -60,7 +37,7 @@
 <script>
   import {AUTH_REQUEST} from '../../store/actions/auth'
   import Loading from './loading'
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
   export default {
   	name: 'Login',
     components: {
