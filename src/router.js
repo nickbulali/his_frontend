@@ -11,10 +11,15 @@ import Patient from './components/Patient/index.vue'
 import patientProfile from './components/Patient/patientProfile.vue'
 
 import Queue from './components/Queue/index.vue'
+import UserAccounts from './components/accesscontrol/useraccounts'
 
+import Permissions from './components/accesscontrol/permissions'
+import Role from './components/accesscontrol/role'
+import RoleUser from './components/accesscontrol/roleusers'
 import Invoice from './components/Billing/index.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
+import Appointment from './components/Appointment/appointment.vue'
 
 
 Vue.use(Router)
@@ -94,6 +99,39 @@ export default new Router({
       path: '/billing/chargesheet',
       name: 'ChargeSheet',
       component: ChargeSheet,
+      beforeEnter: ifAuthenticated,
+    },
+     // Access Control
+    
+    {
+      path: '/accesscontrol/useraccounts',
+      name: 'UserAccount',
+      component: UserAccounts,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/accesscontrol/permissions',
+      name: 'Permission',
+      component: Permissions,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/accesscontrol/role',
+      name: 'Role',
+      component: Role,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/accesscontrol/roleusers',
+      name: 'RoleUser',
+      component: RoleUser,
+      beforeEnter: ifAuthenticated,
+    },
+       //Appointment
+        {
+      path: '/Appointment/appointment',
+      name: 'Appointment',
+      component: Appointment,
       beforeEnter: ifAuthenticated,
     },
   ]

@@ -34,6 +34,18 @@
         </v-list-tile-action>
         <v-list-tile-title>Patients</v-list-tile-title>
       </v-list-tile>
+      <v-list-group prepend-icon="security" no-action>
+        <v-list-tile slot="activator">
+          <v-list-tile-title>Access Control</v-list-tile-title>
+        </v-list-tile>
+        <v-list-tile v-for="(access_control, i) in access_controls" :key="i"
+          :to="{path:access_control.path}">
+          <v-list-tile-action>
+            <v-icon v-text="access_control.icon"></v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title v-text="access_control.label"></v-list-tile-title>
+        </v-list-tile>
+      </v-list-group>
       <v-list-group prepend-icon="attach_money" no-action>
         <v-list-tile slot="activator">
           <v-list-tile-title>Billing</v-list-tile-title>
@@ -69,6 +81,29 @@
           path: '/billing/chargesheet',
           label: 'Charge Sheet',
           icon: 'local_atm'
+        },
+      ],
+      access_controls: [
+        
+        {
+          path: '/accesscontrol/useraccounts',
+          label: 'User Accounts',
+          icon: 'people'
+        },
+        {
+          path: '/accesscontrol/permissions',
+          label: 'Permissions',
+          icon: 'visibility'
+        },
+        {
+          path: '/accesscontrol/role',
+          label: 'Role',
+          icon: 'contacts'
+        },
+        {
+          path: '/accesscontrol/roleusers',
+          label: 'Assign Roles',
+          icon: 'verified_user'
         },
       ],
     }),
