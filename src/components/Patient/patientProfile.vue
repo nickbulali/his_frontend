@@ -330,7 +330,82 @@
             </v-tab>
             <v-tab-item
             >
-
+              <div class="his_card_no_shadow mt-3 pa-2">
+                <v-card-title>
+                  <p class="headline">
+                    Family History
+                  </p>
+                  <v-spacer></v-spacer>
+                </v-card-title>
+                  <template>
+                    <swiper v-if="patient" :options="swiperOption">
+                      <swiper-slide>
+                        <div class="his_card_new_patient">
+                        <p class="his_card_main_heading">Add New</p>
+                          <v-form
+                              ref="familyHistoryForm"
+                              v-model="valid"
+                              lazy-validation
+                          >
+                            <v-layout row wrap>
+                              <v-flex sm12 md12>
+                                <v-select
+                                  :items="conditiontype"
+                                  v-model="familyHistory.condition_type_id"
+                                  item-value="id"
+                                  item-text="description"
+                                  label="Condition Type"
+                                ></v-select>
+                              </v-flex>
+                              <v-flex sm6 md6>
+                                <v-text-field
+                                  label="Description"
+                                  :rules="inputRules"
+                                  v-model="familyHistory.description"
+                                ></v-text-field>
+                              </v-flex>
+                              <v-flex sm6 md6>
+                                <v-select
+                                  :items="familyRelations"
+                                  v-model="familyHistory.relation_id"
+                                  item-value="id"
+                                  item-text="display"
+                                  label="Relation"
+                                ></v-select>
+                              </v-flex>
+                            </v-layout>
+                        </v-form>
+                        <div class="his_card_footer">
+                          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="saveFamilyHistory">
+                            <v-icon left dark>add_circle</v-icon>
+                            Add
+                          </v-btn>
+                        </div>
+                      </div>
+                      </swiper-slide>
+                      <swiper-slide v-for="(history,index) in patient.family_history" :key="history.id">
+                        <div class="his_card">
+                          <p class="his_card_main_heading">{{ history.condition_type.description }}</p>
+                          <p class="his_card_title">Relation</p>
+                          <p class="his_card_description">{{ history.relation.display }}</p>
+                          <p class="his_card_title">Description</p>
+                          <p class="his_card_description">{{ history.description }}</p>
+                        </div>
+                      </swiper-slide>
+                      <div class="swiper-pagination" slot="pagination"></div>
+                    </swiper>
+                  </template>
+                  <!-- <v-flex xs12 sm12 md4 v-for="(history,index) in patient.family_history" :key="history.id">
+                    <div class="his_card">
+                      <p class="his_card_main_heading">{{ history.condition_type.description }}</p>
+                      <p class="his_card_title">Relation</p>
+                      <p class="his_card_description">{{ history.relation.display }}</p>
+                      <p class="his_card_title">Description</p>
+                      <p class="his_card_description">{{ history.description }}</p>
+                    </div>
+                  </v-flex> -->
+               
+              </div>
             </v-tab-item>
             <v-tab
               ripple
@@ -435,6 +510,8 @@
   import BloodPressure from '@/components/Charts/BloodPressure.vue'
   import BodyTemp from '@/components/Charts/BodyTemp.vue'
   import RespiratoryRate from '@/components/Charts/RespiratoryRate.vue'
+  import 'swiper/dist/css/swiper.css'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import Vue from 'vue'
   import VueMoment from 'vue-moment'
   Vue.use(VueMoment);
@@ -444,11 +521,14 @@
       HeartRate,
       BloodPressure,
       BodyTemp,
-      RespiratoryRate
+      RespiratoryRate,
+      swiper,
+      swiperSlide
     },
     data () {
       return {
-        allergyloading: false,
+        loading: false,
+
         visitQuery: '',
         active: null,
         bodyTemperature: [36.1, 36.0, 36.8, 38, 37, 36.9],
@@ -466,12 +546,43 @@
         screenDialog: false,
         patient:{},
         allergies: [],
+        conditions: [],
+        familyRelations: [],
         newallergy: '',
+        familyHistory: {
+          condition_type_id: '',
+          description: '',
+          relation_id: ''
+        },
         visitsPagination: {
           page: 1,
           per_page: 0,
           total: 0,
           visible: 10
+        },
+        swiperOption: {
+          breakpoints: {
+            // when window width is >= 320px
+            320: {
+              slidesPerView: 1,
+              spaceBetween: 50
+            },
+            // when window width is >= 480px
+            480: {
+              slidesPerView: 2,
+              spaceBetween: 50
+            },
+            // when window width is >= 640px
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 50
+            }
+          },
+          slidesPerView: 3,
+          spaceBetween: 30,
+          pagination: {
+            el: '.swiper-pagination'
+          }
         },
       }
     },
@@ -501,6 +612,22 @@
         .catch(error => {
           console.log(error.response)
         })
+        apiCall({url: '/api/conditiontypes', method: 'GET' })
+        .then(resp => {
+          console.log("conditiontype", resp)
+          this.conditiontype = resp;
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+        apiCall({url: '/api/familyRelations', method: 'GET' })
+        .then(resp => {
+          console.log("familyRelations", resp)
+          this.familyRelations = resp;
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
       },
       getVisits(){
         this.visitQuery = 'page='+ this.visitsPagination.page;
@@ -518,19 +645,37 @@
       },
       saveAllergy(){
         if(this.$refs.form.validate()){
-            this.allergyloading = true
+            this.loading = true
             apiCall({url: '/api/patient/'+this.patient.id+'/allergy/'+this.newallergy, method: 'GET' })
             .then(resp => {
               console.log("allergy response", resp)
               this.patient.allergies =resp.allergies
-              this.allergyloading = false
+              this.loading = false
               this.message = 'Allergy Added Succesfully';
               this.snackbar = true;
             })
             .catch(error => {
-              this.allergyloading = false
+              this.loading = false
               console.log(error.response)
             })
+        }
+      },
+      saveFamilyHistory(){
+        if(this.$refs.familyHistoryForm.validate()){
+          this.loading = true
+          apiCall({url: '/api/familyhistory/'+this.patient.id, data: this.familyHistory, method: 'POST' })
+          .then(resp => {
+            console.log("family history response", resp)
+            //this.patient.family_history.unshift(resp)
+            //this.patient.family_history =resp.family_history
+            this.loading = false
+            this.message = 'Family History Added Succesfully';
+            this.snackbar = true;
+          })
+          .catch(error => {
+            this.loading = false
+            console.log(error.response)
+          })
         }
       }
     },
