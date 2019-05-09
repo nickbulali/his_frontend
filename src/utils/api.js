@@ -1,5 +1,5 @@
 import axios from 'axios'
-const base_url ="http://billing.local"
+const base_url ="http://127.0.0.1:8000"
 const apiCall = ({url, data, method}) => new Promise((resolve, reject) => {
   console.log(url)
   url = base_url+url
@@ -39,4 +39,21 @@ const apiCall = ({url, data, method}) => new Promise((resolve, reject) => {
   }, 1000)
 })
 
+export function get(url, params) {
+    return axios({
+        method: 'GET',
+        url: url,
+        params: params
+    })
+}
+
+export function byMethod(method, url, data) {
+    return axios({
+        method: method,
+        url: url,
+        data: data
+    })
+}
+
 export default apiCall
+

@@ -8,8 +8,11 @@ import Register from './components/Auth/register.vue'
 import Dashboard from './views/Dashboard.vue'
 
 import Invoice from './components/Billing/index.vue'
+import ShowInvoice from './components/Billing/show.vue'
+import ShowPayment from './components/Billing/showpayment.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
+import Payment from './components/Billing/payment.vue'
 
 Vue.use(Router)
 
@@ -68,6 +71,24 @@ export default new Router({
       path: '/billing/chargesheet',
       name: 'ChargeSheet',
       component: ChargeSheet,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/billing/payment',
+      name: 'Payment',
+      component: Payment,
+      beforeEnter: ifAuthenticated,
+    },
+     {
+      path: '/billing/invoice/show/:id',
+      name: 'ShowInvoice',
+      component: ShowInvoice,
+      beforeEnter: ifAuthenticated,
+    },
+     {
+      path: '/billing/payment/show/:id',
+      name: 'ShowPayment',
+      component: ShowPayment,
       beforeEnter: ifAuthenticated,
     },
   ]

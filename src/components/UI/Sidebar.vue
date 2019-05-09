@@ -58,6 +58,11 @@
           label: 'Charge Sheet',
           icon: 'local_atm'
         },
+        {
+          path: '/billing/payment',
+          label: 'Payment',
+          icon: 'payment'
+        },  
       ],
     }),
     mounted: function () {

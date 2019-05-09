@@ -28,51 +28,20 @@
                       required>
                     </v-autocomplete>
                   </v-flex>
-                  <v-flex xs12 sm6 md6>
-                    <v-text-field
-                      :rules="inputRules"
-                      v-model="invoice.number"
-                      label="Number"
-                      outline>
-                    </v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field
-                      :rules="inputRules"
-                      label="Reference"
-                      hint="optional"
-                      v-model="invoice.reference"
-                      persistent-hint
-                      outline
-                      required
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md6>
-                    <v-menu>
-                      <v-text-field
-                        :rules="inputRules"
-                        :value="formattedDate"
-                        slot="activator"
-                        label="Date"
-                        prepend-inner-icon="date_range"
-                        outline>
-                      </v-text-field>
-                      <v-date-picker v-model="invoice.date"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex xs12 sm6 md6 lg6>
-                    <v-menu>
-                      <v-text-field
-                        :rules="inputRules"
-                        :value="formattedDueDate"
-                        slot="activator"
-                        label="Due Date"
-                        prepend-inner-icon="hourglass_empty"
-                        outline>
-                      </v-text-field>
-                      <v-date-picker v-model="invoice.due"></v-date-picker>
-                    </v-menu>
-                  </v-flex>        
+                   <v-data-table
+    :headers="invoiceHeaders"
+    :items="data"
+    class="elevation-1"
+  >
+    <template v-slot:items="props">
+      <td>{{ props.item.patient_id }}</td>
+      <td class="text-xs-right">{{ props.item.item_description }}</td>
+      <td class="text-xs-right">{{ props.item.unit_price }}</td>
+      <td class="text-xs-right">{{ props.item.quantity }}</td>
+      <td class="text-xs-right">{{ props.item.total }}</td>
+
+    </template>
+  </v-data-table>          
                 </v-layout>
               </v-container>
             </v-card-text>        
@@ -91,7 +60,7 @@
     </v-layout>
     <v-data-table
       v-if = "completed"
-      :headers="invoiceHeaders"
+      :headers="headers"
       :items="data"
       :loading="loader"
       class="elevation-1"
@@ -193,6 +162,7 @@
           .catch(error => {
             console.log(error.response);
           });
+
       }
     },
     computed: {
