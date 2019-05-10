@@ -348,7 +348,7 @@
                               lazy-validation
                           >
                             <v-layout row wrap>
-                              <v-flex sm12 md12>
+                              <v-flex sm6 md6>
                                 <v-select
                                   :items="conditiontype"
                                   v-model="familyHistory.condition_type_id"
@@ -358,13 +358,6 @@
                                 ></v-select>
                               </v-flex>
                               <v-flex sm6 md6>
-                                <v-text-field
-                                  label="Description"
-                                  :rules="inputRules"
-                                  v-model="familyHistory.description"
-                                ></v-text-field>
-                              </v-flex>
-                              <v-flex sm6 md6>
                                 <v-select
                                   :items="familyRelations"
                                   v-model="familyHistory.relation_id"
@@ -372,6 +365,39 @@
                                   item-text="display"
                                   label="Relation"
                                 ></v-select>
+                              </v-flex>
+                              <v-flex xs12 sm6 md6>
+                                <v-menu>
+                                  <v-text-field
+                                    :rules="inputRules"
+                                    :value="formattedStartDate"
+                                    slot="activator"
+                                    label="Start Date"
+                                    prepend-inner-icon="date_range"
+                                  >
+                                  </v-text-field>
+                                  <v-date-picker v-model="familyHistory.start_date"></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                              <v-flex xs12 sm6 md6>
+                                <v-menu>
+                                  <v-text-field
+                                    :rules="inputRules"
+                                    :value="formattedEndDate"
+                                    slot="activator"
+                                    label="End Date"
+                                    prepend-inner-icon="date_range"
+                                  >
+                                  </v-text-field>
+                                  <v-date-picker v-model="familyHistory.end_date"></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                              <v-flex sm12 md12>
+                                <v-text-field
+                                  label="Description"
+                                  :rules="inputRules"
+                                  v-model="familyHistory.description"
+                                ></v-text-field>
                               </v-flex>
                             </v-layout>
                         </v-form>
@@ -390,10 +416,188 @@
                           <p class="his_card_description">{{ history.relation.display }}</p>
                           <p class="his_card_title">Description</p>
                           <p class="his_card_description">{{ history.description }}</p>
+                          <p class="his_card_title">Start Date</p>
+                          <p class="his_card_description">{{ history.start_date }}</p>
+                          <p class="his_card_title">End Date</p>
+                          <p class="his_card_description">{{ history.end_date }}</p>
                         </div>
                       </swiper-slide>
                       <div class="swiper-pagination" slot="pagination"></div>
                     </swiper>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                  </template>
+                  <!-- <v-flex xs12 sm12 md4 v-for="(history,index) in patient.family_history" :key="history.id">
+                    <div class="his_card">
+                      <p class="his_card_main_heading">{{ history.condition_type.description }}</p>
+                      <p class="his_card_title">Relation</p>
+                      <p class="his_card_description">{{ history.relation.display }}</p>
+                      <p class="his_card_title">Description</p>
+                      <p class="his_card_description">{{ history.description }}</p>
+                    </div>
+                  </v-flex> -->
+               
+              </div>
+              <div class="his_card_no_shadow mt-3 pa-2">
+                <v-card-title>
+                  <p class="headline">
+                    Social History
+                  </p>
+                  <v-spacer></v-spacer>
+                </v-card-title>
+                  <template>
+                    <swiper v-if="patient" :options="swiperSocialOption">
+                      <swiper-slide>
+                        <div class="his_card_new_patient">
+                        <p class="his_card_main_heading">Add New</p>
+                          <v-form
+                              ref="socialHistoryForm"
+                              v-model="valid"
+                              lazy-validation
+                          >
+                            <v-layout row wrap>
+                              <v-flex sm12 md12>
+                                <v-text-field
+                                  label="Social_Problem"
+                                  :rules="inputRules"
+                                  v-model="socialHistory.social_problem"
+                                ></v-text-field>
+                              </v-flex>
+                              <v-flex xs12 sm6 md6>
+                                <v-menu>
+                                  <v-text-field
+                                    :rules="inputRules"
+                                    :value="formattedSocialStartDate"
+                                    slot="activator"
+                                    label="Start Date"
+                                    prepend-inner-icon="date_range"
+                                  >
+                                  </v-text-field>
+                                  <v-date-picker v-model="socialHistory.start_date"></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                              <v-flex xs12 sm6 md6>
+                                <v-menu>
+                                  <v-text-field
+                                    :rules="inputRules"
+                                    :value="formattedSocialEndDate"
+                                    slot="activator"
+                                    label="End Date"
+                                    prepend-inner-icon="date_range"
+                                  >
+                                  </v-text-field>
+                                  <v-date-picker v-model="socialHistory.end_date"></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                            </v-layout>
+                        </v-form>
+                        <div class="his_card_footer">
+                          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="socialloading" :disabled="!valid" round @click="saveSocialHistory">
+                            <v-icon left dark>add_circle</v-icon>
+                            Add
+                          </v-btn>
+                        </div>
+                      </div>
+                      </swiper-slide>
+                      <swiper-slide v-for="(social,index) in patient.social_history" :key="social.id">
+                        <div class="his_card">
+                          <p class="his_card_main_heading">{{ social.social_problem }}</p>
+                          <p class="his_card_title">Start Date</p>
+                          <p class="his_card_description">{{ social.start_date }}</p>
+                          <p class="his_card_title">End Date</p>
+                          <p class="his_card_description">{{ social.end_date }}</p>
+                        </div>
+                      </swiper-slide>
+                      <div class="swiper-pagination" slot="pagination"></div>
+                    </swiper>
+                    <div class="swiper-social-button-prev"></div>
+                    <div class="swiper-social-button-next"></div>
+                  </template>
+                  <!-- <v-flex xs12 sm12 md4 v-for="(history,index) in patient.family_history" :key="history.id">
+                    <div class="his_card">
+                      <p class="his_card_main_heading">{{ history.condition_type.description }}</p>
+                      <p class="his_card_title">Relation</p>
+                      <p class="his_card_description">{{ history.relation.display }}</p>
+                      <p class="his_card_title">Description</p>
+                      <p class="his_card_description">{{ history.description }}</p>
+                    </div>
+                  </v-flex> -->
+               
+              </div>
+              <div class="his_card_no_shadow mt-3 pa-2">
+                <v-card-title>
+                  <p class="headline">
+                    Environmental History
+                  </p>
+                  <v-spacer></v-spacer>
+                </v-card-title>
+                  <template>
+                    <swiper v-if="patient" :options="swiperSocialOption">
+                      <swiper-slide>
+                        <div class="his_card_new_patient">
+                        <p class="his_card_main_heading">Add New</p>
+                          <v-form
+                              ref="environmentalHistoryForm"
+                              v-model="valid"
+                              lazy-validation
+                          >
+                            <v-layout row wrap>
+                              <v-flex sm12 md12>
+                                <v-text-field
+                                  label="Environmental Problem"
+                                  :rules="inputRules"
+                                  v-model="environmentalHistory.description"
+                                ></v-text-field>
+                              </v-flex>
+                              <v-flex xs12 sm6 md6>
+                                <v-menu>
+                                  <v-text-field
+                                    :rules="inputRules"
+                                    :value="formattedEnvironmentalStartDate"
+                                    slot="activator"
+                                    label="Start Date"
+                                    prepend-inner-icon="date_range"
+                                  >
+                                  </v-text-field>
+                                  <v-date-picker v-model="environmentalHistory.start_date"></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                              <v-flex xs12 sm6 md6>
+                                <v-menu>
+                                  <v-text-field
+                                    :rules="inputRules"
+                                    :value="formattedEnvironmentalEndDate"
+                                    slot="activator"
+                                    label="End Date"
+                                    prepend-inner-icon="date_range"
+                                  >
+                                  </v-text-field>
+                                  <v-date-picker v-model="environmentalHistory.end_date"></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                            </v-layout>
+                        </v-form>
+                        <div class="his_card_footer">
+                          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="environmentalloading" :disabled="!valid" round @click="saveEnvironmentalalHistory">
+                            <v-icon left dark>add_circle</v-icon>
+                            Add
+                          </v-btn>
+                        </div>
+                      </div>
+                      </swiper-slide>
+                      <swiper-slide v-for="(environmental,index) in patient.environmental_history" :key="environmental.id">
+                        <div class="his_card">
+                          <p class="his_card_main_heading">{{ environmental.description }}</p>
+                          <p class="his_card_title">Start Date</p>
+                          <p class="his_card_description">{{ environmental.start_date }}</p>
+                          <p class="his_card_title">End Date</p>
+                          <p class="his_card_description">{{ environmental.end_date }}</p>
+                        </div>
+                      </swiper-slide>
+                      <div class="swiper-pagination" slot="pagination"></div>
+                    </swiper>
+                    <div class="swiper-social-button-prev"></div>
+                    <div class="swiper-social-button-next"></div>
                   </template>
                   <!-- <v-flex xs12 sm12 md4 v-for="(history,index) in patient.family_history" :key="history.id">
                     <div class="his_card">
@@ -505,6 +709,7 @@
 </style>
 <script>
 
+  import format from 'date-fns/format'
   import apiCall from '../../utils/api'
   import HeartRate from '@/components/Charts/HeartRate.vue'
   import BloodPressure from '@/components/Charts/BloodPressure.vue'
@@ -528,6 +733,8 @@
     data () {
       return {
         loading: false,
+        socialloading: false,
+        environmentalloading: false,
 
         visitQuery: '',
         active: null,
@@ -552,7 +759,22 @@
         familyHistory: {
           condition_type_id: '',
           description: '',
-          relation_id: ''
+          relation_id: '',
+          patient_id: this.$route.params.id,
+          start_date: '',
+          end_date: ''
+        },
+        socialHistory: {
+          patient_id: this.$route.params.id,
+          social_problem: '',
+          start_date: '',
+          end_date: ''
+        },
+        environmentalHistory: {
+          patient_id: this.$route.params.id,
+          description: '',
+          start_date: '',
+          end_date: ''
         },
         visitsPagination: {
           page: 1,
@@ -561,6 +783,10 @@
           visible: 10
         },
         swiperOption: {
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
           breakpoints: {
             // when window width is >= 320px
             320: {
@@ -584,6 +810,37 @@
             el: '.swiper-pagination'
           }
         },
+        swiperSocialOption: {
+          navigation: {
+            nextEl: '.swiper-social-button-next',
+            prevEl: '.swiper-social-button-prev',
+          },
+          breakpoints: {
+            // when window width is >= 320px
+            320: {
+              slidesPerView: 1,
+              spaceBetween: 50
+            },
+            // when window width is >= 480px
+            480: {
+              slidesPerView: 2,
+              spaceBetween: 50
+            },
+            // when window width is >= 640px
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 50
+            }
+          },
+          slidesPerView: 3,
+          spaceBetween: 30,
+          pagination: {
+            el: '.swiper-pagination'
+          }
+        },
+        inputRules: [
+          v => v.length >= !v  || 'Field is required'
+        ],
       }
     },
     created(){
@@ -663,10 +920,10 @@
       saveFamilyHistory(){
         if(this.$refs.familyHistoryForm.validate()){
           this.loading = true
-          apiCall({url: '/api/familyhistory/'+this.patient.id, data: this.familyHistory, method: 'POST' })
+          apiCall({url: '/api/familyhistory', data: this.familyHistory, method: 'POST' })
           .then(resp => {
             console.log("family history response", resp)
-            //this.patient.family_history.unshift(resp)
+            this.patient.family_history.unshift(resp)
             //this.patient.family_history =resp.family_history
             this.loading = false
             this.message = 'Family History Added Succesfully';
@@ -677,12 +934,66 @@
             console.log(error.response)
           })
         }
+      },
+      saveSocialHistory(){
+        if(this.$refs.socialHistoryForm.validate()){
+          this.socialloading = true
+          apiCall({url: '/api/socialhistory', data: this.socialHistory, method: 'POST' })
+          .then(resp => {
+            console.log("social history response", resp)
+            this.patient.social_history.unshift(resp)
+            //this.patient.family_history =resp.family_history
+            this.socialloading = false
+            this.message = 'Social History Added Succesfully';
+            this.snackbar = true;
+          })
+          .catch(error => {
+            this.socialloading = false
+            console.log(error.response)
+          })
+        }
+      },
+      saveEnvironmentalalHistory(){
+        if(this.$refs.environmentalHistoryForm.validate()){
+          this.environmentalloading = true
+          apiCall({url: '/api/environmentalhistory', data: this.environmentalHistory, method: 'POST' })
+          .then(resp => {
+            console.log("environmental history response", resp)
+            this.patient.environmental_history.unshift(resp)
+            //this.patient.family_history =resp.family_history
+            this.environmentalloading = false
+            this.message = 'Environmental History Added Succesfully';
+            this.snackbar = true;
+          })
+          .catch(error => {
+            this.socialloading = false
+            console.log(error.response)
+          })
+        }
       }
     },
     computed: {
       visitLength: function() {
         return Math.ceil(this.visitsPagination.total / this.visitsPagination.per_page);
       },
+      formattedStartDate(){
+        return this.familyHistory.start_date ? format(this.familyHistory.start_date, 'Do MMM YYYY') : ''
+      },
+      formattedEndDate(){
+        return this.familyHistory.end_date ? format(this.familyHistory.end_date, 'Do MMM YYYY') : ''
+      },
+      formattedSocialStartDate(){
+        return this.socialHistory.start_date ? format(this.socialHistory.start_date, 'Do MMM YYYY') : ''
+      },
+      formattedSocialEndDate(){
+        return this.socialHistory.end_date ? format(this.socialHistory.end_date, 'Do MMM YYYY') : ''
+      },
+      formattedEnvironmentalStartDate(){
+        return this.environmentalHistory.start_date ? format(this.environmentalHistory.start_date, 'Do MMM YYYY') : ''
+      },
+      formattedEnvironmentalEndDate(){
+        return this.environmentalHistory.end_date ? format(this.environmentalHistory.end_date, 'Do MMM YYYY') : ''
+      }
     }
   }
 </script>

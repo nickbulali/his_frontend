@@ -8,18 +8,18 @@
       >
         {{ message }}
     </v-snackbar>
-  	<v-container class="my-5">
-  		<v-card-title>
-	      <p class="his_page_title">
-	        Patients
-	      </p>
-	      <v-spacer></v-spacer>
-	      <v-text-field class="his_search" v-model="search" append-icon="search" label="Search" single-line v-on:keyup.enter="initialize" hide-details>
-	      </v-text-field>
-	    </v-card-title>
+		
+		<v-layout justify-center row wrap mt-3>
+			<p class="his_page_title">Patients</p>
+		</v-layout>
+  	<v-container class="">
+			<v-text-field class="his_search" v-model="search" append-icon="search" label="Search" single-line v-on:keyup.enter="initialize" hide-details>
+			</v-text-field>
+  	</v-container>
+		<v-container class="my-2">
 	    <v-layout row wrap>
 	    	<v-flex sm12 md6 lg4>
-		      <div class="his_card_new_patient">
+		      <div class="his_card_new_patient pa-4">
 		        <p class="his_card_main_heading">Register New Patient</p>
 		        	<v-form
 			            ref="form"

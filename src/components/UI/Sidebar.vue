@@ -1,21 +1,9 @@
 <template>
   <div>
-    <v-card class="ma-1">
-        <v-img
-          class="white--text"
-          height="200px"
-          src="https://pbs.twimg.com/profile_images/1553273706/_iLabAfrica_africa_400x400.png"
-        >
-          <v-container fluid style="background: linear-gradient(to bottom, rgb(241,97,54, 0.1), rgba(241,97,54,0.9)); position: absolute; bottom: 0px; height: 10px">
-            <v-layout>
-              <v-flex xs12 align-end flexbox>
-                <p class="text-xs-center title">@iLabAfrica</p>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-img>
+    <v-card class="pt-5 pb-3 elevation-0">
+        <img src="logo.svg" alt="" style="width:70%; height:auto; margin-left:15px;">
     </v-card>
-    <v-list dense>
+    <v-list dense dark pt-4>
       <v-list-tile to="/">
         <v-list-tile-action>
           <v-icon>home</v-icon>
