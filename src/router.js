@@ -7,12 +7,24 @@ import Register from './components/Auth/register.vue'
 
 import Dashboard from './views/Dashboard.vue'
 
+import Patient from './components/Patient/index.vue'
+import patientProfile from './components/Patient/patientProfile.vue'
+
+import Queue from './components/Queue/index.vue'
+import UserAccounts from './components/accesscontrol/useraccounts'
+
+import Permissions from './components/accesscontrol/permissions'
+import Role from './components/accesscontrol/role'
+import RoleUser from './components/accesscontrol/roleusers'
 import Invoice from './components/Billing/index.vue'
 import ShowInvoice from './components/Billing/show.vue'
 import ShowPayment from './components/Billing/showpayment.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
 import Payment from './components/Billing/payment.vue'
+import Appointment from './components/Appointment/appointment.vue'
+
+
 
 Vue.use(Router)
 
@@ -54,6 +66,26 @@ export default new Router({
       component: Dashboard,
       beforeEnter: ifAuthenticated,
     },
+    //Queue
+    {
+      path: '/queue',
+      name: 'queue',
+      component: Queue,
+      beforeEnter: ifAuthenticated,
+    },
+    //Patient
+    {
+      path: '/patients',
+      name: 'Patient',
+      component: Patient,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/patient/:id',
+      name: 'patientProfile',
+      component: patientProfile,
+      beforeEnter: ifAuthenticated,
+    },
     //Billing
     {
       path: '/billing/invoice',
@@ -89,6 +121,37 @@ export default new Router({
       path: '/billing/payment/show/:id',
       name: 'ShowPayment',
       component: ShowPayment,
+     },
+     // Access Control
+    {
+      path: '/accesscontrol/useraccounts',
+      name: 'UserAccount',
+      component: UserAccounts,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/accesscontrol/permissions',
+      name: 'Permission',
+      component: Permissions,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/accesscontrol/role',
+      name: 'Role',
+      component: Role,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/accesscontrol/roleusers',
+      name: 'RoleUser',
+      component: RoleUser,
+      beforeEnter: ifAuthenticated,
+    },
+       //Appointment
+        {
+      path: '/Appointment/appointment',
+      name: 'Appointment',
+      component: Appointment,
       beforeEnter: ifAuthenticated,
     },
   ]
