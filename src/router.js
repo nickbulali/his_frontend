@@ -22,7 +22,7 @@ import ShowPayment from './components/Billing/showpayment.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
 import Payment from './components/Billing/payment.vue'
-import Appointment from './components/Appointment/appointment.vue'
+
 
 
 
@@ -148,11 +148,6 @@ export default new Router({
       beforeEnter: ifAuthenticated,
     },
        //Appointment
-        {
-      path: '/Appointment/appointment',
-      name: 'Appointment',
-      component: Appointment,
-      beforeEnter: ifAuthenticated,
-    },
+       
   ]
 })
