@@ -16,10 +16,13 @@ import UserAccounts from './components/accesscontrol/useraccounts'
 import Permissions from './components/accesscontrol/permissions'
 import Role from './components/accesscontrol/role'
 import RoleUser from './components/accesscontrol/roleusers'
+
 import Invoice from './components/Billing/index.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
+
 import Appointment from './components/Appointment/appointment.vue'
+import AppointmentCalendar from './components/Appointment/calendar.vue'
 
 
 Vue.use(Router)
@@ -128,10 +131,16 @@ export default new Router({
       beforeEnter: ifAuthenticated,
     },
        //Appointment
-        {
+    {
       path: '/Appointment/appointment',
       name: 'Appointment',
       component: Appointment,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/Appointment/calendar',
+      name: 'AppointmentCalendar',
+      component: AppointmentCalendar,
       beforeEnter: ifAuthenticated,
     },
   ]

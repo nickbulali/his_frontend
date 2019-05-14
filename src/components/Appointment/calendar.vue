@@ -133,7 +133,7 @@
           >
             
              <template v-slot:day="{ date }">
-              <template v-for="event in eventsMap[date]">
+              <template v-for="(event, index) in item[date]" v-if="index <= 0">
                 <v-menu
                   :key="event.id"
                   v-model="event.open"
@@ -161,7 +161,7 @@
                       <v-btn icon>
                         <v-icon>edit</v-icon>
                       </v-btn>
-                      <v-toolbar-title v-html="event.title"></v-toolbar-title>
+                      <v-toolbar-title>{{event}}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn icon>
                         <v-icon>favorite</v-icon>
@@ -171,7 +171,7 @@
                       </v-btn>
                     </v-toolbar>
                     <v-card-title primary-title>
-                       <span v-html="event.details"></span>
+                       <span>{{item[date]}}</span>
            
                     </v-card-title>
                     <v-card-actions>
