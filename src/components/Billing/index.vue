@@ -21,7 +21,7 @@
               single-line
               v-model="search"
               label="Search"
-              v-on:keyup.enter="initialize()"
+              v-on:keyup.enter="initialize"
             ></v-text-field>
              </v-toolbar>
           </v-flex>

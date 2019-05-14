@@ -56,6 +56,7 @@
 		</v-layout>
 	</div>
 </template>
+
 <script>
   import {AUTH_REQUEST} from '../../store/actions/auth'
   import Loading from './loading'
@@ -65,6 +66,14 @@
     components: {
       Loading
     },
+    mounted () {
+    let self = this
+    window.addEventListener('keyup', function (event) {
+      if (event.keyCode === 13) {
+        self.login()
+      }
+    })
+  },
     data: () => {
     	return {
     	  errorsnackbar: false,

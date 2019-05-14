@@ -3,12 +3,9 @@
 		<v-snackbar v-model="snackbar" :timeout="4000" top color="success">
 			<span>{{message}}</span>
 		</v-snackbar>
-		<v-toolbar app>
-			<v-toolbar-side-icon class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
-			<v-toolbar-title class="primary--text">
-				<span>@iLabAfrica</span>
-				<span class="font-weight-light grey--text">HIS</span>
-			</v-toolbar-title>
+		<v-toolbar app flat color="rgba(0, 0, 0, 0)">
+			<v-toolbar-side-icon color="white" class="brown--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+			
 			<v-spacer></v-spacer>
 
 			<v-btn icon slot="activator">
