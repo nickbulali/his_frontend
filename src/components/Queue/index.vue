@@ -138,11 +138,9 @@
 		        <p class="his_card_title">Number of Visits</p>
 		        <p class="his_card_description">!!x visits!!</p>
 		        <div class="his_card_footer">
-		          
-		          <v-btn class="his_card_button" small title="Edit" color="green" @click ="vit(patient)">   Enter Vitals
-		          <v-icon right dark>playlist_add</v-icon>
-		        </v-btn>
-		        
+		          	<v-btn dark class="his_card_button" small title="Edit" color="green" @click ="vit(patient)">
+		          		<v-icon left>playlist_add</v-icon> Enter Vitals		          
+		        	</v-btn>
 		        </div>
 		    	</v-card-text>
 			</v-card>
@@ -200,12 +198,13 @@
 					            </v-flex>
 					            <v-flex xs7>
 					              <strong>{{item.patient.name.given}} {{item.patient.name.family}}</strong>
-					              <div class="caption green--text" v-if="item.queue_status.display=='Complete'">{{item.queue_status.display}}</div>
-					              <div class="caption red--text" v-if="item.queue_status.display=='Pending'">{{item.queue_status.display}}</div>
-					              <div class="caption brown--text" v-if="item.queue_status.display=='Triage'">{{item.queue_status.display}}</div>
-					              <div class="caption blue--text" v-if="item.queue_status.display=='Consultation'">{{item.queue_status.display}}</div>
-					              <div class="caption purple--text" v-if="item.queue_status.display=='Pharmacy'">{{item.queue_status.display}}</div>
-					              <div class="caption teal--text" v-if="item.queue_status.display=='Labs'">{{item.queue_status.display}}</div>
+					              <div class="caption green--text" v-if="item.queue_status.code=='complete'">{{item.queue_status.display}}</div>
+					              <div class="caption red--text" v-if="item.queue_status.code=='pending'">{{item.queue_status.display}}</div>
+					              <div class="caption brown--text" v-if="item.queue_status.code=='triage'">{{item.queue_status.display}}</div>
+					              <div class="caption blue--text" v-if="item.queue_status.code=='consultation_pending'">{{item.queue_status.display}}</div>
+					              <div class="caption teal--text" v-if="item.queue_status.code=='consultation_started'">{{item.queue_status.display}}</div>
+					              <div class="caption orange--text" v-if="item.queue_status.code=='pharmacy'">{{item.queue_status.display}}</div>
+					              <div class="caption purple--text" v-if="item.queue_status.code=='lab'">{{item.queue_status.display}}</div>
 					            </v-flex>
 					            <v-flex xs2>
 					            	<v-btn outline fab small color="brown" @click="patientDetails(item.patient)">
@@ -417,6 +416,7 @@
 				console.log(this.patient)
 			},
 			savevitals(patient){
+
 		        if(this.$refs.form.validate()){
 		            this.loadingMethod(true, "Posting Vitals")
 		            this.loading = true

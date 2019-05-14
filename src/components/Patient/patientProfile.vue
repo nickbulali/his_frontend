@@ -458,7 +458,7 @@
                             <v-layout row wrap>
                               <v-flex sm12 md12>
                                 <v-text-field
-                                  label="Social_Problem"
+                                  label="Social Problem"
                                   :rules="inputRules"
                                   v-model="socialHistory.social_problem"
                                 ></v-text-field>
@@ -578,7 +578,7 @@
                             </v-layout>
                         </v-form>
                         <div class="his_card_footer">
-                          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="environmentalloading" :disabled="!valid" round @click="saveEnvironmentalalHistory">
+                          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="environmentalloading" :disabled="!valid" round @click="saveEnvironmentalHistory">
                             <v-icon left dark>add_circle</v-icon>
                             Add
                           </v-btn>
@@ -592,6 +592,136 @@
                           <p class="his_card_description">{{ environmental.start_date }}</p>
                           <p class="his_card_title">End Date</p>
                           <p class="his_card_description">{{ environmental.end_date }}</p>
+                        </div>
+                      </swiper-slide>
+                      <div class="swiper-pagination" slot="pagination"></div>
+                    </swiper>
+                    <div class="swiper-social-button-prev"></div>
+                    <div class="swiper-social-button-next"></div>
+                  </template>
+                  <!-- <v-flex xs12 sm12 md4 v-for="(history,index) in patient.family_history" :key="history.id">
+                    <div class="his_card">
+                      <p class="his_card_main_heading">{{ history.condition_type.description }}</p>
+                      <p class="his_card_title">Relation</p>
+                      <p class="his_card_description">{{ history.relation.display }}</p>
+                      <p class="his_card_title">Description</p>
+                      <p class="his_card_description">{{ history.description }}</p>
+                    </div>
+                  </v-flex> -->
+               
+              </div>
+              <div class="his_card_no_shadow mt-3 pa-2">
+                <v-card-title>
+                  <p class="headline">
+                    Smoking & Alcohol History
+                  </p>
+                  <v-spacer></v-spacer>
+                </v-card-title>
+                  <template>
+                    <swiper v-if="patient" :options="swiperSocialOption">
+                      <swiper-slide>
+                        <div class="his_card_new_patient">
+                        <p class="his_card_main_heading">Add New</p>
+                          <v-form
+                              ref="habitHistoryForm"
+                              v-model="valid"
+                              lazy-validation
+                          >
+                            <v-layout row wrap>
+                              <v-flex sm12 md12>
+                                <v-select
+                                  :items="habits"
+                                  v-model="habitHistory.type"
+                                  item-value="name"
+                                  item-text="name"
+                                  label="Habit"
+                                ></v-select>
+                              </v-flex>
+                              <v-flex sm12 md12>
+                                <v-text-field
+                                  label="Kind"
+                                  :rules="inputRules"
+                                  v-model="habitHistory.kind"
+                                ></v-text-field>
+                              </v-flex>
+                              <v-flex sm12 md6>
+                                <v-text-field
+                                  label="Frequency"
+                                  :rules="inputRules"
+                                  v-model="habitHistory.frequency"
+                                ></v-text-field>
+                              </v-flex>
+                              <v-flex sm12 md6>
+                                <v-text-field
+                                  label="Quantity"
+                                  :rules="inputRules"
+                                  v-model="habitHistory.quantity"
+                                ></v-text-field>
+                              </v-flex>
+                              <v-flex xs12 sm6 md6>
+                                <v-menu>
+                                  <v-text-field
+                                    :rules="inputRules"
+                                    :value="formattedHabitsStartDate"
+                                    slot="activator"
+                                    label="Start Date"
+                                    prepend-inner-icon="date_range"
+                                  >
+                                  </v-text-field>
+                                  <v-date-picker v-model="habitHistory.start_date"></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                              <v-flex xs12 sm6 md6>
+                                <v-menu>
+                                  <v-text-field
+                                    :rules="inputRules"
+                                    :value="formattedHabitsEndDate"
+                                    slot="activator"
+                                    label="End Date"
+                                    prepend-inner-icon="date_range"
+                                  >
+                                  </v-text-field>
+                                  <v-date-picker v-model="habitHistory.end_date"></v-date-picker>
+                                </v-menu>
+                              </v-flex>
+                            </v-layout>
+                        </v-form>
+                        <div class="his_card_footer">
+                          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="habitloading" :disabled="!valid" round @click="saveHabitHistory">
+                            <v-icon left dark>add_circle</v-icon>
+                            Add
+                          </v-btn>
+                        </div>
+                      </div>
+                      </swiper-slide>
+                      <swiper-slide v-for="(smoking,index) in patient.smoking_history" :key="smoking.id">
+                        <div class="his_card">
+                          <p class="his_card_main_heading">Smoking</p>
+                          <p class="his_card_title">Kind</p>
+                          <p class="his_card_description">{{ smoking.kind }}</p>
+                          <p class="his_card_title">Frequency</p>
+                          <p class="his_card_description">{{ smoking.frequency }}</p>
+                          <p class="his_card_title">Quantity</p>
+                          <p class="his_card_description">{{ smoking.quantity }}</p>
+                          <p class="his_card_title">Start Date</p>
+                          <p class="his_card_description">{{ smoking.start_date }}</p>
+                          <p class="his_card_title">End Date</p>
+                          <p class="his_card_description">{{ smoking.end_date }}</p>
+                        </div>
+                      </swiper-slide>
+                      <swiper-slide v-for="(alcohol,index) in patient.alcohol_history" :key="alcohol.id">
+                        <div class="his_card">
+                          <p class="his_card_main_heading">Alcohol</p>
+                          <p class="his_card_title">Kind</p>
+                          <p class="his_card_description">{{ alcohol.kind }}</p>
+                          <p class="his_card_title">Frequency</p>
+                          <p class="his_card_description">{{ alcohol.frequency }}</p>
+                          <p class="his_card_title">Quantity</p>
+                          <p class="his_card_description">{{ alcohol.quantity }}</p>
+                          <p class="his_card_title">Start Date</p>
+                          <p class="his_card_description">{{ alcohol.start_date }}</p>
+                          <p class="his_card_title">End Date</p>
+                          <p class="his_card_description">{{ alcohol.end_date }}</p>
                         </div>
                       </swiper-slide>
                       <div class="swiper-pagination" slot="pagination"></div>
@@ -660,9 +790,9 @@
                     <div class="his_card_new_patient">
                       <p class="his_card_main_heading">Add New</p>
                         <v-form
-                            ref="form"
-                            v-model="valid"
-                            lazy-validation
+                          ref="form"
+                          v-model="valid"
+                          lazy-validation
                         >
                           <v-layout row wrap>
                             <v-flex sm12 md12>
@@ -675,7 +805,7 @@
                               ></v-select>
                             </v-flex>
                           </v-layout>
-                      </v-form>
+                        </v-form>
                       <div class="his_card_footer">
                         <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="saveAllergy">
                           <v-icon left dark>add_circle</v-icon>
@@ -735,6 +865,7 @@
         loading: false,
         socialloading: false,
         environmentalloading: false,
+        habitloading: false,
 
         visitQuery: '',
         active: null,
@@ -756,6 +887,18 @@
         conditions: [],
         familyRelations: [],
         newallergy: '',
+        habits: [
+          {name: 'Smoking'},
+          {name: 'Alcohol'}
+        ],
+        habitHistory: {
+          patient_id: this.$route.params.id,
+          type: '',
+          kind: '',
+          frequency: '',
+          start_date: '',
+          end_date: ''
+        },
         familyHistory: {
           condition_type_id: '',
           description: '',
@@ -917,6 +1060,41 @@
             })
         }
       },
+      saveHabitHistory(){
+        if(this.habitHistory.type == "Smoking"){
+          if(this.$refs.habitHistoryForm.validate()){
+            this.habitloading = true
+            apiCall({url: '/api/smoking', data: this.habitHistory, method: 'POST' })
+            .then(resp => {
+              console.log("Smoking history response", resp)
+              this.patient.smoking_history.unshift(resp)
+              this.habitloading = false
+              this.message = 'Smoking History Added Succesfully';
+              this.snackbar = true;
+            })
+            .catch(error => {
+              this.habitloading = false
+              console.log(error.response)
+            })
+          }
+        }else{
+          if(this.$refs.habitHistoryForm.validate()){
+            this.habitloading = true
+            apiCall({url: '/api/alcohol', data: this.habitHistory, method: 'POST' })
+            .then(resp => {
+              console.log("Alcohol history response", resp)
+              this.patient.alcohol_history.unshift(resp)
+              this.habitloading = false
+              this.message = 'Alcohol History Added Succesfully';
+              this.snackbar = true;
+            })
+            .catch(error => {
+              this.habitloading = false
+              console.log(error.response)
+            })
+          }
+        }
+      },
       saveFamilyHistory(){
         if(this.$refs.familyHistoryForm.validate()){
           this.loading = true
@@ -953,7 +1131,7 @@
           })
         }
       },
-      saveEnvironmentalalHistory(){
+      saveEnvironmentalHistory(){
         if(this.$refs.environmentalHistoryForm.validate()){
           this.environmentalloading = true
           apiCall({url: '/api/environmentalhistory', data: this.environmentalHistory, method: 'POST' })
@@ -993,6 +1171,12 @@
       },
       formattedEnvironmentalEndDate(){
         return this.environmentalHistory.end_date ? format(this.environmentalHistory.end_date, 'Do MMM YYYY') : ''
+      },
+      formattedHabitsStartDate(){
+        return this.habitHistory.start_date ? format(this.habitHistory.start_date, 'Do MMM YYYY') : ''
+      },
+      formattedHabitsEndDate(){
+        return this.habitHistory.end_date ? format(this.habitHistory.end_date, 'Do MMM YYYY') : ''
       }
     }
   }
