@@ -38,7 +38,7 @@
                     </td>
                 </tr>
 
-                <v-data-table :headers="headers" :items="data.items" class="elevation-1">
+                <v-data-table :headers="headers" :items="items" class="elevation-1">
                     <template v-slot:items="props">
                         <td class="text-xs-right">{{ props.item.item_code }}</td>
                         <td class="text-xs-right">{{ props.item.description }}</td>
@@ -46,15 +46,7 @@
                         <td class="text-xs-right">{{ props.item.qty }}</td>
                         <td class="text-xs-right">{{ props.item.qty * props.item.unit_price }}</td>
                     </template>
-                    <template slot="footer">
-                        <td>
-                            <strong>Total</strong>
-                        </td>
-                        <td class="text-xs-right" :colspan="headers.length-1">
-                            <strong>{{total}}</strong>
-                        </td>
-                    </template>
-
+                   
                 </v-data-table>
 
             </table>
@@ -108,7 +100,7 @@ export default {
                 })
                 .then(resp => {
 
-                    this.data = resp.data[0];
+                    this.data = resp;
                     console.log("invoice response", this.data);
                     this.loader = false
                 })
