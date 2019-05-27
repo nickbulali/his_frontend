@@ -90,7 +90,7 @@
 		        </div>
 		      </div>
 		    </v-flex>
-		    <v-flex sm12 md6 lg4 v-for="(patient,index) in patient" :key="patient.id">
+		    <v-flex sm12 md6 lg4 v-for="(patient,index) in allPatients" :key="patient.id">
 		      <div class="his_card">
 		        <div class="his_card_top_right">
 		          <v-btn outline fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
@@ -141,6 +141,7 @@
   import apiCall from '../../utils/api'
   import format from 'date-fns/format'
   import { EventBus } from './../../main.js'
+  import {mapGetters, mapActions} from 'vuex'
   import Vue from 'vue'
 
   export default {
@@ -188,9 +189,11 @@
 	  }
   	},
   	created () {
-      this.initialize()
+  		this.fetchPatients()
+      	this.initialize()
     },
     methods: {
+    	...mapActions(['fetchPatients']),
    		loadingMethod(load, message="") {
         	this.loadingDialog.loading = load;
         	this.loadingDialog.message = message
@@ -267,7 +270,9 @@
     	length: function() {
 	        return Math.ceil(this.pagination.total / this.pagination.per_page);
 	      },
-    }
+    },
+
+    computed: mapGetters(['allPatients']),
   }
 
 </script>
