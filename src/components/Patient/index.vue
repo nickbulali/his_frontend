@@ -93,6 +93,9 @@
 		    <v-flex sm12 md6 lg4 v-for="(patient,index) in allPatients" :key="patient.id">
 		      <div class="his_card">
 		        <div class="his_card_top_right">
+		        	<v-btn outline fab small color="red" @click="deletePatient(patient.id)">
+		            	<v-icon dark>delete</v-icon>
+		          	</v-btn>
 		          <v-btn outline fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
 		            <v-icon dark>visibility</v-icon>
 		          </v-btn>
@@ -156,7 +159,6 @@
 	        loading: false,
 	    	message: ""
 	    },
-	    patient: [],
 	    marital: [],
 	    message:'',
 	    y: 'top',
@@ -193,7 +195,7 @@
       	this.initialize()
     },
     methods: {
-    	...mapActions(['fetchPatients']),
+    	...mapActions(['fetchPatients', 'addPatient', 'deletePatient']),
    		loadingMethod(load, message="") {
         	this.loadingDialog.loading = load;
         	this.loadingDialog.message = message
@@ -230,21 +232,10 @@
 	        // this.loadingMethod(true, "Adding Patient")
 	        if(this.$refs.form.validate()){
 	            this.loading = true
-	            apiCall({url: '/api/patient', data: this.newpatient, method: 'POST' })
-	            .then(resp => {
-	              console.log(resp)
-	              this.loading = false
-	              this.patient.unshift(resp)
-	              this.saving = false;
-	              this.message = 'Patient Added Succesfully';
-	              this.snackbar = true;
-	              //this.loadingMethod(false)
-	            })
-	            .catch(error => {
-	              this.loading = false
-	              console.log(error.response)
-	              this.loadingMethod(false)
-	            })
+	            this.addPatient(this.newpatient);
+	            this.loading = false
+	            this.message = 'Patient Added Succesfully';
+	            this.snackbar = true;
 	            this.close()
 	        }
 	      },
@@ -265,14 +256,13 @@
     },
     computed: {
         formattedDate(){
-          return this.newpatient.birth_date ? format(this.newpatient.birth_date, 'Do MMM YYYY') : ''
+        	return this.newpatient.birth_date ? format(this.newpatient.birth_date, 'Do MMM YYYY') : ''
     	},
     	length: function() {
-	        return Math.ceil(this.pagination.total / this.pagination.per_page);
-	      },
+	    	return Math.ceil(this.pagination.total / this.pagination.per_page);
+	    },
+	    ...mapGetters(['allPatients']),
     },
-
-    computed: mapGetters(['allPatients']),
   }
 
 </script>
