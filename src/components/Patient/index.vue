@@ -50,7 +50,7 @@
 					        </v-flex>
 					        <v-flex sm6 md6>
 						        <v-select
-						          :items="marital"
+						          :items="allMaritalStatuses"
 						          v-model="newpatient.maritalstatus_id"
 						          item-value="id"
 						          item-text="display"
@@ -127,7 +127,7 @@
 		      </div>
 		    </v-flex>
 		    </v-layout>
-		    <div v-if="length" class="text-xs-center">
+		    <!-- <div v-if="length" class="text-xs-center">
 		      <v-pagination
 		        :length="length"
 		        :total-visible="pagination.visible"
@@ -135,7 +135,7 @@
 		        @input="initialize"
 		        circle>
 		      </v-pagination>
-		    </div>
+		    </div> -->
   	</v-container>
   </div>
 </template>
@@ -159,16 +159,9 @@
 	        loading: false,
 	    	message: ""
 	    },
-	    marital: [],
 	    message:'',
 	    y: 'top',
 	    color: 'success',
-	    pagination: {
-	        page: 1,
-	        per_page: 0,
-	        total: 0,
-	        visible: 10
-	    },
 	    newpatient: {
 	    	identifier: '',
 	    	given_name: '',
@@ -191,45 +184,11 @@
 	  }
   	},
   	created () {
-  		this.fetchPatients()
-      	this.initialize()
+      	
     },
     methods: {
-    	...mapActions(['fetchPatients', 'addPatient', 'deletePatient']),
-   		loadingMethod(load, message="") {
-        	this.loadingDialog.loading = load;
-        	this.loadingDialog.message = message
-      	},
-      	initialize () {
-	        this.loadingMethod(true, "Fetching All Patients")
-	        this.query = 'page='+ this.pagination.page;
-	        if (this.search != '') {
-	            this.query = '&search='+this.search;
-	        }
-	        apiCall({url: '/api/patient?' + this.query, method: 'GET' })
-	        .then(resp => {
-	          console.log(resp)
-	          this.patient = resp.data;
-	          this.pagination.total = resp.total;
-	          this.pagination.per_page = resp.per_page;
-	          this.loadingMethod(false)
-	        })
-	        .catch(error => {
-	          console.log(error.response)
-	          this.loadingMethod(false)
-	        })
-
-	        apiCall({url: '/api/maritalstatus', method: 'GET' })
-	        .then(resp => {
-	          console.log(resp)
-	          this.marital = resp;
-	        })
-	        .catch(error => {
-	          console.log(error.response)
-	        })
-	      },
+    	...mapActions(['addPatient', 'deletePatient']),
 	      save () {
-	        // this.loadingMethod(true, "Adding Patient")
 	        if(this.$refs.form.validate()){
 	            this.loading = true
 	            this.addPatient(this.newpatient);
@@ -258,10 +217,13 @@
         formattedDate(){
         	return this.newpatient.birth_date ? format(this.newpatient.birth_date, 'Do MMM YYYY') : ''
     	},
-    	length: function() {
+    	/*length: function() {
 	    	return Math.ceil(this.pagination.total / this.pagination.per_page);
-	    },
-	    ...mapGetters(['allPatients']),
+	    },*/
+	    ...mapGetters([
+	    	'allPatients',
+	    	'allMaritalStatuses'
+	    ]),
     },
   }
 

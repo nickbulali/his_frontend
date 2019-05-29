@@ -3,6 +3,11 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import auth from './modules/auth'
 import patients from './modules/patients'
+import allergies from './modules/allergies'
+import conditiontypes from './modules/conditiontypes'
+import familyrelations from './modules/familyrelations'
+import familyhistories from './modules/familyhistories'
+import maritalstatuses from './modules/maritalstatuses'
 import VuexPersist from 'vuex-persist'
 
 Vue.use(Vuex)
@@ -27,6 +32,11 @@ export default new Vuex.Store({
     user,
     auth,
     patients,
+    allergies,
+    conditiontypes,
+    familyrelations,
+    familyhistories,
+    maritalstatuses
   },
   strict: false,
 })

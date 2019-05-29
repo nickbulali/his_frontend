@@ -1,13 +1,11 @@
 import apiCall from '../../utils/api'
 
 const state = {
-	patients: [],
-	patient: {}
+	patients: []
 };
 
 const getters = {
-	allPatients: (state) => state.patients,
-	individualPatient: (state) => state.patient
+	allPatients: (state) => state.patients
 };
 
 const actions = {
@@ -18,7 +16,6 @@ const actions = {
 	async fetchPatient({commit}, id) {
 		try {
 			const response = await apiCall({url: `/api/patient/${id}`, method: 'GET' });
-			console.log('setPatient', response)
 			commit('setPatient', response);
 		} catch (error){
 			console.log(error.response)
@@ -36,7 +33,6 @@ const actions = {
 		try {
 			const response = await apiCall({url: `/api/patient/${patient.id}`, data: patient, method: 'PUT' });
 			commit('setPatient', response);
-			commit('editPatients', updPatient)
 		} catch (error) {
 			console.log(error.response)
 		}
@@ -53,15 +49,14 @@ const actions = {
 
 const mutations = {
 	setPatients: (state, patients) => (state.patients = patients),
-	setPatient: (state, patient) => (state.patient = patient),
-	newPatient: (state, patient) => state.patients.unshift(patient),
-	removePatient: (state, id) =>  state.patients = state.patients.filter(patient => patient.id !== id),
-	editPatients: (state, updPatient) => {
+	setPatient: (state, updPatient) => {
 		const index = state.patients.findIndex(patient => patient.id === updPatient.id);
 		if(index !== -1){
 			state.patients.splice(index, 1, updPatient);
 		}
-	}
+	},
+	newPatient: (state, patient) => state.patients.unshift(patient),
+	removePatient: (state, id) =>  state.patients = state.patients.filter(patient => patient.id !== id),
 };
 
 export default {

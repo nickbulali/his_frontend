@@ -30,7 +30,7 @@
               <v-layout column>
                 <v-flex xs12 sm12 md12 class="mt-5">
                   <p class="headline">
-                    {{individualPatient.name.given}} {{individualPatient.name.family}}
+                    {{current.name.given}} {{current.name.family}}
                   </p>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
@@ -45,15 +45,15 @@
                             wrap>
                             <v-flex sm4 md4>
                               <p class="his_card_title">Age</p>
-                              <p class="his_card_description">{{individualPatient.birth_date | moment("from", true)}}</p>
+                              <p class="his_card_description">{{current.birth_date | moment("from", true)}}</p>
                             </v-flex>
                             <v-flex sm4 md4>
                               <p class="his_card_title">Gender</p>
-                              <p class="his_card_description">{{individualPatient.gender.display}}</p>
+                              <p class="his_card_description">{{current.gender.display}}</p>
                             </v-flex>
                             <v-flex sm4 md4>
                               <p class="his_card_title">Blood Type</p>
-                              <p class="his_card_description">{{individualPatient.blood_group.display}}</p>
+                              <p class="his_card_description">{{current.blood_group.display}}</p>
                             </v-flex>
                           </v-layout>
                         </v-flex>
@@ -244,7 +244,7 @@
                       <v-flex xs12 sm12 md4 v-for="(encounter,index) in encounters" :key="encounter.id">
                         <div class="his_card">
                           <div class="his_card_top_right">
-                            <v-btn outline fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: individualPatient.id } }">
+                            <v-btn outline fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: current.id } }">
                               <v-icon dark>visibility</v-icon>
                             </v-btn>
                           </div>
@@ -260,7 +260,7 @@
                           <p class="his_card_description">{{encounter.created_at | moment("from", true)}}</p>
                           <div class="his_card_footer">
                             <div class="his_card_footer_right">
-                              <v-btn dark class="his_card_button" small title="Edit" color="brown" round @click="requestTest(individualPatient)">
+                              <v-btn dark class="his_card_button" small title="Edit" color="brown" round @click="requestTest(current)">
                               <v-icon left dark>add_circle</v-icon>
                                 Add Notes
                             </v-btn>
@@ -283,7 +283,7 @@
               <v-flex sm12 md2>
                   <div class="his_card_no_shadow mt-3 text-xs-center mx-2">
                     <p class="his_card_title">Total</p>
-                    <p class="his_card_description">{{individualPatient.encounter.length}} Visits</p>
+                    <p class="his_card_description">{{current.encounter.length}} Visits</p>
                     <v-progress-circular
                         :rotate="-90"
                         :size="130"
@@ -318,7 +318,7 @@
                   <v-spacer></v-spacer>
                 </v-card-title>
                   <template>
-                    <swiper v-if="individualPatient" :options="swiperOption">
+                    <swiper v-if="current" :options="swiperOption">
                       <swiper-slide>
                         <div class="his_card_new_patient">
                         <p class="his_card_main_heading">Add New</p>
@@ -330,7 +330,7 @@
                             <v-layout row wrap>
                               <v-flex sm6 md6>
                                 <v-select
-                                  :items="conditiontype"
+                                  :items="allConditionTypes"
                                   v-model="familyHistory.condition_type_id"
                                   item-value="id"
                                   item-text="description"
@@ -339,7 +339,7 @@
                               </v-flex>
                               <v-flex sm6 md6>
                                 <v-select
-                                  :items="familyRelations"
+                                  :items="allFamilyRelations"
                                   v-model="familyHistory.relation_id"
                                   item-value="id"
                                   item-text="display"
@@ -389,7 +389,7 @@
                         </div>
                       </div>
                       </swiper-slide>
-                      <swiper-slide v-for="(history,index) in individualPatient.family_history" :key="history.id">
+                      <swiper-slide v-for="(history,index) in current.family_history" :key="history.id">
                         <div class="his_card">
                           <p class="his_card_main_heading">{{ history.condition_type.description }}</p>
                           <p class="his_card_title">Relation</p>
@@ -426,7 +426,7 @@
                   <v-spacer></v-spacer>
                 </v-card-title>
                   <template>
-                    <swiper v-if="individualPatient" :options="swiperSocialOption">
+                    <swiper v-if="current" :options="swiperSocialOption">
                       <swiper-slide>
                         <div class="his_card_new_patient">
                         <p class="his_card_main_heading">Add New</p>
@@ -479,7 +479,7 @@
                         </div>
                       </div>
                       </swiper-slide>
-                      <swiper-slide v-for="(social,index) in individualPatient.social_history" :key="social.id">
+                      <swiper-slide v-for="(social,index) in current.social_history" :key="social.id">
                         <div class="his_card">
                           <p class="his_card_main_heading">{{ social.social_problem }}</p>
                           <p class="his_card_title">Start Date</p>
@@ -512,7 +512,7 @@
                   <v-spacer></v-spacer>
                 </v-card-title>
                   <template>
-                    <swiper v-if="individualPatient" :options="swiperSocialOption">
+                    <swiper v-if="current" :options="swiperSocialOption">
                       <swiper-slide>
                         <div class="his_card_new_patient">
                         <p class="his_card_main_heading">Add New</p>
@@ -565,7 +565,7 @@
                         </div>
                       </div>
                       </swiper-slide>
-                      <swiper-slide v-for="(environmental,index) in individualPatient.environmental_history" :key="environmental.id">
+                      <swiper-slide v-for="(environmental,index) in current.environmental_history" :key="environmental.id">
                         <div class="his_card">
                           <p class="his_card_main_heading">{{ environmental.description }}</p>
                           <p class="his_card_title">Start Date</p>
@@ -598,7 +598,7 @@
                   <v-spacer></v-spacer>
                 </v-card-title>
                   <template>
-                    <swiper v-if="individualPatient" :options="swiperSocialOption">
+                    <swiper v-if="current" :options="swiperSocialOption">
                       <swiper-slide>
                         <div class="his_card_new_patient">
                         <p class="his_card_main_heading">Add New</p>
@@ -674,7 +674,7 @@
                         </div>
                       </div>
                       </swiper-slide>
-                      <swiper-slide v-for="(smoking,index) in individualPatient.smoking_history" :key="smoking.id">
+                      <swiper-slide v-for="(smoking,index) in current.smoking_history" :key="smoking.id">
                         <div class="his_card">
                           <p class="his_card_main_heading">Smoking</p>
                           <p class="his_card_title">Kind</p>
@@ -689,7 +689,7 @@
                           <p class="his_card_description">{{ smoking.end_date }}</p>
                         </div>
                       </swiper-slide>
-                      <swiper-slide v-for="(alcohol,index) in individualPatient.alcohol_history" :key="alcohol.id">
+                      <swiper-slide v-for="(alcohol,index) in current.alcohol_history" :key="alcohol.id">
                         <div class="his_card">
                           <p class="his_card_main_heading">Alcohol</p>
                           <p class="his_card_title">Kind</p>
@@ -741,7 +741,7 @@
                 <v-layout
                   row
                   wrap>
-                  <v-flex xs12 sm12 md4 v-for="(medication,index) in individualPatient.medications" :key="medication.id">
+                  <v-flex xs12 sm12 md4 v-for="(medication,index) in current.medications" :key="medication.id">
                     <div class="his_card">
                       <p class="his_card_main_heading">{{ medication.drugs.trade_name }}</p>
                       <p class="his_card_title">Description</p>
@@ -777,7 +777,7 @@
                           <v-layout row wrap>
                             <v-flex sm12 md12>
                               <v-select
-                                :items="allergies"
+                                :items="allAllergies"
                                 v-model="newallergy"
                                 item-value="id"
                                 item-text="substance"
@@ -794,7 +794,7 @@
                       </div>
                     </div>
                   </v-flex>
-                  <v-flex xs12 sm12 md4 v-for="(allergy,index) in individualPatient.allergies" :key="allergy.id">
+                  <v-flex xs12 sm12 md4 v-for="(allergy,index) in current.allergies" :key="allergy.id">
                     <div class="his_card">
                       <p class="his_card_main_heading">{{ allergy.substance }}</p>
                       <p class="his_card_title">Type</p>
@@ -863,7 +863,6 @@
         color: 'success',
         message: '',
         patient:{},
-        allergies: [],
         conditions: [],
         familyRelations: [],
         newallergy: '',
@@ -968,42 +967,21 @@
     },
     created(){
       this.fetchPatient(this.$route.params.id)
+      
       this.initialize()
     },
     methods:{
-      ...mapActions(['fetchPatient']),
+      ...mapActions([
+        'fetchPatient',
+        'addFamilyHistory'
+        ]),
       initialize(){
         this.getVisits()
-        
-        apiCall({url: '/api/allergy', method: 'GET' })
-        .then(resp => {
-          console.log("allergies", resp)
-          this.allergies = resp;
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
-        apiCall({url: '/api/conditiontypes', method: 'GET' })
-        .then(resp => {
-          console.log("conditiontype", resp)
-          this.conditiontype = resp;
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
-        apiCall({url: '/api/familyRelations', method: 'GET' })
-        .then(resp => {
-          console.log("familyRelations", resp)
-          this.familyRelations = resp;
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
       },
       getVisits(){
         this.visitQuery = 'page='+ this.visitsPagination.page;
       
-        apiCall({url: '/api/encounter/patient/' + this.patient.id + '?' + this.visitQuery, method: 'GET' })
+        apiCall({url: '/api/encounter/patient/' + this.$route.params.id + '?' + this.visitQuery, method: 'GET' })
         .then(resp => {
           console.log(resp)
           this.encounters = resp.data;
@@ -1069,19 +1047,11 @@
       saveFamilyHistory(){
         if(this.$refs.familyHistoryForm.validate()){
           this.loading = true
-          apiCall({url: '/api/familyhistory', data: this.familyHistory, method: 'POST' })
-          .then(resp => {
-            console.log("family history response", resp)
-            this.patient.family_history.unshift(resp)
-            //this.patient.family_history =resp.family_history
-            this.loading = false
-            this.message = 'Family History Added Succesfully';
-            this.snackbar = true;
-          })
-          .catch(error => {
-            this.loading = false
-            console.log(error.response)
-          })
+          this.addFamilyHistory(this.familyHistory)
+          this.loading = false
+          this.message = 'Family History Added Succesfully';
+          this.snackbar = true;
+          this.fetchPatient(this.$route.params.id)
         }
       },
       saveSocialHistory(){
@@ -1122,6 +1092,16 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'allAllergies',
+        'allConditionTypes',
+        'allFamilyRelations'
+      ]),
+
+      current(){
+        return this.$store.getters.allPatients.find((patient) => patient.id == this.$route.params.id)
+      },
+
       visitLength: function() {
         return Math.ceil(this.visitsPagination.total / this.visitsPagination.per_page);
       },
@@ -1149,7 +1129,6 @@
       formattedHabitsEndDate(){
         return this.habitHistory.end_date ? format(this.habitHistory.end_date, 'Do MMM YYYY') : ''
       },
-      ...mapGetters(['individualPatient']),
     }
   }
 </script>
