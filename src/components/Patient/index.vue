@@ -22,9 +22,9 @@
 		      <div class="his_card_new_patient pa-4">
 		        <p class="his_card_main_heading">Register New Patient</p>
 		        	<v-form
-			            ref="form"
-			            v-model="valid"
-			            lazy-validation
+								ref="form"
+								v-model="valid"
+								lazy-validation
 			        >
 				        <v-layout row wrap>
 				        	<v-flex sm12 md12>
@@ -58,30 +58,29 @@
 						        ></v-select>
 					      	</v-flex>
 					      	<v-flex sm6 md6>
-			                    <v-menu>
-			                      <v-text-field
-			                      	:rules="inputRules"
-			                        :value="formattedDate"
-			                        slot="activator"
-			                        label="Date of Birth"
-			                        >
-			                      </v-text-field>
-			                      <v-date-picker v-model="newpatient.birth_date"></v-date-picker>
-			                    </v-menu>
-			                </v-flex> 
+										<v-menu>
+											<v-text-field
+												:rules="inputRules"
+												:value="formattedDate"
+												slot="activator"
+												label="Date of Birth"
+											>
+											</v-text-field>
+											<v-date-picker v-model="newpatient.birth_date"></v-date-picker>
+										</v-menu>
+			            </v-flex> 
 					        <v-flex sm6 md6>
-			                	Gender
-				                <v-radio-group 
-				                	v-model="newpatient.gender_id"
-				                	row
-				                  	>
-				                  <v-radio label="Male" :value="1"></v-radio>
-				                  <v-radio label="Female" :value="2"></v-radio>
-				                </v-radio-group>
-				            </v-flex>
-				            
+			              Gender
+				            <v-radio-group 
+				              v-model="newpatient.gender_id"
+				              row
+				            >
+											<v-radio label="Male" :value="1"></v-radio>
+											<v-radio label="Female" :value="2"></v-radio>
+										</v-radio-group>
+				          </v-flex>
 				        </v-layout>
-				    </v-form>
+				    	</v-form>
 		        <div class="his_card_footer">
 		          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="save">
 		            <v-icon left dark>add_circle</v-icon>
@@ -90,12 +89,12 @@
 		        </div>
 		      </div>
 		    </v-flex>
-		    <v-flex sm12 md6 lg4 v-for="(patient,index) in allPatients" :key="patient.id">
+		    <v-flex sm12 md6 lg4 v-for="(patient) in allPatients" :key="patient.id">
 		      <div class="his_card">
 		        <div class="his_card_top_right">
 		        	<v-btn outline fab small color="red" @click="deletePatient(patient.id)">
-		            	<v-icon dark>delete</v-icon>
-		          	</v-btn>
+								<v-icon dark>delete</v-icon>
+							</v-btn>
 		          <v-btn outline fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
 		            <v-icon dark>visibility</v-icon>
 		          </v-btn>
@@ -119,23 +118,23 @@
 		          </v-btn>
 		          <div class="his_card_footer_right">
 		            <v-btn dark class="his_card_button" small title="Edit" color="blue" round @click="requestTest(patient)">
-			        	<v-icon left dark>add_circle</v-icon>
-			            View Report
-			        </v-btn>
+									<v-icon left dark>add_circle</v-icon>
+										View Report
+								</v-btn>
 		          </div>
 		        </div>
 		      </div>
 		    </v-flex>
 		    </v-layout>
-		    <!-- <div v-if="length" class="text-xs-center">
+		    <div class="text-xs-center">
 		      <v-pagination
 		        :length="length"
-		        :total-visible="pagination.visible"
-		        v-model="pagination.page"
-		        @input="initialize"
+		        :total-visible="patientPagination.visible"
+		        v-model="patientPagination.current_page"
+		        @input="fetchPatients"
 		        circle>
 		      </v-pagination>
-		    </div> -->
+		    </div>
   	</v-container>
   </div>
 </template>
@@ -155,76 +154,72 @@
         valid: true,
       	loading: false,
       	snackbar: false,
-	    loadingDialog: {
-	        loading: false,
-	    	message: ""
-	    },
-	    message:'',
-	    y: 'top',
-	    color: 'success',
-	    newpatient: {
-	    	identifier: '',
-	    	given_name: '',
-	    	family_name: '',
-	    	gender_id: '',
-	    	maritalstatus_id: '',
-	    	birth_date: null
-	    },
-	    defaultpatient: {
-	    	identifier: ' ',
-	    	given_name: ' ',
-	    	family_name: ' ',
-	    	gender_id: ' ',
-	    	maritalstatus_id: ' ',
-	    	birth_date: ' '
-	    },
-	    inputRules: [
+				message:'',
+				y: 'top',
+				color: 'success',
+				newpatient: {
+					identifier: '',
+					given_name: '',
+					family_name: '',
+					gender_id: '',
+					maritalstatus_id: '',
+					birth_date: null
+				},
+				defaultpatient: {
+					identifier: ' ',
+					given_name: ' ',
+					family_name: ' ',
+					gender_id: ' ',
+					maritalstatus_id: ' ',
+					birth_date: ' '
+				},
+	    	inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],
-	  }
+	  	}
   	},
   	created () {
-      	
+      this.fetchPatients(patientPagination.current_page)
     },
     methods: {
-    	...mapActions(['addPatient', 'deletePatient']),
-	      save () {
-	        if(this.$refs.form.validate()){
-	            this.loading = true
-	            this.addPatient(this.newpatient);
-	            this.loading = false
-	            this.message = 'Patient Added Succesfully';
-	            this.snackbar = true;
-	            this.close()
-	        }
-	      },
-	      close(){
-	      	this.newpatient = this.defaultpatient
-	      },
-	      addToQueue(patient){
-	      	apiCall({url: '/api/queue', data: patient, method: 'POST' })
-	            .then(resp => {
-	              console.log(resp)
-	              this.message = 'Patient Sent to Queue Succesfully';
-	              this.snackbar = true;
-	            })
-	            .catch(error => {
-	              console.log(error.response)
-	            })
-	      }
+    	...mapActions(['fetchPatients', 'addPatient', 'deletePatient']),
+			save () {
+				if(this.$refs.form.validate()){
+					this.loading = true
+					this.addPatient(this.newpatient);
+					this.loading = false
+					this.message = 'Patient Added Succesfully';
+					this.snackbar = true;
+					this.close()
+				}
+			},
+			close(){
+				this.newpatient = this.defaultpatient
+			},
+			addToQueue(patient){
+				apiCall({url: '/api/queue', data: patient, method: 'POST' })
+					.then(resp => {
+						console.log(resp)
+						this.message = 'Patient Sent to Queue Succesfully';
+						this.snackbar = true;
+					})
+					.catch(error => {
+						console.log(error.response)
+					})
+			}
     },
     computed: {
-        formattedDate(){
-        	return this.newpatient.birth_date ? format(this.newpatient.birth_date, 'Do MMM YYYY') : ''
-    	},
-    	/*length: function() {
-	    	return Math.ceil(this.pagination.total / this.pagination.per_page);
-	    },*/
+			formattedDate(){
+				return this.newpatient.birth_date ? format(this.newpatient.birth_date, 'Do MMM YYYY') : ''
+		},
+    	length: function() {
+	    	return Math.ceil(this.patientPagination.total / this.patientPagination.per_page);
+	    },
 	    ...mapGetters([
 	    	'allPatients',
-	    	'allMaritalStatuses'
+				'allMaritalStatuses',
+				'patientPagination'
 	    ]),
     },
   }
-
 </script>

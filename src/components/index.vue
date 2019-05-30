@@ -18,6 +18,7 @@
       this.fetchAllergies()
       this.fetchConditionTypes()
       this.fetchFamilyRelations()
+      this.fetchMaritalStatuses()
     },
     methods: {
       ...mapActions([
@@ -25,6 +26,7 @@
         'fetchAllergies',
         'fetchConditionTypes',
         'fetchFamilyRelations',
+        'fetchMaritalStatuses'
       ]),
     }
   }

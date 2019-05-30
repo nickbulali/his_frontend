@@ -53,7 +53,7 @@
                             </v-flex>
                             <v-flex sm4 md4>
                               <p class="his_card_title">Blood Type</p>
-                              <p class="his_card_description">{{current.blood_group.display}}</p>
+                              <p v-if="current.blood_group" class="his_card_description">{{current.blood_group.display}}</p>
                             </v-flex>
                           </v-layout>
                         </v-flex>

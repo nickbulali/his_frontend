@@ -11,7 +11,7 @@ const getters = {
 const actions = {
 	async fetchMaritalStatuses({commit}) {
 		const response = await apiCall({url: '/api/maritalstatus', method: 'GET' });
-		commit('setMaritalStatuses', response.data)
+		commit('setMaritalStatuses', response)
 	},
 	async fetchMaritalStatus({commit}, id) {
 		try {

@@ -1,17 +1,24 @@
 import apiCall from '../../utils/api'
 
 const state = {
-	patients: []
+	patients: [],
+	patientPagination: {
+		current_page: 1,
+		per_page: 0,
+	    total: 0,
+	    visible: 10
+	}
 };
 
 const getters = {
-	allPatients: (state) => state.patients
+	allPatients: (state) => state.patients,
+	patientPagination: (state) => state.patientPagination
 };
 
 const actions = {
-	async fetchPatients({commit}) {
-		const response = await apiCall({url: '/api/patient', method: 'GET' });
-		commit('setPatients', response.data)
+	async fetchPatients({commit}, page) {
+		const response = await apiCall({url: `/api/patient?page=${page}`, method: 'GET' });
+		commit('setPatients', response)
 	},
 	async fetchPatient({commit}, id) {
 		try {
@@ -48,7 +55,12 @@ const actions = {
 };
 
 const mutations = {
-	setPatients: (state, patients) => (state.patients = patients),
+	setPatients: (state, patients) => {
+		state.patients = patients.data,
+		state.patientPagination.current_page = patients.current_page
+		state.patientPagination.total = patients.total
+		state.patientPagination.per_page = patients.per_page
+	},
 	setPatient: (state, updPatient) => {
 		const index = state.patients.findIndex(patient => patient.id === updPatient.id);
 		if(index !== -1){
