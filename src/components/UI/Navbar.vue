@@ -4,7 +4,7 @@
 			<span>{{message}}</span>
 		</v-snackbar>
 		<v-toolbar app flat color="rgba(0, 0, 0, 0)">
-			<v-toolbar-side-icon color="white" class="brown--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+			<v-toolbar-side-icon color="white" class="brown--text elevation-5" @click="drawer = !drawer"></v-toolbar-side-icon>
 			
 			<v-spacer></v-spacer>
 
@@ -13,9 +13,15 @@
 			</v-btn>
 			<!--dropdown menu-->
 			<v-menu left transition="slide-y-reverse-transition">
-				<v-avatar color="red" slot="activator">
-			      <span class="white--text headline">A</span>
-			    </v-avatar>
+				<v-layout  slot="activator">
+					<v-avatar color="red">
+						<span class="white--text headline">A</span>
+					</v-avatar>
+					<div class="ml-2">
+            <div class="subheading">User Name</div>
+            <span class="grey--text">Other Info</span>
+          </div>
+				</v-layout>
 				<v-list>
 					<v-list-tile >
 						<v-list-tile-title @click="signOut">
@@ -26,14 +32,9 @@
 				</v-list>
 			</v-menu>
 		</v-toolbar>
-		<v-navigation-drawer
-			app
-			v-model="drawer"
-			absolute
-			temporary>
+		<v-navigation-drawer app v-model="drawer" absolute temporary class="darkened white--text">
 			<sidebar></sidebar>
 		</v-navigation-drawer>
-
 	</nav>
 	
 </template>

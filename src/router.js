@@ -5,7 +5,7 @@ import Router from 'vue-router'
 import Login from './components/Auth/login.vue'
 import Register from './components/Auth/register.vue'
 
-import Dashboard from './views/Dashboard.vue'
+import Home from './components/index.vue'
 
 import Patient from './components/Patient/index.vue'
 import patientProfile from './components/Patient/patientProfile.vue'
@@ -41,7 +41,7 @@ const ifAuthenticated = (to, from, next) => {
 }
 
 export default new Router({
-  mode: 'history',
+  //mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -58,8 +58,8 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'dashboard',
-      component: Dashboard,
+      name: 'home',
+      component: Home,
       beforeEnter: ifAuthenticated,
     },
     //Queue
