@@ -13,7 +13,7 @@
 			<p class="his_page_title">Patients</p>
 		</v-layout>
   	<v-container class="">
-			<v-text-field class="his_search" v-model="search" append-icon="search" label="Search" single-line v-on:keyup.enter="initialize" hide-details>
+			<v-text-field class="his_search" v-model="patientPagination.search" append-icon="search" label="Search" single-line v-on:keyup.enter="fetchPatients" hide-details>
 			</v-text-field>
   	</v-container>
 		<v-container class="my-2">
@@ -89,7 +89,7 @@
 		        </div>
 		      </div>
 		    </v-flex>
-		    <v-flex sm12 md6 lg4 v-for="(patient) in allPatients" :key="patient.id">
+		    <v-flex xs12 sm12 md6 lg4 v-for="(patient) in allPatients" :key="patient.id">
 		      <div class="his_card">
 		        <div class="his_card_top_right">
 		        	<v-btn outline fab small color="red" @click="deletePatient(patient.id)">
@@ -179,7 +179,7 @@
 	  	}
   	},
   	created () {
-      this.fetchPatients(patientPagination.current_page)
+      this.fetchPatients(this.patientPagination.current_page)
     },
     methods: {
     	...mapActions(['fetchPatients', 'addPatient', 'deletePatient']),

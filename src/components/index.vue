@@ -1,11 +1,8 @@
 <template>
   <div class="dashboard">
-    
   	<v-container class="my-5">
   		<p>home</p>
-  		
   	</v-container>
-
   </div>
 </template>
 
@@ -14,7 +11,7 @@
 
   export default {
     created(){
-      this.fetchPatients()
+      this.fetchPatients(this.patientPagination.current_page)
       this.fetchAllergies()
       this.fetchConditionTypes()
       this.fetchFamilyRelations()
@@ -28,6 +25,7 @@
         'fetchFamilyRelations',
         'fetchMaritalStatuses'
       ]),
-    }
+    },
+    computed: mapGetters(['patientPagination'])
   }
 </script>

@@ -3,6 +3,7 @@ import apiCall from '../../utils/api'
 const state = {
 	patients: [],
 	patientPagination: {
+		search: null,
 		current_page: 1,
 		per_page: 0,
 	    total: 0,
@@ -16,8 +17,8 @@ const getters = {
 };
 
 const actions = {
-	async fetchPatients({commit}, page) {
-		const response = await apiCall({url: `/api/patient?page=${page}`, method: 'GET' });
+	async fetchPatients({commit, state}, page) {
+		const response = await apiCall({url: `/api/patient?page=${page}&search=${state.patientPagination.search}`, method: 'GET' });
 		commit('setPatients', response)
 	},
 	async fetchPatient({commit}, id) {
