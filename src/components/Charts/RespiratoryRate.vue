@@ -3,10 +3,10 @@
    
   export default {
     extends: Line,
-    props: ['respiratoryRate'],
+    props: ['respiratoryRate', 'dates'],
     mounted () {
       this.renderChart({
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      labels: [this.dates],
       datasets: [
         {
           label: 'Respiratory Rate',
@@ -15,6 +15,7 @@
         },
       ]
       }, {responsive: true, maintainAspectRatio: false})
+    
     }
   }
 </script>

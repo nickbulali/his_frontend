@@ -1,0 +1,136 @@
+[1mdiff --git a/src/components/Appointment/calendar.vue b/src/components/Appointment/calendar.vue[m
+[1mindex d95be94..3b4e395 100644[m
+[1m--- a/src/components/Appointment/calendar.vue[m
+[1m+++ b/src/components/Appointment/calendar.vue[m
+[36m@@ -132,9 +132,11 @@[m
+             :value="today"[m
+           >[m
+             [m
+[31m-             <template v-slot:day="{ date }">[m
+[32m+[m[32m             <template v-slot:day="{ date }" >[m
+[32m+[m
+               <template v-for="(event, index) in item[date]" v-if="index <= 0">[m
+                 <v-menu[m
+[32m+[m
+                   :key="event.id"[m
+                   v-model="event.open"[m
+                   full-width[m
+[36m@@ -147,7 +149,7 @@[m
+                       class="my-event"[m
+                       v-on="on"[m
+                       v-html="event.title"[m
+[31m-                    ></div>[m
+[32m+[m[32m                    >  </div>[m
+                   </template>[m
+                   <v-card[m
+                     color="grey lighten-4"[m
+[36m@@ -157,11 +159,12 @@[m
+                     <v-toolbar[m
+                       color="primary"[m
+                       dark[m
+[32m+[m
+                     >[m
+                       <v-btn icon>[m
+                         <v-icon>edit</v-icon>[m
+                       </v-btn>[m
+[31m-                      <v-toolbar-title>{{event}}</v-toolbar-title>[m
+[32m+[m[32m                      <v-toolbar-title>Appointments</v-toolbar-title>[m
+                       <v-spacer></v-spacer>[m
+                       <v-btn icon>[m
+                         <v-icon>favorite</v-icon>[m
+[36m@@ -170,8 +173,16 @@[m
+                         <v-icon>more_vert</v-icon>[m
+                       </v-btn>[m
+                     </v-toolbar>[m
+[31m-                    <v-card-title primary-title>[m
+[31m-                       <span>{{item[date]}}</span>[m
+[32m+[m
+[32m+[m[32m                  <v-card-title primary-title >[m
+[32m+[m
+[32m+[m[32m <li v-for="(event, index) in item[date]" @click = "productDialog = true" >[m
+[32m+[m
+[32m+[m[32m{{ event.patient.name.given}}[m[41m  [m
+[32m+[m[41m   [m
+[32m+[m[32m  </li>[m
+[32m+[m
+[32m+[m[41m             [m
+            [m
+                     </v-card-title>[m
+                     <v-card-actions>[m
+[1mdiff --git a/src/components/accesscontrol/roleusers.vue b/src/components/accesscontrol/roleusers.vue[m
+[1mindex 6d7897d..a0f04cc 100644[m
+[1m--- a/src/components/accesscontrol/roleusers.vue[m
+[1m+++ b/src/components/accesscontrol/roleusers.vue[m
+[36m@@ -135,7 +135,7 @@[m
+             this.query = this.query+'&search='+this.search;[m
+         }[m
+ [m
+[31m-        apiCall({url: '/api/user?' + this.query, method: 'GET' })[m
+[32m+[m[32m        apiCall({url: '/api/users?' + this.query, method: 'GET' })[m
+         .then(resp => {[m
+           console.log(resp.data)[m
+           this.users = resp.data;[m
+[1mdiff --git a/src/components/accesscontrol/useraccounts.vue b/src/components/accesscontrol/useraccounts.vue[m
+[1mindex 0a61885..ad7e484 100644[m
+[1m--- a/src/components/accesscontrol/useraccounts.vue[m
+[1m+++ b/src/components/accesscontrol/useraccounts.vue[m
+[36m@@ -234,18 +234,13 @@[m
+       },[m
+      initialize () {[m
+          this.loader = true[m
+[31m-        this.query = 'page='+ this.pagination.page;[m
+[31m-        if (this.search != '') {[m
+[31m-            this.query = this.query+'&search='+this.search;[m
+[31m-        }[m
+[31m-[m
+[31m-        apiCall({url: '/api/user?' + this.query, method: 'GET' })[m
+[32m+[m[41m     [m
+[32m+[m[32m        apiCall({url: '/api/users' + this.query, method: 'GET' })[m
+         .then(resp => {[m
+           console.log(resp)[m
+           this.user = resp.data;[m
+           this.loader = false[m
+[31m-          this.pagination.per_page = resp.per_page;[m
+[31m-          this.pagination.total = resp.total;[m
+[32m+[m[41m       [m
+         })[m
+         .catch(error => {[m
+           console.log(error.response)[m
+[36m@@ -317,7 +312,7 @@[m
+               this.editedItem.adminPasswordChange = true[m
+               this.editedItem.password = this.password[m
+             }[m
+[31m-            apiCall({url: '/api/user/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })[m
+[32m+[m[32m            apiCall({url: '/api/users/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })[m
+             .then(resp => {[m
+               Object.assign(this.user[this.editedIndex], this.editedItem)[m
+               console.log(resp)[m
+[36m@@ -334,7 +329,7 @@[m
+         // store[m
+         } else {[m
+           if(this.$refs.form.validate()){[m
+[31m-            apiCall({url: '/api/user', data: this.editedItem, method: 'POST' })[m
+[32m+[m[32m            apiCall({url: '/api/users', data: this.editedItem, method: 'POST' })[m
+             .then(resp => {[m
+               this.user.push(resp)[m
+               console.log(resp)[m
+[36m@@ -357,7 +352,7 @@[m
+         if (this.delete) {[m
+           const index = this.item.indexOf(item)[m
+           this.item.splice(index, 1)[m
+[31m-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })[m
+[32m+[m[32m          apiCall({url: '/api/users/'+item.id, method: 'DELETE' })[m
+           .then(resp => {[m
+             console.log(resp)[m
+           })[m
+[1mdiff --git a/src/utils/api.js b/src/utils/api.js[m
+[1mindex f512d89..8bddfad 100755[m
+[1m--- a/src/utils/api.js[m
+[1m+++ b/src/utils/api.js[m
+[36m@@ -1,5 +1,5 @@[m
+ import axios from 'axios'[m
+[31m-const base_url ="http://billing.local"[m
+[32m+[m[32mconst base_url ="http://billing.test"[m
+ const apiCall = ({url, data, method}) => new Promise((resolve, reject) => {[m
+   console.log(url)[m
+   url = base_url+url[m

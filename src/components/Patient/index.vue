@@ -14,7 +14,7 @@
 	        Patients
 	      </p>
 	      <v-spacer></v-spacer>
-	      <v-text-field class="his_search" v-model="search" append-icon="search" label="Search" single-line v-on:keyup.enter="initialize" hide-details>
+	      <v-text-field class="his_search" v-model="search" append-icon="search" label="Search" single-line v-on:keyup.enter="initialize" autocomplete>
 	      </v-text-field>
 	    </v-card-title>
 	    <v-layout row wrap>

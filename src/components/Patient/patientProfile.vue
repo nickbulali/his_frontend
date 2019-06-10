@@ -83,11 +83,11 @@
                             wrap>
                             <v-flex sm4 md4>
                               <p class="his_card_title">Weight</p>
-                              <p class="his_card_description">87kgs</p>
+                              <p class="his_card_description">{{vitals.weight}}kgs</p>
                             </v-flex>
                             <v-flex sm4 md4>
                               <p class="his_card_title">Height</p>
-                              <p class="his_card_description">176cms</p>
+                              <p class="his_card_description">{{vitals.height}}cms</p>
                             </v-flex>
                           </v-layout>
                         </v-flex>
@@ -158,21 +158,25 @@
                   <v-flex sm12 md3>
                     <blood-pressure
                       :bloodPressure="bloodPressure"
+                      :dates="vitalDates"
                     />
                   </v-flex>
                   <v-flex sm12 md3>
                     <body-temp 
                       :bodyTemperature="bodyTemperature"
+                      :dates="vitalDates"
                     />
                   </v-flex>
                   <v-flex sm12 md3>
                     <heart-rate 
                       :heartRate="heartRate"
+                      :dates="vitalDates"
                     />
                   </v-flex>
                   <v-flex sm12 md3>
                     <respiratory-rate
                       :respiratoryRate="respiratoryRate"
+                      :dates="vitalDates"
                     />
                   </v-flex>
                   
@@ -435,10 +439,11 @@
         allergyloading: false,
         visitQuery: '',
         active: null,
-        bodyTemperature: [36.1, 36.0, 36.8, 38, 37, 36.9],
-        respiratoryRate: [12, 17, 21, 15, 22, 18],
-        heartRate: [80, 70, 81, 70, 87, 90],
-        bloodPressure: [125, 130, 127, 126, 124, 130],
+        vitalDates: [],
+        bodyTemperature: [],
+        respiratoryRate: [],
+        heartRate: [],
+        bloodPressure: [],
         loading: false,
         valid: false,
         interval: {},
@@ -450,6 +455,7 @@
         screenDialog: false,
         patient:{},
         allergies: [],
+        vitals:[],
         newallergy: '',
         visitsPagination: {
           page: 1,
@@ -481,6 +487,28 @@
         .then(resp => {
           console.log("allergies", resp)
           this.allergies = resp;
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+
+         apiCall({url: '/api/vitalsigns/' + this.$route.params.id, method: 'GET' })
+        .then(resp => {
+          console.log("Vitals", resp)
+          this.vitals = resp[0];
+          //console.log("bloodPressure is", Object.keys(resp).length)
+          var i;
+          for (i = 0; i < Object.keys(resp).length; i++) {
+            this.bloodPressure[Object.keys(resp)[i]] = resp[Object.keys(resp)[i]].blood_pressure;
+            this.heartRate[Object.keys(resp)[i]] = resp[Object.keys(resp)[i]].heart_rate;
+            this.respiratoryRate[Object.keys(resp)[i]] = resp[Object.keys(resp)[i]].respiratory_rate;
+            this.bodyTemperature[Object.keys(resp)[i]] = resp[Object.keys(resp)[i]].body_temperature;
+            this.vitalDates[Object.keys(resp)[i]] = resp[Object.keys(resp)[i]].created_at;
+            //console.log("bloodPressure is", this.bloodPressure)
+          }
+
+
+
         })
         .catch(error => {
           console.log(error.response)

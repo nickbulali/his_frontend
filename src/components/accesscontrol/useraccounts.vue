@@ -234,18 +234,13 @@
       },
      initialize () {
          this.loader = true
-        this.query = 'page='+ this.pagination.page;
-        if (this.search != '') {
-            this.query = this.query+'&search='+this.search;
-        }
-
-        apiCall({url: '/api/user?' + this.query, method: 'GET' })
+     
+        apiCall({url: '/api/users' + this.query, method: 'GET' })
         .then(resp => {
           console.log(resp)
           this.user = resp.data;
           this.loader = false
-          this.pagination.per_page = resp.per_page;
-          this.pagination.total = resp.total;
+       
         })
         .catch(error => {
           console.log(error.response)
@@ -263,6 +258,8 @@
         this.editedIndex = this.user.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
+        console.log("My Edited Info",item)
+
       },
       resetDialogReferences() {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -317,7 +314,7 @@
               this.editedItem.adminPasswordChange = true
               this.editedItem.password = this.password
             }
-            apiCall({url: '/api/user/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+            apiCall({url: '/api/users/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
               Object.assign(this.user[this.editedIndex], this.editedItem)
               console.log(resp)
@@ -334,7 +331,7 @@
         // store
         } else {
           if(this.$refs.form.validate()){
-            apiCall({url: '/api/user', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/users', data: this.editedItem, method: 'POST' })
             .then(resp => {
               this.user.push(resp)
               console.log(resp)
@@ -357,7 +354,7 @@
         if (this.delete) {
           const index = this.item.indexOf(item)
           this.item.splice(index, 1)
-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
+          apiCall({url: '/api/users/'+item.id, method: 'DELETE' })
           .then(resp => {
             console.log(resp)
           })

@@ -3,10 +3,10 @@
    
   export default {
     extends: Line,
-    props: ['heartRate'],
+    props: ['heartRate', 'dates'],
     mounted () {
       this.renderChart({
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: [this.dates],
       datasets: [
         {
           label: 'Heart Rate',

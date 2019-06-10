@@ -3,15 +3,15 @@
    
   export default {
     extends: Line,
-    props: ['bloodPressure'],
+    props: ['bloodPressure', 'dates'],
     mounted () {
       this.renderChart({
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: [this.dates],
       datasets: [
         {
           label: 'Blood Pressure',
           backgroundColor: '#CDDC39',
-          data: this.heartRate
+          data: this.bloodPressure
         },
       ]
       }, {responsive: true, maintainAspectRatio: false})

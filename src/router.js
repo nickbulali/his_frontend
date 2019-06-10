@@ -21,8 +21,10 @@ import Invoice from './components/Billing/index.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
 
-import Appointment from './components/Appointment/appointment.vue'
-import AppointmentCalendar from './components/Appointment/calendar.vue'
+import Appointment from './components/appointment/index.vue'
+
+
+
 
 
 Vue.use(Router)
@@ -132,16 +134,14 @@ export default new Router({
     },
        //Appointment
     {
-      path: '/Appointment/appointment',
+      path: '/appointment',
       name: 'Appointment',
       component: Appointment,
       beforeEnter: ifAuthenticated,
+
     },
-    {
-      path: '/Appointment/calendar',
-      name: 'AppointmentCalendar',
-      component: AppointmentCalendar,
-      beforeEnter: ifAuthenticated,
-    },
+ 
+    
+
   ]
 })
