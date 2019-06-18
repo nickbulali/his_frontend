@@ -22,7 +22,8 @@ import ShowPayment from './components/Billing/showpayment.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
 import Payment from './components/Billing/payment.vue'
-import Appointment from './components/Appointment/appointment.vue'
+import Pharmacy from './components/pharmacy/index.vue'
+import Prescription from './components/pharmacy/prescriptions.vue'
 
 
 
@@ -147,12 +148,18 @@ export default new Router({
       component: RoleUser,
       beforeEnter: ifAuthenticated,
     },
-       //Appointment
-        {
-      path: '/Appointment/appointment',
-      name: 'Appointment',
-      component: Appointment,
+    {
+      path: '/pharmacy',
+      name: 'Pharmacy',
+      component: Pharmacy,
       beforeEnter: ifAuthenticated,
     },
+    {
+      path: '/pharmacy/prescription',
+      name: 'Prescription',
+      component: Prescription,
+      beforeEnter: ifAuthenticated,
+    },
+ 
   ]
 })
