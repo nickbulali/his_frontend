@@ -27,6 +27,7 @@ import Prescription from './components/pharmacy/prescriptions.vue'
 
 
 
+
 Vue.use(Router)
 
 const ifNotAuthenticated = (to, from, next) => {
@@ -148,6 +149,7 @@ export default new Router({
       component: RoleUser,
       beforeEnter: ifAuthenticated,
     },
+
     {
       path: '/pharmacy',
       name: 'Pharmacy',
@@ -161,5 +163,6 @@ export default new Router({
       beforeEnter: ifAuthenticated,
     },
  
+
   ]
 })

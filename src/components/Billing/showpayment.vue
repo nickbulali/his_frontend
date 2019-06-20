@@ -1,101 +1,113 @@
 <template>
-<div class="invoice-box">
-  <v-container class="my-5">
-  <table cellpadding="0" cellspacing="0">
-    <tr class="top">
-      <td colspan="4">
-        <table>
-          <tr>
-            <td class="title">
-              <img src="http://ilabafrica.ac.ke/wp-content/uploads/2016/01/ILABLOGO1.png" style="width:100%; max-width:300px;">
-            </td>
+    <div class="invoice-box">
+        <v-container class="my-5">
+            <table cellpadding="0" cellspacing="0">
+                <tr class="top">
+                    <td colspan="4">
+                        <table>
+                            <tr>
+                                <td class="title">
+                                    <img src="http://ilabafrica.ac.ke/wp-content/uploads/2016/01/ILABLOGO1.png" style="width:100%; max-width:300px;">
+                                </td>
 
-            <td>
-              Payment Number: {{info.number}}<br> Payment Method: {{ info.method }}<br> Description: {{ info.description }}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+                                <td>
+                                    Payment Number: {{info.number}}
+                                    <br> Payment Method: {{ info.method }}
+                                    <br> Description: {{ info.description }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-    <tr class="information">
-      <td colspan="4">
-        <table>
-          <tr>
-                <td>
-              Patient Address: {{ info.invoice[0].patient.address }}
-            </td>
-             <td>
-              Patient Name: {{ info.invoice[0].patient.name.text }}<br> Patient Identifier: {{ info.invoice[0].patient.identifier }}<br>Patient Birth Date: {{ info.invoice[0].patient.birth_date }}<br>Gender: {{ }}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+                <tr class="information">
+                    <td colspan="4">
+                        <table>
+                            <tr>
+                                <td>
+                                    Patient Address: {{ info.invoice[0].patient.address }}
+                                </td>
+                                <td>
+                                    Patient Name: {{ info.invoice[0].patient.name.text }}
+                                    <br> Patient Identifier: {{ info.invoice[0].patient.identifier }}
+                                    <br>Patient Birth Date: {{ info.invoice[0].patient.birth_date }}
+                                    <br>Gender: {{ }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-     <v-data-table
-    :headers="headers"
-    :items="data"
-    class="elevation-1"
-  >
-    <template v-slot:items="props">
-      <td class="text-xs-right">{{ props.item.invoice_id }}</td>
-      <td class="text-xs-right">{{ props.item.date }}</td>
-      <td class="text-xs-right">{{ props.item.amount }}</td>
-      <td class="text-xs-right">{{ props.item.balance }}</td>
-    </template>
-  
-  </v-data-table>
+                <v-data-table :headers="headers" :items="data" class="elevation-1">
+                    <template v-slot:items="props">
+                        <td class="text-xs-right">{{ props.item.invoice_id }}</td>
+                        <td class="text-xs-right">{{ props.item.date }}</td>
+                        <td class="text-xs-right">{{ props.item.amount }}</td>
+                        <td class="text-xs-right">{{ props.item.balance }}</td>
+                    </template>
 
-  </table>
-  </v-container>
-</div>
+                </v-data-table>
+
+            </table>
+        </v-container>
+    </div>
 </template>
-<script>
+<script >
 import apiCall from "../../utils/api";
 export default {
-  data() {
-    return{
+    data() {
+        return {
 
- headers: [
-          {
-            text: 'Invoice Number',
-            align: 'left',
-            sortable: false,
-            value: 'invoice_id'
-          },
-          { text: 'Date', value: 'date' },
-          { text: 'Amount', value: 'amount' },
-          { text: 'Balance', value: 'balance' }
-         
-        ],
-        data:[],
-        info:[]
+            headers: [{
+                    text: 'Invoice Number',
+                    align: 'left',
+                    sortable: false,
+                    value: 'invoice_id'
+                },
+                {
+                    text: 'Date',
+                    value: 'date'
+                },
+                {
+                    text: 'Amount',
+                    value: 'amount'
+                },
+                {
+                    text: 'Balance',
+                    value: 'balance'
+                }
 
-    }
-  },
- created() {
-      this.initialize();
+            ],
+            data: [],
+            info: []
+
+        }
+    },
+    created() {
+        this.initialize();
     },
     methods: {
-      initialize() {
-        this.loader=true
-        apiCall({ url: "/api/payment/" + this.$route.params.id, method: "GET" })
-          .then(resp => {
-          console.log("response", resp);
-          this.info = resp[0];
-           this.data = resp;
-            this.loader=false
-          })
-          .catch(error => {
-            console.log(error.response);
-          });
+        initialize() {
+            this.loader = true
+            apiCall({
+                    url: "/api/payment/" + this.$route.params.id,
+                    method: "GET"
+                })
+                .then(resp => {
+                    console.log("response", resp);
+                    this.info = resp[0];
+                    this.data = resp;
+                    this.loader = false
+                })
+                .catch(error => {
+                    console.log(error.response);
+                });
 
-          
-      },
 
-}
-}
+        },
+
+    }
+} 
 </script>
 <style>
 .invoice-box {
@@ -181,7 +193,6 @@ export default {
     display: block;
     text-align: center;
   }
-
   .invoice-box table tr.information table td {
     width: 100%;
     display: block;
@@ -189,11 +200,12 @@ export default {
   }
 }
 
+
 /** RTL **/
+
 .rtl {
   direction: rtl;
-  font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial,
-    sans-serif;
+  font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
 
 .rtl table {
