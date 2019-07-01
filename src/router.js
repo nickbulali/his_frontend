@@ -19,7 +19,7 @@ import RoleUser from './components/accesscontrol/roleusers'
 import Invoice from './components/Billing/index.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
-import Appointment from './components/Appointment/appointment.vue'
+
 
 
 Vue.use(Router)
@@ -127,12 +127,6 @@ export default new Router({
       component: RoleUser,
       beforeEnter: ifAuthenticated,
     },
-       //Appointment
-        {
-      path: '/Appointment/appointment',
-      name: 'Appointment',
-      component: Appointment,
-      beforeEnter: ifAuthenticated,
-    },
+      
   ]
 })
