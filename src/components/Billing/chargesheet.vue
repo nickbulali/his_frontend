@@ -126,7 +126,7 @@
         </v-form>
       </v-card>
     </v-dialog>
-  	<v-container class="my-5">
+    <v-container class="my-5">
       <span class="title">Charge Sheet</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
@@ -160,7 +160,7 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-    		<v-data-table
+        <v-data-table
           :headers="headers"
           :items="item"
           :loading="loader"
@@ -205,7 +205,7 @@
           circle>
         </v-pagination>
       </div>
-  	</v-container>
+    </v-container>
 
   </div>
 </template>

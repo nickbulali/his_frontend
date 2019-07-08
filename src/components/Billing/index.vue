@@ -1,12 +1,12 @@
 <template>
   <div class="invoice">
-  	<v-container class="my-5">
+    <v-container class="my-5">
       <span class="title">Invoices</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn outline color="primary" router to = "/billing/invoice/create">Print Invoice</v-btn>
+               
               </v-flex>
             </v-layout>
           </v-flex>
@@ -26,7 +26,7 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-    		<v-data-table
+        <v-data-table
           :headers="headers"
           :items="data"
           :loading="loader"
@@ -35,10 +35,33 @@
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.date }}</td>
-          <td class="text-xs-left">{{ props.item.number }}</td>
+          <td @click="viewInvoice(props.item)" class="text-xs-left">{{ props.item.number }}</td>
           <td class="text-xs-left">{{ props.item.patient.name.text }} {{ props.item.patient.name.family }}</td>
           <td class="text-xs-left">{{ props.item.due_date }}</td>
           <td class="text-xs-right">{{ props.item.total }}</td>
+    <td class="justify-center layout px-0">
+          <v-btn
+            outline
+            small
+            title="Edit"
+            color="teal"
+            flat
+            router :to="{name:'ShowInvoice', params:{id: props.item.id}}"
+           >
+            Edit
+            <v-icon right dark>edit</v-icon>
+          </v-btn>
+          <v-btn
+            outline
+            small
+            title="Delete"
+            color="pink"
+            flat
+            @click="deleteItem(props.item)">
+            Delete
+            <v-icon right dark>delete</v-icon>
+          </v-btn>
+        </td>
         </template>
         <template slot="footer">
           <td>
@@ -58,7 +81,7 @@
           circle>
         </v-pagination>
       </div>
-  	</v-container>
+    </v-container>
 
   </div>
 </template>
@@ -96,6 +119,7 @@
               { text: 'Patient', align: 'left', value: 'customer' },
               { text: 'Due Date', align: 'left', value: 'due_date' },
               { text: 'Total', align: 'right', value: 'total' },
+               { text: 'Actions', align: 'center', value: 'actions' },
             ],
         invoiceHeaders: [
               {
@@ -139,6 +163,10 @@
             console.log(error.response);
           });
       },
+      viewInvoice(invoice){
+
+        console.log("invoce is",invoice)
+      }
     },
     computed: {
         total: function(){

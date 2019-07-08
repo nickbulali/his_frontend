@@ -5,8 +5,6 @@ import Router from 'vue-router'
 import Login from './components/Auth/login.vue'
 import Register from './components/Auth/register.vue'
 
-import Home from './components/index.vue'
-
 import Patient from './components/Patient/index.vue'
 import patientProfile from './components/Patient/patientProfile.vue'
 
@@ -17,8 +15,13 @@ import Permissions from './components/accesscontrol/permissions'
 import Role from './components/accesscontrol/role'
 import RoleUser from './components/accesscontrol/roleusers'
 import Invoice from './components/Billing/index.vue'
+import ShowInvoice from './components/Billing/show.vue'
+import ShowPayment from './components/Billing/showpayment.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
+import Payment from './components/Billing/payment.vue'
+
+
 
 
 
@@ -41,7 +44,7 @@ const ifAuthenticated = (to, from, next) => {
 }
 
 export default new Router({
-  //mode: 'history',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -55,12 +58,6 @@ export default new Router({
       name: 'Register',
       component: Register,
       beforeEnter: ifNotAuthenticated,
-    },
-    {
-      path: '/',
-      name: 'home',
-      component: Home,
-      beforeEnter: ifAuthenticated,
     },
     //Queue
     {
@@ -101,8 +98,24 @@ export default new Router({
       component: ChargeSheet,
       beforeEnter: ifAuthenticated,
     },
+    {
+      path: '/billing/payment',
+      name: 'Payment',
+      component: Payment,
+      beforeEnter: ifAuthenticated,
+    },
+     {
+      path: '/billing/invoice/show/:id',
+      name: 'ShowInvoice',
+      component: ShowInvoice,
+      beforeEnter: ifAuthenticated,
+    },
+     {
+      path: '/billing/payment/show/:id',
+      name: 'ShowPayment',
+      component: ShowPayment,
+     },
      // Access Control
-    
     {
       path: '/accesscontrol/useraccounts',
       name: 'UserAccount',
@@ -127,6 +140,7 @@ export default new Router({
       component: RoleUser,
       beforeEnter: ifAuthenticated,
     },
-      
+       //Appointment
+       
   ]
 })
