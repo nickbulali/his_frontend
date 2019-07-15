@@ -34,6 +34,12 @@
         </v-list-tile-action>
         <v-list-tile-title>Patients</v-list-tile-title>
       </v-list-tile>
+      <v-list-tile to="/pharmacy">
+        <v-list-tile-action>
+          <v-icon>local_hospital</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-title>Pharmacy</v-list-tile-title>
+      </v-list-tile>
       <v-list-group prepend-icon="security" no-action>
         <v-list-tile slot="activator">
           <v-list-tile-title>Access Control</v-list-tile-title>
