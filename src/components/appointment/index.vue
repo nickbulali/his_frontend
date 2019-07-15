@@ -29,7 +29,7 @@
                     item-value="id"
                     label="Patients"
                     :rules="[v => !!v || 'Staff Name is Required']"
-                    v-model="editedItem.patient_id">
+                    v-model="defaultItem.patient_id">
                 </v-select>
                 </v-flex>
                
@@ -40,21 +40,21 @@
                     label="Staff"
                     item-text="username"
                     item-value="id"
-                    v-model="editedItem.user_id"
+                    v-model="defaultItem.user_id"
                     >
                 </v-select>
 
                 </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
-                      <v-date-picker v-model="editedItem.appointment_date"></v-date-picker>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="defaultItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
+                      <v-date-picker v-model="defaultItem.appointment_date"></v-date-picker>
                     </v-menu>
                   </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_time" slot="activator" label="Appointment Time "></v-text-field>
-                      <v-time-picker v-model="editedItem.appointment_time"></v-time-picker>
+                      <v-text-field  outline :rules="[v => !!v || 'Time Received is Required']" :value="defaultItem.appointment_time" slot="activator" label="Appointment Time "></v-text-field>
+                      <v-time-picker v-model="defaultItem.appointment_time"></v-time-picker>
                     </v-menu>
                   </v-flex>
               </v-layout>
@@ -75,17 +75,10 @@
     </v-dialog>
     <v-dialog v-model="DetailsVue" max-width="600px">
       <div v-if="DetailsVue == true">
-        <v-card class="pa-3">
-          <v-card-text>
-            <div class="his_card_top_right">
-            
-            </div>
-         
-         
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
+            <v-toolbar-title>Edit Appointment</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-form ref="productform" v-model="valid" lazy-validation>
@@ -129,12 +122,25 @@
                       <v-time-picker v-model="editedItem.appointment_time"></v-time-picker>
                     </v-menu>
                   </v-flex>
+                  <v-flex xs12 sm12 md12>
+                  
+                <v-select
+                   outline
+                   :items="status"
+                   item-text="status"
+                   item-value="id"
+                   v-model="editedItem.status"
+                   :rules="[v => !!v || 'Status is Required']"
+                   label="Status">
+                         
+                </v-select>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat data-dismiss="DetailsVue">
+             <v-btn round outline color="blue lighten-1" flat @click.native="close" data-dismiss="DetailsVue">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
@@ -144,8 +150,6 @@
           
           </v-card-actions>
         </v-form>
-      </v-card>
-          </v-card-text>
       </v-card>
         </div>
     </v-dialog>
@@ -269,9 +273,19 @@
                   <v-card-title primary-title >
                     <v-layout row wrap>
                       <v-flex sm 12>
-                        <span v-for="(event, index) in item[date]"  :key="event.id"  @click="appointmentDetails(event)">
+                        <span v-for="(event, index) in item[date]"  :key="event.id">
                           
                             <div class="subheading">{{index+1}}. {{ event.patient.name.given }} - {{ event.appointment_time }}</div>
+                                  <v-btn
+                      outline
+                      small
+                      title="Edit"
+                      color="blue"
+                      flat
+                     @click="appointmentDetails(event)">
+                      Edit
+                      <v-icon right dark>edit</v-icon>
+                      </v-btn>
                         <v-btn
                       outline
                       small
@@ -352,13 +366,20 @@
           user_id: '',
           appointment_date: '',
           appointment_time:'',
+          status:'',
         },
         patient: [],
+        status:[
+        'Canceled',
+        'Waiting',
+        'Confirmed'
+        ],
         defaultItem: {
           patient_id:'',
           user_id: '',
           appointment_date: '',
           appointment_time:'',
+          status:'Waiting',
          
         },
         searchInput: '',
@@ -483,7 +504,7 @@
         this.saving = true;
         // update
         // if (this.editedIndex > -1) {
-          this.loadingMethod(true, "Updating Appointments")
+          this.loadingMethod(true, "Updating Appointment")
           if(this.$refs.productform.validate()){
 
             this.loading = true
@@ -509,10 +530,10 @@
 
       },
       add(){
-          this.loadingMethod(true, "Appointment Added Succesfully")
+          this.loadingMethod(true, "Adding Appointment")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/appointment', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/appointment', data: this.defaultItem, method: 'POST' })
             .then(resp => {
           
               // this.item.push(resp)
