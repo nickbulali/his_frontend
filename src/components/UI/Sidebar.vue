@@ -34,12 +34,8 @@
         </v-list-tile-action>
         <v-list-tile-title>Patients</v-list-tile-title>
       </v-list-tile>
-      <v-list-tile to="/pharmacy">
-        <v-list-tile-action>
-          <v-icon>local_hospital</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-title>Pharmacy</v-list-tile-title>
-      </v-list-tile>
+      
+
       <v-list-group prepend-icon="security" no-action>
         <v-list-tile slot="activator">
           <v-list-tile-title>Access Control</v-list-tile-title>
@@ -63,7 +59,7 @@
           <v-list-tile-title v-text="inventory.label"></v-list-tile-title>
         </v-list-tile>
       </v-list-group>
-                 <v-list-group prepend-icon="assignment" no-action>
+        <v-list-group prepend-icon="local_hospital" no-action>
         <v-list-tile slot="activator">
           <v-list-tile-title>Pharmacy</v-list-tile-title>
         </v-list-tile>
@@ -117,7 +113,7 @@
         },  
       ],
 
-        inventory: [
+      inventory: [
         {
           path: '/inventory/supplier',
           label: 'Suppliers',
@@ -135,19 +131,18 @@
         },
       ],
       pharmacy: [
-            {
-        path: '/pharmacy',
-        label: 'Pharmacy',
-        icon: 'folder'
-            },
-           {
-        path: '/pharmacy/prescription',
-        label: 'Prescription',
-        icon: 'assignment_turned_in'
-           },
-         ],
-      access_controls: [
-        
+        {
+          path: '/pharmacy',
+          label: 'Pharmacy',
+          icon: 'folder'
+        },
+        {
+          path: '/pharmacy/prescription',
+          label: 'Prescription',
+          icon: 'assignment_turned_in'
+        },
+      ],
+      access_controls: [ 
         {
           path: '/accesscontrol/useraccounts',
           label: 'User Accounts',

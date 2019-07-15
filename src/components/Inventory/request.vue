@@ -79,7 +79,7 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-container class="my-5">
+  <v-container class="my-5">
       <span class="title">Requests</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
@@ -108,7 +108,7 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-         <v-data-table
+<v-data-table
       :headers="headers"
       :items="item"
       hide-actions
@@ -117,7 +117,7 @@
       <template slot="items" slot-scope="props">
         <td>{{ props.item.created_at }}</td>
         <td class="text-xs-left">{{ props.item.user.name }}</td>
-        <td class="text-xs-left">{{ props.item.item.name }}</td>
+        <td class="text-xs-left">{{ props.item.supplies.name }}</td>
         <td class="text-xs-left">{{ props.item.quantity_requested }}</td>
         <td class="text-xs-left">{{ props.item.quantity_issued }}</td>
         <td class="text-xs-left">
@@ -175,7 +175,6 @@
   import format from 'date-fns/format'
   import apiCall from "../../utils/api";
   export default {
-      name:'InventoryRequest',
     data () {
       return {
         search: '',
@@ -213,26 +212,25 @@
         { text: 'Remarks', value: 'remarks' },
         { text: 'Quantity', value: 'quantity' },
         { text: 'Actions', value: 'name', sortable: false }
-      ],
+        ],
         item: [],
-        items: [],
-        categories: [],
-        editedIndex: -1,
       
-        editedItem: {
-        item_id: '',
-        curr_bal: '',
-   
-        remarks: '',
-    
+        editedIndex: -1,
+        category: {
+          name: '',
+          description: '',
+        },
+         editedItem: {
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
       },
-       defaultItem: {
-        item_id: '',
-        curr_bal: '',
-        lab_section_id: '',
-   
-        remarks: '',
-   
+      defaultItem: {
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
       },
         pagination: {
           page: 1,
@@ -256,17 +254,19 @@
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
-     apiCall({url: '/api/supplies?' + this.query, method: 'GET' })
-        .then(resp => {
-          console.log(resp)
-          this.item = resp.data;
-          this.pagination.total = resp.total;
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
+        apiCall({ url: "/api/request?" + this.query, method: "GET" })
+          .then(resp => {
+            console.log("item is",resp);
+            this.item = resp.data;
+            this.loader=false
+            this.pagination.total = resp.total;
+            this.pagination.per_page = resp.per_page;
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
 
-          apiCall({ url: "/api/supplies", method: "GET" })
+        apiCall({ url: "/api/supplies", method: "GET" })
           .then(resp => {
             console.log("item",resp);
             this.items = resp.data;
@@ -275,56 +275,24 @@
             console.log(error.response);
           });
       },
-  
-         editItem (item) {
-        this.editedIndex = this.request.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      viewItem (item) {
-        this.editedIndex = this.request.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.detailsdialog = true
-      },      
-
-      deleteItem (item) {
-
-        confirm('Are you sure you want to delete this item?') && (this.delete = true)
-
-        if (this.delete) {
-          const index = this.request.indexOf(item)
-          this.request.splice(index, 1)
-          apiCall({url: '/request/'+item.id, method: 'DELETE' })
-          .then(resp => {
-            console.log(resp)
-            this.message = 'Item Deleted Succesfully';
-            this.snackbar = true;
-          })
-          .catch(error => {
-            console.log(error.response)
-          })
-        }
-
-      },
-
       close () {
         this.dialog = false
-
         // if not saving reset dialog references to datatables
         if (!this.saving) {
           this.resetDialogReferences();
         }
       },
-
+      editItem (item) {
+        this.editedIndex = this.item.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.productDialog = true
+      },
       resetDialogReferences() {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
-
       save () {
-
-        this.saving = true;
+         this.saving = true;
         // update
         if (this.editedIndex > -1) {
           if(this.$refs.form.validate()){
@@ -337,8 +305,10 @@
               this.message = 'Request Updated Succesfully';
               this.snackbar = true;
             })
-            .catch(error => {
+              .catch(error => {
+              this.loading = false
               console.log(error.response)
+              this.loadingMethod(false)
             })
             this.close()
           }
@@ -357,8 +327,10 @@
               this.loading = false
               this.loadingMethod(false)
             })
-            .catch(error => {
+              .catch(error => {
+              this.loading = false
               console.log(error.response)
+              this.loadingMethod(false)
             })
             this.close()
           }
@@ -371,7 +343,7 @@
         if (this.delete) {
           const index = this.item.indexOf(item)
           this.item.splice(index, 1)
-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
+          apiCall({url: '/api/supplier/'+item.id, method: 'DELETE' })
           .then(resp => {
             console.log(resp)
           })
