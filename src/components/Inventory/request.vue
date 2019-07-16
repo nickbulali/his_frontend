@@ -115,25 +115,17 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.created_at }}</td>
+              <td>{{ props.item.created_at }}</td>
         <td class="text-xs-left">{{ props.item.user.name }}</td>
         <td class="text-xs-left">{{ props.item.supplies.name }}</td>
         <td class="text-xs-left">{{ props.item.quantity_requested }}</td>
-        <td class="text-xs-left">{{ props.item.quantity_issued }}</td>
+        <td class="text-xs-left">{{ props.item.curr_bal }}</td>
+        <td class="text-xs-left">{{ props.item.remarks }}</td>
         <td class="text-xs-left">
           <v-btn small color="primary" dark>{{ props.item.status.name }}</v-btn>
         </td>
         <td class="justify-center layout px-0">
-          <v-btn
-            outline
-            small
-            title="Edit"
-            color="success"
-            flat
-            @click="viewItem(props.item)">
-            View
-            <v-icon right dark>remove_red_eye</v-icon>
-          </v-btn>
+    
           <v-btn
             outline
             small
@@ -204,13 +196,13 @@
           v => v.length >= !v  || 'Field is required'
         ],
         headers: [
+        { text: 'Requested Date', value: 'date' },
         { text: 'Name', value: 'name' },
-        { text: 'Unit', value: 'unit' },
-        { text: 'Min. Level', value: 'min' },
-        { text: 'Max. Level', value: 'max' },
-        { text: 'Storage Req.', value: 'storage_req' },
+        { text: 'Item', value: 'item' },
+        { text: 'Current Balance', value: 'curr_bal' },
+        { text: 'Quantity Requested', value: 'quantity_requested' },
         { text: 'Remarks', value: 'remarks' },
-        { text: 'Quantity', value: 'quantity' },
+        { text: 'Status', value: 'status' },
         { text: 'Actions', value: 'name', sortable: false }
         ],
         item: [],
@@ -285,8 +277,13 @@
       editItem (item) {
         this.editedIndex = this.item.indexOf(item)
         this.editedItem = Object.assign({}, item)
-        this.productDialog = true
+        this.dialog = true
       },
+        viewItem (item) {
+        this.editedIndex = this.request.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.detailsdialog = true
+      }, 
       resetDialogReferences() {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
@@ -296,14 +293,18 @@
         // update
         if (this.editedIndex > -1) {
           if(this.$refs.form.validate()){
+            this.loadingMethod(true, "Updating Requests")
+            this.loading = true
             apiCall({url: '/api/request/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
               Object.assign(this.request[this.editedIndex], resp)
               console.log(resp)
               this.resetDialogReferences();
               this.saving = false;
+              this.loading = false
               this.message = 'Request Updated Succesfully';
               this.snackbar = true;
+              this.loadingMethod(false)
             })
               .catch(error => {
               this.loading = false
@@ -316,7 +317,7 @@
         } else {
           this.loadingMethod(true, "Adding Request")
           if(this.$refs.form.validate()){
-                  this.loading = true
+            this.loading = true
             apiCall({url: '/api/request', data: this.editedItem, method: 'POST' })
             .then(resp => {
               this.request.push(resp)

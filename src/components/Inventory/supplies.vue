@@ -297,6 +297,7 @@
             <v-layout wrap>
               <v-flex xs12 sm12 md12>
                 <v-text-field
+                  outline
                   v-model="stockItem.lot_no"
                   :rules="[v => !!v || 'Lot no. is Required']"
                   label="Lot no.">
@@ -304,6 +305,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
+                  outline
                   v-model="stockItem.batch_no"
                   :rules="[v => !!v || 'Batch no. is Required']"
                   label="Batch no.">
@@ -311,12 +313,13 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-menu>
-                  <v-text-field :rules="[v => !!v || 'Expiry Date is Required']" :value="stockItem.expiry_date" slot="activator" label="Expiry Date"></v-text-field>
+                  <v-text-field :rules="[v => !!v || 'Expiry Date is Required']" :value="stockItem.expiry_date" slot="activator" label="Expiry Date" outline></v-text-field>
                   <v-date-picker v-model="stockItem.expiry_date"></v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
+                  outline
                   v-model="stockItem.manufacturer"
                   :rules="[v => !!v || 'Manufacturer is Required']"
                   label="Manufacturer">
@@ -324,6 +327,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-select
+                  outline
                   :items="suppliers"
                   v-model="stockItem.supplier_id"
                   :rules="[v => !!v || 'Supplier is Required']"
@@ -334,6 +338,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
+                  outline
                   v-model="stockItem.quantity_supplied"
                   :rules="[v => !!v || 'Quantity Supplied is Required']"
                   label="Quantity Supplied">
@@ -341,6 +346,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
+                  outline
                   v-model="stockItem.cost_per_unit"
                   :rules="[v => !!v || 'Cost Per Unit is Required']"
                   label="Cost Per Unit">
@@ -348,12 +354,13 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-menu>
-                  <v-text-field :rules="[v => !!v || 'Date Received is Required']" :value="stockItem.date_received" slot="activator" label="Date Received"></v-text-field>
+                  <v-text-field :rules="[v => !!v || 'Date Received is Required']" :value="stockItem.date_received" slot="activator" label="Date Received" outline></v-text-field>
                   <v-date-picker v-model="stockItem.date_received"></v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
+                  outline
                   v-model="stockItem.remarks"
                   :rules="[v => !!v || 'Remarks is Required']"
                   label="Remarks">
@@ -370,14 +377,16 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="receiveDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+   <v-dialog v-model="receiveDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark color="primary">
           <v-btn icon dark @click.native="receiveDialog = false">
             <v-icon>close</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-        
+          <v-toolbar-items>
+            <v-btn dark flat @click.native="addStock = true">Add new Stock</v-btn>
+          </v-toolbar-items>
         </v-toolbar>
         <v-data-table
           :headers="stockheaders"
@@ -522,7 +531,7 @@
       snackbar: false,
       message: '',
       y: 'top',
-      color: 'green',
+      color: 'success',
       stockdialog: false,
       issueDialog: false,
       delete: false,
@@ -554,7 +563,7 @@
         { text: 'Max. Level', value: 'max' },
         { text: 'Storage Req.', value: 'storage_req' },
         { text: 'Remarks', value: 'remarks' },
-        { text: 'Quantity', value: 'quantity' },
+        { text: 'Quantity', value: 'item_id' },
         { text: 'Actions', value: 'name', sortable: false }
       ],
       stockheaders: [
@@ -570,7 +579,6 @@
       requestheaders: [
         { text: 'Selection', value: 'selection' },
         { text: 'Requested By', value: 'requested_by' },
-        { text: 'Lab Section', value: 'lab_section' },
         { text: 'Quantity Requested', value: 'quantity_requested' },
         { text: 'Quantity Issued', value: 'quantity_issued' },
         { text: 'Remarks', value: 'remarks' }
@@ -757,10 +765,10 @@
         .then(resp => {
           let request = resp
           Vue.set(this,"request",request)
-          //this.request = resp.data.request;
+          this.request = resp.data.request;
           console.log('requests')
           console.log(resp)
-          //this.pagination.total = resp.total;
+          this.pagination.total = resp.total;
         })
         .catch(error => {
           console.log(error.response)
