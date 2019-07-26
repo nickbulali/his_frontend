@@ -34,12 +34,8 @@
         </v-list-tile-action>
         <v-list-tile-title>Patients</v-list-tile-title>
       </v-list-tile>
-      <v-list-tile to="/pharmacy">
-        <v-list-tile-action>
-          <v-icon>local_hospital</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-title>Pharmacy</v-list-tile-title>
-      </v-list-tile>
+      
+
       <v-list-group prepend-icon="security" no-action>
         <v-list-tile slot="activator">
           <v-list-tile-title>Access Control</v-list-tile-title>
@@ -50,6 +46,28 @@
             <v-icon v-text="access_control.icon"></v-icon>
           </v-list-tile-action>
           <v-list-tile-title v-text="access_control.label"></v-list-tile-title>
+        </v-list-tile>
+      </v-list-group>
+        <v-list-group prepend-icon="line_weight" no-action>
+        <v-list-tile slot="activator">
+          <v-list-tile-title>Inventory</v-list-tile-title>
+        </v-list-tile>
+        <v-list-tile v-for="(inventory, i) in inventory" :key="i" :to="{path:inventory.path}">
+          <v-list-tile-action>
+            <v-icon v-text="inventory.icon"></v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title v-text="inventory.label"></v-list-tile-title>
+        </v-list-tile>
+      </v-list-group>
+        <v-list-group prepend-icon="local_hospital" no-action>
+        <v-list-tile slot="activator">
+          <v-list-tile-title>Pharmacy</v-list-tile-title>
+        </v-list-tile>
+        <v-list-tile v-for="(pharmacy, i) in pharmacy" :key="i" :to="{path:pharmacy.path}">
+          <v-list-tile-action>
+            <v-icon v-text="pharmacy.icon"></v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title v-text="pharmacy.label"></v-list-tile-title>
         </v-list-tile>
       </v-list-group>
       <v-list-group prepend-icon="attach_money" no-action>
@@ -94,8 +112,37 @@
           icon: 'payment'
         },  
       ],
-      access_controls: [
-        
+
+      inventory: [
+        {
+          path: '/inventory/supplier',
+          label: 'Suppliers',
+          icon: 'folder'
+        },
+        {
+          path: '/inventory/supplies',
+          label: 'Supplies',
+          icon: 'widgets'
+        },
+        {
+          path: '/inventory/request',
+          label: 'Requests',
+          icon: 'launch'
+        },
+      ],
+      pharmacy: [
+        {
+          path: '/pharmacy',
+          label: 'Pharmacy',
+          icon: 'folder'
+        },
+        {
+          path: '/pharmacy/prescription',
+          label: 'Prescription',
+          icon: 'assignment_turned_in'
+        },
+      ],
+      access_controls: [ 
         {
           path: '/accesscontrol/useraccounts',
           label: 'User Accounts',

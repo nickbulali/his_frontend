@@ -22,9 +22,11 @@ import ShowPayment from './components/Billing/showpayment.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
 import Payment from './components/Billing/payment.vue'
-import Pharmacy from './components/pharmacy/index.vue'
-import Prescription from './components/pharmacy/prescriptions.vue'
-
+import Pharmacy from './components/Pharmacy/index.vue'
+import Prescription from './components/Pharmacy/prescription.vue'
+import InventoryItem from './components/Inventory/supplies'
+import InventoryRequest from './components/Inventory/request'
+import InventorySupplier from './components/Inventory/supplier'
 
 
 
@@ -146,20 +148,39 @@ export default new Router({
       component: RoleUser,
       beforeEnter: ifAuthenticated,
     },
-
+    //Pharmacy
+      {
+        path: '/pharmacy',
+        name: 'Pharmacy',
+        component: Pharmacy,
+        beforeEnter: ifAuthenticated,
+      },
+      {
+        path: '/pharmacy/prescription',
+        name: 'Prescription',
+        component: Prescription,
+        beforeEnter: ifAuthenticated,
+      },
+ 
+   //Inventory
     {
-      path: '/pharmacy',
-      name: 'Pharmacy',
-      component: Pharmacy,
+      path: '/inventory/supplier',
+      name: 'Supplier',
+      component: InventorySupplier,
       beforeEnter: ifAuthenticated,
     },
     {
-      path: '/pharmacy/prescription',
-      name: 'Prescription',
-      component: Prescription,
+      path: '/inventory/supplies',
+      name: 'Supplies',
+      component: InventoryItem,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/inventory/request',
+      name: 'Request',
+      component: InventoryRequest,
       beforeEnter: ifAuthenticated,
     },
  
-
   ]
 })
