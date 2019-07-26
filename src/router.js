@@ -68,6 +68,7 @@ export default new Router({
       component: Dashboard,
       beforeEnter: ifAuthenticated,
     },
+
     //Queue
     {
       path: '/queue',
@@ -95,12 +96,7 @@ export default new Router({
       component: Invoice,
       beforeEnter: ifAuthenticated,
     },
-    {
-      path: '/billing/invoice/create',
-      name: 'CreateInvoice',
-      component: CreateInvoice,
-      beforeEnter: ifAuthenticated,
-    },
+    
     {
       path: '/billing/chargesheet',
       name: 'ChargeSheet',

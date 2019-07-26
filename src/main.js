@@ -6,6 +6,9 @@ import store from './store/index'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import VueBreadcrumbs from 'vue-breadcrumbs'
+ 
+Vue.use(VueBreadcrumbs)
 
 Vue.config.productionTip = false
 library.add(faUserSecret)

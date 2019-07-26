@@ -9,6 +9,11 @@
         {{ message }}
     </v-snackbar>
     <v-container class="my-5">
+    	<v-breadcrumbs :items="items">
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
      <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
       <v-card color="primary" dark>
         <v-card-text>
@@ -300,6 +305,7 @@
 	import VueMoment from 'vue-moment'
   	Vue.use(VueMoment);
   	import InfiniteLoading from 'vue-infinite-loading'
+  	import Dashboard from '@/views/Dashboard.vue'
 	export default {
 		components: {
 			InfiniteLoading,
@@ -336,6 +342,18 @@
      		    ],
 	    		time: '',
 	    		queue:[],
+	    		items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Queue',
+           to: { name: 'queue' }
+          }
+           
+        ],
+	    		     
 	    		page: 1,
 	    		vitals:{
 			    	patient_id:'',

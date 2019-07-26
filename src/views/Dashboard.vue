@@ -1,19 +1,27 @@
 <template>
-  <div class="dashboard">
-    
-  	<v-container class="my-5">
-  		<p>home</p>
-  		
-  	</v-container>
-
+  <div>
+    <v-container>
+    <v-breadcrumbs :items="items">
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
+  </v-container>
   </div>
 </template>
 
 <script>
-
   export default {
-    mounted(){
-      
+    data() {
+      return {
+        items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          }
+           
+        ]
+      }
     }
   }
 </script>

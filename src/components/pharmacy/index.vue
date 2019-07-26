@@ -95,7 +95,14 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-container class="my-5">
+    <v-container>
+  <v-breadcrumbs :items="items">
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
+  </v-container>
+    <v-container>
       <span class="title">Drugs</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
@@ -174,12 +181,15 @@
     </v-container>
 
   </div>
+  
 </template>
 
 <script>
   import format from 'date-fns/format'
   import apiCall from "../../utils/api";
+  import Dashboard from '@/views/Dashboard.vue'
   export default {
+   
     data () {
       return {
         search: '',
@@ -196,6 +206,7 @@
           loading: false,
           message: ""
         },
+        active: null,
         dialog: false,
         productDialog: false,
         invoice: {
@@ -235,6 +246,17 @@
         dosage_form:'',
         administration_route:''
       },
+      items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Pharmacy',
+           to: { name: 'Pharmacy' }
+          }
+           
+        ],
       defaultItem: {
         generic_name: '',
         trade_name: '',
@@ -357,6 +379,11 @@
         }
 
       },
+
+       next () {
+        const active = parseInt(this.active)
+        this.active = (active < 2 ? active + 1 : 0)
+      }
 
     },
     computed: {

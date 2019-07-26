@@ -3,6 +3,7 @@
     <Navbar v-if="['Login', 'Register'].indexOf($route.name) == -1"/>
       <v-content class="mx-3 mb-4 mt-1">
         <router-view></router-view>
+        
       </v-content>
     <Footer></Footer>
 

@@ -1,7 +1,12 @@
 <template>
    <div class="invoice">
     <v-container class="my-5">
-      <span class="title">Permissions</span>
+      <v-breadcrumbs :items="items">
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
+      <span class="title">Assign Role</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
@@ -83,6 +88,21 @@
         total: 0,
         visible: 10
       },
+       items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Access Control',
+           to: { name: 'accesscontrol' }
+          },
+          {
+           text: 'Assign Role',
+           to: { name: 'RoleUser' }
+          }
+           
+        ],
       rolesusers: [],
       roleUserIds: [],
       users: [],

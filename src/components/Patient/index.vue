@@ -9,6 +9,11 @@
         {{ message }}
     </v-snackbar>
   	<v-container class="my-5">
+  		<v-breadcrumbs :items="items">
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
   		<v-card-title>
 	      <p class="his_page_title">
 	        Patients
@@ -142,8 +147,10 @@
   import format from 'date-fns/format'
   import { EventBus } from './../../main.js'
   import Vue from 'vue'
+  import Dashboard from '@/views/Dashboard.vue'
 
   export default {
+  	
   	data () {
       return {
       	search: '',
@@ -157,6 +164,7 @@
 	    },
 	    patient: [],
 	    marital: [],
+	    
 	    message:'',
 	    y: 'top',
 	    color: 'success',
@@ -174,6 +182,17 @@
 	    	maritalstatus_id: '',
 	    	birth_date: null
 	    },
+	    items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Patients',
+           to: { name: 'Patient' }
+          }
+           
+        ],
 	    defaultpatient: {
 	    	identifier: ' ',
 	    	given_name: ' ',
