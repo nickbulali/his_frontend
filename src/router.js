@@ -22,8 +22,8 @@ import ShowPayment from './components/Billing/showpayment.vue'
 import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
 import Payment from './components/Billing/payment.vue'
-import Pharmacy from './components/Pharmacy/index.vue'
-import Prescription from './components/Pharmacy/prescription.vue'
+import Pharmacy from './components/pharmacy/index.vue'
+import Prescription from './components/pharmacy/prescription.vue'
 import InventoryItem from './components/Inventory/supplies'
 import InventoryRequest from './components/Inventory/request'
 import InventorySupplier from './components/Inventory/supplier'
@@ -150,7 +150,7 @@ export default new Router({
     },
     //Pharmacy
       {
-        path: '/pharmacy',
+        path: '/pharmacy/index',
         name: 'Pharmacy',
         component: Pharmacy,
         beforeEnter: ifAuthenticated,

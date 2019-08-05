@@ -8,6 +8,13 @@
       >
         {{ message }}
     </v-snackbar>
+    <v-container>
+    <v-breadcrumbs :items="items">
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
+  </v-container>
     <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
       <v-card color="primary" dark>
         <v-card-text>
@@ -244,6 +251,21 @@
         { text: 'Name', value: 'name' },
         { text: 'Phone', value: 'phone' },
         { text: 'Actions', value: 'name', sortable: false },
+        ],
+         items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Inventory',
+           to: { name: 'inventory' }
+          },
+          {
+           text: 'Supplier',
+           to: { name: 'Supplier' }
+          }
+           
         ],
         supplier: [],
       

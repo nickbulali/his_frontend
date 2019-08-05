@@ -132,7 +132,7 @@
       ],
       pharmacy: [
         {
-          path: '/pharmacy',
+          path: '/pharmacy/index',
           label: 'Pharmacy',
           icon: 'folder'
         },

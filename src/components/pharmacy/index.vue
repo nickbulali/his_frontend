@@ -253,6 +253,10 @@
           },
           {
            text: 'Pharmacy',
+           to: { name: 'pharmacy' }
+          },
+          {
+           text: 'Pharmacy',
            to: { name: 'Pharmacy' }
           }
            

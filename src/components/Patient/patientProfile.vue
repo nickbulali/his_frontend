@@ -8,6 +8,13 @@
       >
         {{ message }}
     </v-snackbar>
+    <v-container>
+    <v-breadcrumbs :items="items" large>
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
+  </v-container>
     <v-dialog
       v-model="screenDialog"
       hide-overlay
@@ -450,6 +457,21 @@
         screenDialog: false,
         patient:{},
         allergies: [],
+         items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Patients',
+           to: { name: 'patients' }
+          },
+           {
+           text: 'Patient Profile',
+           to: { name: 'patientProfile' }
+          },
+           
+        ],
         newallergy: '',
         visitsPagination: {
           page: 1,
