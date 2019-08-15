@@ -17,11 +17,7 @@ import Permissions from './components/accesscontrol/permissions'
 import Role from './components/accesscontrol/role'
 import RoleUser from './components/accesscontrol/roleusers'
 import Invoice from './components/Billing/index.vue'
-import ShowInvoice from './components/Billing/ShowInvoice.vue'
-import ShowPayment from './components/Billing/showpayment.vue'
-import CreateInvoice from './components/Billing/form.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
-import Payment from './components/Billing/payment.vue'
 import Pharmacy from './components/pharmacy/index.vue'
 import Prescription from './components/pharmacy/prescription.vue'
 import InventoryItem from './components/Inventory/supplies'
@@ -105,24 +101,7 @@ export default new Router({
       component: ChargeSheet,
       beforeEnter: ifAuthenticated,
     },
-    {
-      path: '/billing/payment',
-      name: 'Payment',
-      component: Payment,
-      beforeEnter: ifAuthenticated,
-    },
-     {
-      path: '/billing/invoice/show/:id',
-      name: 'ShowInvoice',
-      component: ShowInvoice,
-      beforeEnter: ifAuthenticated,
-    },
-     {
-      path: '/billing/payment/show/:id',
-      name: 'ShowPayment',
-      component: ShowPayment,
-      beforeEnter: ifAuthenticated,
-     },
+    
      // Access Control
     {
       path: '/accesscontrol/useraccounts',
