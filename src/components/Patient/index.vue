@@ -93,7 +93,7 @@
 		        </div>
 		      </div>
 		    </v-flex>
-		    <v-flex sm12 md6 lg4 v-for="(patient,index) in allPatients.data" :key="patient.id">
+		    <v-flex sm12 md3 lg4 v-for="(patient,index) in allPatients.data" :key="patient.id">
 		      <div class="his_card">
 		        <div class="his_card_top_right">
 		        	<v-btn outline fab small color="red" @click="deletePatient(patient.id)">

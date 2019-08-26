@@ -3,15 +3,15 @@
    
   export default {
     extends: Line,
-    props: ['heartRate','dates'],
+    props: ['respiratoryRate','dates'],
     mounted () {
       this.renderChart({
-      labels: this.dates,
+          labels: [this.dates],
       datasets: [
         {
-          label: 'Heart Rate',
-          backgroundColor: '#009688',
-          data: this.heartRate
+          label: 'Respiratory Rate',
+          backgroundColor: '#2196F3',
+          data: this.respiratoryRate
         },
       ]
       }, {responsive: true, maintainAspectRatio: false})

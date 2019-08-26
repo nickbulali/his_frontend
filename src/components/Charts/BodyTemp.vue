@@ -1,12 +1,12 @@
 <script>
-  import { Line } from 'vue-chartjs'
+  import { Bar } from 'vue-chartjs'
    
   export default {
-    extends: Line,
-    props: ['bodyTemperature'],
+    extends: Bar,
+    props: ['bodyTemperature','dates'],
     mounted () {
       this.renderChart({
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+         labels: this.dates,
       datasets: [
         {
           label: 'Body Temperature',
