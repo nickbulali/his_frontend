@@ -9,10 +9,6 @@
                 <td class="title">
                   <img src="http://ilabafrica.ac.ke/wp-content/uploads/2016/01/ILABLOGO1.png" style="width:100%; max-width:300px;">
                 </td>
-
-                <td>
-                  Invoice #: 123<br> Created:  {{ message }}<br> Due:  {{ message }}
-                </td>
               </tr>
             </table>
           </td>
@@ -27,7 +23,14 @@
                 </td>
 
                 <td>
-                                  <v-flex xs12 sm12 md12>
+          <v-flex xs4 sm4 md4>
+          <v-text-field
+            label="Invoice Number"
+            v-model="invoice.number"
+            disabled
+          ></v-text-field>
+          </v-flex>
+                <v-col>
                 <v-autocomplete
                     outline
                     :items="patient"
@@ -35,10 +38,42 @@
                     item-value="id"
                     label="Patients"
                     :rules="[v => !!v || 'Patient Name is Required']"
-                    v-model="generateBill.patient_id"
+                    v-model="invoice.patient_id"
                     >
                 </v-autocomplete>
-                </v-flex>
+                </v-col>
+                  <v-col>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Created is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
+                      <v-date-picker v-model="invoice.date"></v-date-picker>
+                    </v-menu>
+                  </v-col>
+                    <v-col>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Due is Required']" :value="invoice.due" slot="activator" label="Due Date"></v-text-field>
+                      <v-date-picker v-model="invoice.due"></v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-flex xs4 sm4 md4>
+          <v-text-field
+            label="Status"
+            v-model="invoice.status"
+            disabled
+          ></v-text-field>
+          </v-flex>
+          <v-flex xs4 sm4 md4>
+          <v-text-field
+            label="Reference"
+            v-model="invoice.reference"
+          ></v-text-field>
+          </v-flex>
+           <v-flex xs6 sm6 md6>
+           <v-textarea
+          name="input-7-1"
+          label="Terms And Conditions"
+          v-model="invoice.terms_and_conditions"
+        ></v-textarea>
+      </v-flex>
                 </td>
               </tr>
             </table>
@@ -47,12 +82,10 @@
 
         <tr class="heading">
           <td colspan="3">Payment Method</td>
-          <td>Check #</td>
         </tr>
 
         <tr class="details">
           <td colspan="3">Mpesa</td>
-          <td>1000</td>
         </tr>
 
         <tr class="heading">
@@ -112,8 +145,8 @@
         <td colspan="3"></td>
         <td>Total: ${{ total }}</td>
       </tr>
-          <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
-                  Make Payment <v-icon right dark>payment</v-icon>
+          <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
+                  Generate Invoice <v-icon right dark>payment</v-icon>
                 </v-btn>
     </table>
   </div>
@@ -235,57 +268,26 @@
         query: '',
         valid: true,
         loader: false,
-        billDialog:false,
         dialog: false,
         delete: false,
         invoice:[],
-       message:new Date().toJSON().slice(0,10).replace(/-/g,'/'),
+         message:new Date().toJSON().slice(0,10).replace(/-/g,'/'),
         selected: {},
-        items: [
-        { description: "Website design", quantity: 1, price: 300 },
-        { description: "Website design", quantity: 1, price: 75 },
-        { description: "Website design", quantity: 1, price: 10 }
-        ],
+        items: [],
         invoice: {
-          patient: '',
+          patient_id: '',
           number: '',
+          status: 'not paid',
           reference: '',
-          date: null,
-          due: null,
+          date: '',
+          due: '',
+          terms_and_conditions: '',
+          sub_total: '',
+          discount: '',
+          total: ''
         },
         details: [],
-        dosages:[],
-        prescription:[],
-        editedIndex: -1,
-        editedItem: {
-
-          patient_id: '',
-          medication_status_id: '',
-          quantity:'',
-          dosage_id:'',
-          drugs:[],
-          end_time:'',
-          start_time:'',
-          price:''
-        },
-        defaultItem: {
-
-          patient_id: '',
-          medication_status_id: '',
-          quantity:'',
-          dosage_id:'',
-          drugs:[],
-          end_time:'',
-          start_time:''
-        },
-        generateBill: {
-
-          patient_id: '',
-          date: '',
-          price: '',
-          quantity: '',
-          date: ''
-        },
+    
         inputRules: [
         v => v.length >= !v  || 'Field is required'
         ],
@@ -339,7 +341,7 @@
       addRow() {
         this.items.push({ description: "", quantity: 1, unit_price: 0, total:'' });
       },
-      addItem(){
+       addItem(){
         var i =0
         for (i; i <= this.details.length; i++) {
           if(this.details[i].id == this.items[i].description){
@@ -349,6 +351,7 @@
         }
          
       },
+
       getSubTotal(){
         var i =0
         for (i; i <= this.details.length; i++) {
@@ -366,17 +369,6 @@
         if (this.search != '') {
           this.query = this.query+'&search='+this.search;
         }
-        apiCall({ url: "/api/invoice?" + this.query, method: "GET" })
-        .then(resp => {
-          console.log(resp);
-          this.data = resp.data;
-          this.loader=false
-          this.pagination.total = resp.total;
-          this.pagination.per_page = resp.per_page;
-        })
-        .catch(error => {
-          console.log(error.response);
-        })
         apiCall({url: '/api/patient?' , method: 'GET' })
         .then(resp => {
           console.log(resp.data)
@@ -388,6 +380,17 @@
         .catch(error => {
           console.log(error.response)
         })
+
+        apiCall({ url: "/api/invoice/create", method: "GET" })
+          .then(resp => {
+            console.log("invoice create", resp.form.number);
+            this.invoice.number = resp.form.number;
+            console
+            /*this.loader=false*/
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
 
         apiCall({url: '/api/medications?' + this.query, method: 'GET' })
         .then(resp => {
@@ -415,24 +418,20 @@
       save(){
 
         this.saving = true;
-        // update
-        if (this.editedIndex > -1) {
-          if(this.$refs.form.validate()){
-            apiCall({url: '/api/invoice/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+        // save
+            apiCall({url: '/api/invoice', data: this.invoice, method: 'POST' })
             .then(resp => {
-              Object.assign(this.patient[this.editedIndex], this.editedItem)
+              Object.assign(this.patient[this.invoice], this.invoice)
               console.log(resp)
               this.resetDialogReferences();
               this.saving = false;
-              this.message = 'Patient Invoice Updated Succesfully';
+              this.message = 'Patient Invoice generated Succesfully';
               this.snackbar = true;
             })
             .catch(error => {
               console.log(error.response)
             })
             this.close()
-          }
-        }
       },
       editItem (item) {
         this.editedIndex = this.patient.indexOf(item)

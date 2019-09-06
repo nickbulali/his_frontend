@@ -18,9 +18,6 @@ import Role from './components/accesscontrol/role'
 import RoleUser from './components/accesscontrol/roleusers'
 import Invoice from './components/Billing/index.vue'
 import Bill from './components/Billing/billing.vue'
-import ShowInvoice from './components/Billing/ShowInvoice.vue'
-import ShowPayment from './components/Billing/showpayment.vue'
-import CreateInvoice from './components/Billing/form.vue'
 import Expenses from './components/Billing/expenses.vue'
 import ChargeSheet from './components/Billing/chargesheet.vue'
 import Payment from './components/Billing/payment.vue'
@@ -126,18 +123,20 @@ export default new Router({
       component: Expenses,
       beforeEnter: ifAuthenticated,
     },
-     {
+    /* {
       path: '/billing/invoice/show/:id',
       name: 'ShowInvoice',
       component: ShowInvoice,
       beforeEnter: ifAuthenticated,
     },
+
      {
       path: '/billing/payment/show/:id',
       name: 'ShowPayment',
       component: ShowPayment,
       beforeEnter: ifAuthenticated,
      },
+     */
      // Access Control
     {
       path: '/accesscontrol/useraccounts',
