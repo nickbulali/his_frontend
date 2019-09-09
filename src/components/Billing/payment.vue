@@ -23,14 +23,14 @@
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>Make Payment</v-toolbar-title>
+            <v-toolbar-title>MAKE PAYMENT</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <v-flex xs4 sm4 md4>
+                <v-flex xs12 sm12 md12>
           <v-text-field
             label="Payment Number"
             v-model="paymentNew.number"
@@ -64,22 +64,22 @@
                     required>
                   </v-textarea>
                 </v-flex>
-                <v-flex xs4 sm4 md4>
+                <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
                   v-model="paymentNew.method"
                   :rules="[v => !!v || 'Method is Required']"
-                  label="PaymentNew Method">    
+                  label="Payment Method">    
                 </v-text-field>
               </v-flex>
-                <v-flex xs4 sm4 md4>
+                <v-flex xs12 sm12 md12>
           <v-text-field
             label="Status"
             v-model="paymentNew.status"
             disabled
           ></v-text-field>
           </v-flex>
-          <v-flex xs4 sm4 md4>
+          <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
                   v-model="paymentNew.amount"
@@ -87,7 +87,7 @@
                   label="Amount">    
                 </v-text-field>
               </v-flex>
-              <v-flex xs4 sm4 md4>
+              <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
                   v-model="paymentNew.balance"
@@ -115,18 +115,18 @@
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
+            <v-toolbar-title>Edit Payment</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-form ref="productform" v-model="valid" lazy-validation>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-               <v-flex xs4 sm4 md4>
+               <v-flex xs12 sm12 md12>
           <v-text-field
             label="Payment Number"
             v-model="editPayment.number"
-            disabled
+            outline
           ></v-text-field>
           </v-flex>
                     <v-flex xs12 sm12 md12>
@@ -156,7 +156,7 @@
                     required>
                   </v-textarea>
                 </v-flex>
-                <v-flex xs4 sm4 md4>
+                <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
                   v-model="editPayment.method"
@@ -164,14 +164,14 @@
                   label="Payment Method">    
                 </v-text-field>
               </v-flex>
-                <v-flex xs4 sm4 md4>
+                <v-flex xs12 sm12 md12>
           <v-text-field
+          outline
             label="Status"
             v-model="editPayment.status"
-            disabled
           ></v-text-field>
           </v-flex>
-          <v-flex xs4 sm4 md4>
+          <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
                   v-model="editPayment.amount"
@@ -179,7 +179,7 @@
                   label="Amount">    
                 </v-text-field>
               </v-flex>
-              <v-flex xs4 sm4 md4>
+              <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
                   v-model="editPayment.balance"
@@ -332,7 +332,7 @@
         paymentNew: {
           invoice_id: '',
           description: '',
-          status: '',
+          status: 'not complete',
           date: '',
           method: '',
           number: '',
@@ -383,10 +383,21 @@
             console.log(error.response);
           });
 
+             apiCall({ url: "/api/payment/create", method: "GET" })
+          .then(resp => {
+            console.log("payment create", resp.form.number);
+            this.paymentNew.number = resp.form.number;
+            console
+            /*this.loader=false*/
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
+
            apiCall({ url: "/api/invoice?" + this.query, method: "GET" })
           .then(resp => {
             console.log("invoice is",resp);
-            this.item = resp.data;
+            this.invoice = resp.data;
             this.loader=false
             this.pagination.total = resp.total;
             this.pagination.per_page = resp.per_page;
@@ -414,7 +425,7 @@
       },
       editItem (item) {
         this.editedIndex = this.item.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.editPayment = Object.assign({}, item)
         this.productDialog = true
       },
       resetDialogReferences() {
