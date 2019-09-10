@@ -45,7 +45,7 @@
                     item-value="id"
                     label="Invoice Number"
                     :rules="[v => !!v || 'Invoice Number is Required']"
-                    v-model="paymentNew.invoice_id"
+                    v-model="paymentNew.invoice_number"
                     >
                 </v-autocomplete>
                 </v-flex>
@@ -137,7 +137,7 @@
                     item-value="id"
                     label="Invoice Number"
                     :rules="[v => !!v || 'Invoice Number is Required']"
-                    v-model="editPayment.invoice_id"
+                    v-model="editPayment.invoice_number"
                     >
                 </v-autocomplete>
                 </v-flex>
@@ -196,7 +196,7 @@
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="store" :loading="loading">
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -330,7 +330,7 @@
         item:[],
         editedIndex: -1,
         paymentNew: {
-          invoice_id: '',
+          invoice_number: '',
           description: '',
           status: 'not complete',
           date: '',
@@ -340,7 +340,7 @@
           balance: ''
         },
         editPayment: {
-          invoice_id: '',
+          invoice_number: '',
           description: '',
           status: '',
           date: '',
@@ -436,18 +436,18 @@
         this.saving = true;
         // update
         if (this.editedIndex > -1) {
-          this.loadingMethod(true, "Updating Chargesheet")
+          this.loadingMethod(true, "Updating Payment")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/item/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+            apiCall({url: '/api/payment/'+this.editPayment.id, data: this.editPayment, method: 'PUT' })
             .then(resp => {
               this.loading = false
-              Object.assign(this.item[this.editedIndex], this.editedItem)
+              Object.assign(this.payment[this.editedIndex], this.editPayment)
               console.log(resp)
               this.productDialog = false
               this.resetDialogReferences();
               this.saving = false;
-              this.message = 'Patient Information Updated Succesfully';
+              this.message = 'Payment Information Updated Succesfully';
               this.snackbar = true;
               this.loadingMethod(false)
             })
@@ -460,18 +460,18 @@
           }
         // store
         } else {
-          this.loadingMethod(true, "Adding Chargesheet Entry")
-          if(this.$refs.productform.validate()){
+          this.loadingMethod(true, "Adding Payment Entry")
+          if(this.$refs.form.validate()){
             this.loading = true
-            apiCall({url: '/api/item', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/payment', data: this.editPayment, method: 'POST' })
             .then(resp => {
               this.loading = false
-              this.item.push(resp)
-              console.log(this.editedItem)
+              this.payment.push(resp)
+              console.log(this.editPayment)
               this.productDialog = false
               this.resetDialogReferences();
               this.saving = false;
-              this.message = 'Item Added Succesfully';
+              this.message = 'Payment Added Succesfully';
               this.snackbar = true;
               this.loadingMethod(false)
             })
@@ -489,9 +489,9 @@
         confirm('Are you sure you want to delete this item?') && (this.delete = true)
 
         if (this.delete) {
-          const index = this.item.indexOf(item)
-          this.item.splice(index, 1)
-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
+          const index = this.payment.indexOf(item)
+          this.payment.splice(index, 1)
+          apiCall({url: '/api/payment/'+payment.id, method: 'DELETE' })
           .then(resp => {
             console.log(resp)
           })
@@ -501,32 +501,11 @@
         }
 
       },
-      saveCategory(){
-        if(this.$refs.form.validate()){
-            this.loadingMethod(true, "Posting Category")
-            this.loading = true
-            apiCall({url: '/api/item-category', data: this.category, method: 'POST' })
-            .then(resp => {
-              this.loading = false
-              this.saving = false
-              this.categories.push(resp)
-              this.dialog = false
-              this.message = 'Category Added Succesfully'
-              this.snackbar = true
-              this.loadingMethod(false)
-            })
-            .catch(error => {
-              this.loading = false
-              console.log(error.response)
-              this.loadingMethod(false)
-            })
-            this.close()
-          }
-      }
+   
     },
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+        return this.editedIndex === -1 ? 'New Payment' : 'Edit Payment'
       },
 
       length: function() {
