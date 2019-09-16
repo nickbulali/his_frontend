@@ -45,7 +45,7 @@
                     item-value="id"
                     label="Invoice Number"
                     :rules="[v => !!v || 'Invoice Number is Required']"
-                    v-model="paymentNew.invoice_number"
+                    v-model="paymentNew.invoice_id"
                     >
                 </v-autocomplete>
                 </v-flex>
@@ -127,6 +127,7 @@
             label="Payment Number"
             v-model="editPayment.number"
             outline
+            disabled
           ></v-text-field>
           </v-flex>
                     <v-flex xs12 sm12 md12>
@@ -137,7 +138,7 @@
                     item-value="id"
                     label="Invoice Number"
                     :rules="[v => !!v || 'Invoice Number is Required']"
-                    v-model="editPayment.invoice_number"
+                    v-model="editPayment.invoice_id"
                     >
                 </v-autocomplete>
                 </v-flex>
@@ -196,7 +197,7 @@
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading">
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="saveUpdate" :loading="loading">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -233,14 +234,14 @@
         </v-layout>
         <v-data-table
           :headers="headers"
-          :items="payment"
+          :items="data"
           :loading="loader"
           class="elevation-1"
         >
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.number }}</td>
-          <td class="text-xs-left">{{ props.item.invoice_number }}</td>
+          <td class="text-xs-left">{{ props.item.invoice.number }}</td>
           <td class="text-xs-left">{{ props.item.date }}</td>
           <td class="text-xs-left">{{ props.item.method }}</td>
           <td class="text-xs-left">{{ props.item.description }}</td>
@@ -318,7 +319,7 @@
             value: 'id'
           },
           { text: 'Payment Number', align: 'left', value: 'number' },
-          { text: 'Invoice Number', align: 'left', value: 'invoice_number' },
+          { text: 'Invoice Number', align: 'left', value: 'invoice_id' },
           { text: 'Date', align: 'left', value: 'date' },
           { text: 'Method', align: 'left', value: 'method' },
           { text: 'Description', align: 'left', value: 'description' },
@@ -328,9 +329,10 @@
           { text: 'Actions', align: 'center', value: 'actions' },
         ],
         item:[],
+        payment:[],
         editedIndex: -1,
         paymentNew: {
-          invoice_number: '',
+          invoice_id: '',
           description: '',
           status: 'not complete',
           date: '',
@@ -340,7 +342,7 @@
           balance: ''
         },
         editPayment: {
-          invoice_number: '',
+          invoice_id: '',
           description: '',
           status: '',
           date: '',
@@ -374,7 +376,7 @@
         apiCall({ url: "/api/payment?" + this.query, method: "GET" })
           .then(resp => {
             console.log("payment is",resp);
-            this.payment = resp;
+            this.data = resp.data;
             this.loader=false
             this.pagination.total = resp.total;
             this.pagination.per_page = resp.per_page;
@@ -405,16 +407,7 @@
           .catch(error => {
             console.log(error.response);
           });
-/*
-          apiCall({ url: "/api/item-category", method: "GET" })
-          .then(resp => {
-            console.log("item",resp);
-            this.categories = resp.data;
-          })
-          .catch(error => {
-            console.log(error.response);
-          });
-          */
+
       },
       close () {
         this.productDialog = false
@@ -432,42 +425,16 @@
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
-      save () {
-        this.saving = true;
-        // update
-        if (this.editedIndex > -1) {
-          this.loadingMethod(true, "Updating Payment")
-          if(this.$refs.productform.validate()){
-            this.loading = true
-            apiCall({url: '/api/payment/'+this.editPayment.id, data: this.editPayment, method: 'PUT' })
-            .then(resp => {
-              this.loading = false
-              Object.assign(this.payment[this.editedIndex], this.editPayment)
-              console.log(resp)
-              this.productDialog = false
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Payment Information Updated Succesfully';
-              this.snackbar = true;
-              this.loadingMethod(false)
-            })
-            .catch(error => {
-              this.loading = false
-              console.log(error.response)
-              this.loadingMethod(false)
-            })
-            this.close()
-          }
-        // store
-        } else {
-          this.loadingMethod(true, "Adding Payment Entry")
+     
+          save(){
+          this.loadingMethod(true, "Adding Payment")
           if(this.$refs.form.validate()){
             this.loading = true
-            apiCall({url: '/api/payment', data: this.editPayment, method: 'POST' })
+            apiCall({url: '/api/payment', data: this.paymentNew, method: 'POST' })
             .then(resp => {
-              this.loading = false
-              this.payment.push(resp)
-              console.log(this.editPayment)
+          
+              // this.item.push(resp)
+              // console.log("Post is:",this.item.push(resp))
               this.productDialog = false
               this.resetDialogReferences();
               this.saving = false;
@@ -482,17 +449,47 @@
             })
             this.close()
           }
-        }
       },
-      deleteItem (item) {
 
-        confirm('Are you sure you want to delete this item?') && (this.delete = true)
+      saveUpdate () {
+
+        this.saving = true;
+          this.loadingMethod(true, "Updating Payment")
+          if(this.$refs.productform.validate()){
+
+            this.loading = true
+            apiCall({url: '/api/payment/'+ this.editPayment.id, data: this.editPayment, method: 'PUT' })
+            .then(resp => {
+              this.loading = false
+              this.productDialog = false
+              this.saving = false;
+              this.message = 'Payment Updated Succesfully';
+              this.snackbar = true;
+
+              this.loadingMethod(false)
+            })
+            .catch(error => {
+              this.loading = false
+              console.log(this.item)
+              this.loadingMethod(false)
+            })
+            this.close()
+          }
+
+      },
+    
+ deleteItem (item) {
+
+        confirm('Are you sure you want to delete this Payment Entry?') && (this.delete = true)
 
         if (this.delete) {
           const index = this.payment.indexOf(item)
-          this.payment.splice(index, 1)
-          apiCall({url: '/api/payment/'+payment.id, method: 'DELETE' })
+         this.payment.splice(index, 1)
+          apiCall({url: '/api/payment/'+item.id, method: 'DELETE' })
           .then(resp => {
+              this.message = 'Payment Deleted Succesfully';
+              this.snackbar = true;
+         
             console.log(resp)
           })
           .catch(error => {
@@ -501,6 +498,7 @@
         }
 
       },
+
    
     },
     computed: {

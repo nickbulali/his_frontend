@@ -376,13 +376,7 @@
       },
         showPasswordField: false,
         productDialog: false,
-        invoice: {
-          patient: '',
-          number: '',
-          reference: '',
-          date: null,
-          due: null,
-        },
+        
         inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],
