@@ -65,12 +65,13 @@
                   </v-textarea>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
-                 <v-text-field  
+                 <v-select  
                   outline
                   v-model="paymentNew.method"
                   :rules="[v => !!v || 'Method is Required']"
-                  label="Payment Method">    
-                </v-text-field>
+                  label="Payment Method"
+                  :items="paymentMethod">    
+                </v-select>
               </v-flex>
                 <v-flex xs12 sm12 md12>
           <v-text-field
@@ -158,19 +159,22 @@
                   </v-textarea>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
-                 <v-text-field  
+                 <v-select  
                   outline
                   v-model="editPayment.method"
                   :rules="[v => !!v || 'Method is Required']"
-                  label="Payment Method">    
-                </v-text-field>
+                  label="Payment Method"
+                   :items="paymentMethod">    
+                </v-select>
               </v-flex>
                 <v-flex xs12 sm12 md12>
-          <v-text-field
+          <v-select
           outline
             label="Status"
             v-model="editPayment.status"
-          ></v-text-field>
+            :items="state"
+            :rules="[v => !!v || 'Status is Required']"
+          ></v-select>
           </v-flex>
           <v-flex xs12 sm12 md12>
                  <v-text-field  
@@ -357,6 +361,8 @@
           total: 0,
           visible: 10
         },
+        state:['complete','not complete'],
+        paymentMethod:['cash','insurance','credit card','mpesa','bank'],
       }
     },
     created() {
