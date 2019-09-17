@@ -74,11 +74,12 @@
                 </v-select>
               </v-flex>
                 <v-flex xs12 sm12 md12>
-          <v-text-field
+          <v-select
             label="Status"
             v-model="paymentNew.status"
-            disabled
-          ></v-text-field>
+            :items="state"
+            :rules="[v => !!v || 'Status is Required']"
+          ></v-select>
           </v-flex>
           <v-flex xs12 sm12 md12>
                  <v-text-field  
