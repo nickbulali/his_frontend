@@ -32,83 +32,7 @@
           </v-flex>
         </v-layout>
         
-         <v-dialog v-model="billDialog" max-width="400px">
-      <template v-slot:activator="{ on }">
-      <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
-      </template>
-      <v-card>
-        <v-toolbar dark color="primary" class="elevation-0">
-          <v-spacer></v-spacer>
-            <v-toolbar-title>Generate Bill</v-toolbar-title>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                   <v-flex xs12 sm12 md12>
-                <v-autocomplete
-                    outline
-                    :items="patient"
-                    item-text="name.text"
-                    item-value="id"
-                    label="Patients"
-                    :rules="[v => !!v || 'Patient Name is Required']"
-                    v-model="generateBill.patient_id"
-                    >
-                </v-autocomplete>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                          <v-select
-                    :items="item"
-                    :rules="[v => !!v || 'Unit is Required']"
-                    v-model="generateBill.item.Description"
-                    item-text="item_description"
-                    item-value="id"
-                    label="Description"
-                    outline
-                  ></v-select>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                <v-text-field
-                disabled
-                  outline
-                  v-model="generateBill.quantity"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Quantity">    
-                </v-text-field>
-              </v-flex>
-                 <v-flex xs12 sm12 md12>
-                <v-text-field
-                disabled
-                  outline
-                  v-model="generateBill.price"
-                  :rules="[v => !!v || 'Price is Required']"
-                  label="Price">    
-                </v-text-field>
-              </v-flex>
-                <v-flex xs12 sm12 md12>
-                    <v-menu>
-                      <v-text-field disabled outline :rules="[v => !!v || 'Date is Required']" :value="generateBill.date" slot="activator" label="Date"></v-text-field>
-                      <v-date-picker v-model="generateBill.date"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
-              Cancel
-              <v-icon right dark>close</v-icon>
-            </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
-                  Bill <v-icon right dark>payment</v-icon>
-                </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
+         
      
      <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
@@ -291,18 +215,10 @@
         query: '',
         valid: true,
         loader: false,
-        billDialog:false,
         dialog: false,
         delete: false,
         invoice:[],
 
-        invoice: {
-          patient: '',
-          number: '',
-          reference: '',
-          date: null,
-          due: null,
-        },
           editedIndex: -1,
         editedItem: {
         
@@ -318,14 +234,7 @@
         terms_and_conditions: ''
 
       },
-         generateBill: {
-           item: '',
-        patient_id: '',
-        date: '',
-        price: '',
-        quantity: '',
-        date: ''
-      },
+         
         inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],
@@ -362,6 +271,7 @@
           total: 0,
           visible: 10
         },
+        state:['paid','not paid'],
       }
     },
     created() {

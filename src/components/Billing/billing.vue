@@ -23,69 +23,52 @@
                 </td>
 
                 <td>
-          <v-flex xs4 sm4 md4>
+         <v-flex xs12 sm12 md12>
           <v-text-field
             label="Invoice Number"
             v-model="invoice.number"
             disabled
           ></v-text-field>
           </v-flex>
-                <v-col>
-                <v-autocomplete
-                    outline
-                    :items="patient"
-                    item-text="name.text"
-                    item-value="id"
-                    label="Patients"
-                    :rules="[v => !!v || 'Patient Name is Required']"
-                    v-model="invoice.patient_id"
-                    >
-                </v-autocomplete>
-                </v-col>
-                  <v-col>
+                   <v-flex xs12 sm12 md12>
+          <v-text-field
+            label="Patient Name"
+            v-model="invoice.patient"
+          ></v-text-field>
+          </v-flex>
+                <v-flex xs4 sm4 md4>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Created is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Created Is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
                       <v-date-picker v-model="invoice.date"></v-date-picker>
                     </v-menu>
-                  </v-col>
-                    <v-col>
+                  </v-flex>
+                  <v-flex xs4 sm4 md4>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Due is Required']" :value="invoice.due" slot="activator" label="Due Date"></v-text-field>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due" slot="activator" label="Date Due"></v-text-field>
                       <v-date-picker v-model="invoice.due"></v-date-picker>
                     </v-menu>
-                  </v-col>
-                  <v-flex xs4 sm4 md4>
-          <v-text-field
+                  </v-flex>
+                <v-flex xs12>
+                  <v-textarea
+                    v-model="invoice.description"
+                    :rules="[v => !!v || 'Description is Required']"
+                    outline
+                    label="Description"
+                    required>
+                  </v-textarea>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+          <v-select
             label="Status"
             v-model="invoice.status"
-            disabled
-          ></v-text-field>
+            :items="state"
+            :rules="[v => !!v || 'Status is Required']"
+          ></v-select>
           </v-flex>
-          <v-flex xs4 sm4 md4>
-          <v-text-field
-            label="Reference"
-            v-model="invoice.reference"
-          ></v-text-field>
-          </v-flex>
-           <v-flex xs6 sm6 md6>
-           <v-textarea
-          name="input-7-1"
-          label="Terms And Conditions"
-          v-model="invoice.terms_and_conditions"
-        ></v-textarea>
-      </v-flex>
                 </td>
               </tr>
             </table>
           </td>
-        </tr>
-
-        <tr class="heading">
-          <td colspan="3">Payment Method</td>
-        </tr>
-
-        <tr class="details">
-          <td colspan="3">Mpesa</td>
         </tr>
 
         <tr class="heading">
@@ -137,7 +120,7 @@
 
       <tr >
         <td colspan="4">
-          <button class="btn-add-row" @click="addRow">Add Item</button>
+          <button class="btn btn-info" @click="addRow">Add Item</button>
         </td>
       </tr>
 
@@ -193,7 +176,7 @@
 }
 
 .invoice-box table tr.heading td {
-  background: #ffff;
+  background: #grey;
   border-bottom: 1px solid #ddd;
   font-weight: bold;
 }
@@ -211,7 +194,7 @@
 }
 
 .invoice-box table tr.item input {
-  background: #ffff;
+  background: #grey;
   padding-left: 5px;
 }
 
@@ -275,19 +258,15 @@
         selected: {},
         items: [],
         invoice: {
-          patient_id: '',
-          number: '',
-          status: 'not paid',
-          reference: '',
-          date: '',
-          due: '',
-          terms_and_conditions: '',
-          sub_total: '',
-          discount: '',
-          total: ''
+        number: '',
+        patient: '',
+        date: '',
+        due: '',
+        description: '',
+        status: 'not paid'
         },
         details: [],
-    
+        state:['paid','not paid'],
         inputRules: [
         v => v.length >= !v  || 'Field is required'
         ],
@@ -392,17 +371,6 @@
             console.log(error.response);
           });
 
-        apiCall({url: '/api/medications?' + this.query, method: 'GET' })
-        .then(resp => {
-          console.log("The Prescriptions are",resp.data)
-          this.prescription = resp.data;
-          this.loader = false
-          this.pagination.per_page = resp.per_page;
-          this.pagination.total = resp.total;
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
         apiCall({ url: "/api/item", method: "GET" })
         .then(resp => {
           console.log("item is",resp);
