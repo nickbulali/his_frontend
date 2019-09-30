@@ -81,7 +81,7 @@
           <v-list-tile-title v-text="billing.label"></v-list-tile-title>
         </v-list-tile>
       </v-list-group>
-            <v-list-tile to="/Radiology">
+            <v-list-tile to="/radiology">
         <v-list-tile-action>
           <v-icon>image</v-icon>
         </v-list-tile-action>
@@ -181,14 +181,14 @@
           icon: 'launch'
         },
       ],
-         pharmacy: [
+      pharmacy: [
         {
-          path: '/Pharmacy',
+          path: '/pharmacy',
           label: 'Pharmacy',
           icon: 'opacity'
         },
         {
-          path: '/Pharmacy/prescription',
+          path: '/pharmacy/prescription',
           label: 'Prescription',
           icon: 'launch'
         },

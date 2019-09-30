@@ -57,7 +57,7 @@
       <v-divider></v-divider>
   
       <v-card-actions class="justify-center">
-        <v-btn to="/Reports/patients" block text>Go to Report</v-btn>
+        <v-btn to="/reports/patients" block text>Go to Report</v-btn>
       </v-card-actions>
     </v-card>
             </v-flex>

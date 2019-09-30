@@ -168,19 +168,19 @@ export default new Router({
       beforeEnter: ifAuthenticated,
     },
     //Pharmacy
-      {
-        path: '/pharmacy',
-        name: 'Pharmacy',
-        component: Pharmacy,
-        beforeEnter: ifAuthenticated,
-      },
-      {
-        path: '/pharmacy/prescription',
-        name: 'Prescription',
-        component: Prescription,
-        beforeEnter: ifAuthenticated,
-      },
-     //Appointment
+    {
+      path: '/pharmacy',
+      name: 'Pharmacy',
+      component: Pharmacy,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/pharmacy/prescription',
+      name: 'Prescription',
+      component: Prescription,
+      beforeEnter: ifAuthenticated,
+    },
+    //Appointment
     {
       path: '/appointment',
       name: 'Appointment',
@@ -188,34 +188,31 @@ export default new Router({
       beforeEnter: ifAuthenticated,
 
     },
-
-         //Radiology
+    //Radiology
     {
-      path: '/Radiology',
+      path: '/radiology',
       name: 'Radiology',
       component: Radiology,
       beforeEnter: ifAuthenticated,
 
     },
-             //Tests
+    //Tests
     {
       path: '/test',
       name: 'Tests',
       component: Tests,
       beforeEnter: ifAuthenticated,
-
     },
-
-      //Reports
+    //Reports
     {
-      path: '/Reports/appointments',
+      path: '/reports/appointments',
       name: 'AppointmentReport',
       component: AppointmentReport,
       beforeEnter: ifAuthenticated,
 
     },
    {
-      path: '/Reports/patients',
+      path: '/reports/patients',
       name: 'PatientReport',
       component: PatientReport,
       beforeEnter: ifAuthenticated,
@@ -240,7 +237,7 @@ export default new Router({
       component: InventoryRequest,
       beforeEnter: ifAuthenticated,
     },
-        // User Profile
+    // User Profile
     {
       path: '/account/profile',
       name: 'Profile',
