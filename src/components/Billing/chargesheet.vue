@@ -8,14 +8,6 @@
       >
         {{ message }}
     </v-snackbar>
-    <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
-      <v-card color="primary" dark>
-        <v-card-text>
-          {{ loadingDialog.message }}
-          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
@@ -161,6 +153,7 @@
           :headers="headers"
           :items="item"
           :loading="loader"
+          hide-actions
           class="elevation-1"
         >
         <template v-slot:items="props">

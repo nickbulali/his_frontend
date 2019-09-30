@@ -285,6 +285,7 @@
           </v-flex>
         </v-layout>
         <v-data-table
+          hide-actions
           :headers="headers"
           :items="drugs"
           :loading="loader"

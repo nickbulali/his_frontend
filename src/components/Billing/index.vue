@@ -146,6 +146,7 @@
     </v-dialog>
 
         <v-data-table
+          hide-actions
           :headers="headers"
           :items="data"
           :loading="loader"
