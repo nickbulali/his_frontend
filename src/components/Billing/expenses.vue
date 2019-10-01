@@ -8,7 +8,18 @@
       >
         {{ message }}
     </v-snackbar>
+    <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          {{ loadingDialog.message }}
+          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
+   <!--    <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template> -->
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
@@ -78,7 +89,7 @@
                 <v-flex xs12 sm12 md12>
                   <v-text-field
                     outline
-                    v-model="editedItem.item_code"
+                    v-model="editedItem.expense_code"
                     :rules="[v => !!v || 'Item Code is Required']"
                     label="Item Code">
                   </v-text-field>
@@ -115,8 +126,8 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-container class="my-5">
-      <span class="title">Charge Sheet</span>
+  	<v-container class="my-5">
+      <span class="title">Expenses</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
@@ -149,19 +160,20 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-        <v-data-table
+    		<v-data-table
+          hide-actions
           :headers="headers"
           :items="item"
           :loading="loader"
-          hide-actions
           class="elevation-1"
         >
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
-          <td class="text-xs-left">{{ props.item.item_code }}</td>
+          <td class="text-xs-left">{{ props.item.expense_code }}</td>
           <td class="text-xs-left">{{ props.item.description }}</td>
-          <td class="text-xs-left">{{ props.item.item_category.name }}</td>
+          <td class="text-xs-left">{{ props.item.expense_category.name }}</td>
           <td class="text-xs-left">{{ props.item.unit_price }}</td>
+            <td class="text-xs-left">{{ props.item.created_at }}</td>
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -195,7 +207,7 @@
           circle>
         </v-pagination>
       </div>
-    </v-container>
+  	</v-container>
 
   </div>
 </template>
@@ -243,6 +255,7 @@
           { text: 'Name', align: 'left', value: 'description' },
           { text: 'Category', align: 'left', value: 'category' },
           { text: 'Unit Price', align: 'left', value: 'unit_price' },
+          { text: 'Date', align: 'left', value: 'created_at' },
           { text: 'Actions', align: 'center', value: 'actions' },
         ],
         item: [],
@@ -254,13 +267,13 @@
         },
         editedItem: {
           category: '',
-          item_code: '',
+          expense_code: '',
           description: '',
           unit_price: '',
         },
         defaultItem: {
           category: '',
-          item_code: '',
+          expense_code: '',
           description: '',
           unit_price: '',
         },
@@ -286,10 +299,11 @@
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
-        apiCall({ url: "/api/item?" + this.query, method: "GET" })
+        apiCall({ url: "/api/expenses?" + this.query, method: "GET" })
           .then(resp => {
-            console.log("item is",resp);
+            console.log("item is", resp.data[0].created_at);
             this.item = resp.data;
+             this.date = resp.data.created_at;
             this.loader=false
             this.pagination.total = resp.total;
             this.pagination.per_page = resp.per_page;
@@ -298,9 +312,9 @@
             console.log(error.response);
           });
 
-          apiCall({ url: "/api/item-category", method: "GET" })
+          apiCall({ url: "/api/expense-category", method: "GET" })
           .then(resp => {
-            console.log("item",resp);
+            console.log("categories",resp);
             this.categories = resp.data;
           })
           .catch(error => {
@@ -330,7 +344,7 @@
           this.loadingMethod(true, "Updating Chargesheet")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/item/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+            apiCall({url: '/api/expenses/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
               this.loading = false
               Object.assign(this.item[this.editedIndex], this.editedItem)
@@ -354,7 +368,7 @@
           this.loadingMethod(true, "Adding Chargesheet Entry")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/item', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/expenses', data: this.editedItem, method: 'POST' })
             .then(resp => {
               this.loading = false
               this.item.push(resp)
@@ -382,7 +396,7 @@
         if (this.delete) {
           const index = this.item.indexOf(item)
           this.item.splice(index, 1)
-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
+          apiCall({url: '/api/expenses/'+item.id, method: 'DELETE' })
           .then(resp => {
             console.log(resp)
           })
@@ -396,7 +410,7 @@
         if(this.$refs.form.validate()){
             this.loadingMethod(true, "Posting Category")
             this.loading = true
-            apiCall({url: '/api/item-category', data: this.category, method: 'POST' })
+            apiCall({url: '/api/expense-category', data: this.category, method: 'POST' })
             .then(resp => {
               this.loading = false
               this.saving = false

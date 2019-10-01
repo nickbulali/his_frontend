@@ -8,11 +8,22 @@
       >
         {{ message }}
     </v-snackbar>
+    <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          {{ loadingDialog.message }}
+          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
+<!--       <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template> -->
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>Add Category</v-toolbar-title>
+            <v-toolbar-title>Add Test</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -21,22 +32,50 @@
               <v-layout wrap>
                 <v-flex xs12>
                   <v-text-field
-                    v-model="category.name"
+                    v-model="category.testname"
                     :rules="[v => !!v || 'Name is Required']"
                     outline
-                    label="Name"
+                    label="Test Name"
                     required>
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-textarea
-                    v-model="category.description"
-                    :rules="[v => !!v || 'Description is Required']"
+                  <v-text-field
+                    v-model="category.shortname"
+                    :rules="[v => !!v || 'Name is Required']"
                     outline
-                    label="Description"
+                    label="Short Name"
                     required>
-                  </v-textarea>
+                  </v-text-field>
                 </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model="category.testtype"
+                    :rules="[v => !!v || 'Name is Required']"
+                    outline
+                    label="Test Type"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                  <v-flex xs12>
+                  <v-text-field
+                    v-model="category.category"
+                    :rules="[v => !!v || 'Name is Required']"
+                    outline
+                    label="Category"
+                    required>
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model="category.charge"
+                    :rules="[v => !!v || 'Name is Required']"
+                    outline
+                    label="Charge"
+                    required>
+                  </v-text-field>
+                </v-flex>
+
               </v-layout>
             </v-container>
           </v-card-text>
@@ -115,21 +154,21 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-container class="my-5">
-      <span class="title">Charge Sheet</span>
+  	<v-container class="my-5">
+      <span class="title">Radiology</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Category
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Radiology Test
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
               <v-flex sm12 md6>
-                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
+<!--                 <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
                   New Item
                   <v-icon right dark>playlist_add</v-icon>
-                </v-btn>
+                </v-btn> -->
               </v-flex>
             </v-layout>
           </v-flex>
@@ -149,19 +188,20 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-        <v-data-table
+    		<v-data-table
+          hide-actions
           :headers="headers"
           :items="item"
           :loading="loader"
-          hide-actions
           class="elevation-1"
         >
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
-          <td class="text-xs-left">{{ props.item.item_code }}</td>
-          <td class="text-xs-left">{{ props.item.description }}</td>
-          <td class="text-xs-left">{{ props.item.item_category.name }}</td>
-          <td class="text-xs-left">{{ props.item.unit_price }}</td>
+          <td class="text-xs-left">{{ props.item.testname }}</td>
+          <td class="text-xs-left">{{ props.item.shortname }}</td>
+          <td class="text-xs-left">{{ props.item.testtype}}</td>
+          <td class="text-xs-left">{{ props.item.category }}</td>
+          <td class="text-xs-left">{{ props.item.charge }}</td>
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -195,7 +235,7 @@
           circle>
         </v-pagination>
       </div>
-    </v-container>
+  	</v-container>
 
   </div>
 </template>
@@ -239,18 +279,23 @@
             sortable: false,
             value: 'id'
           },
-          { text: 'Item Code', align: 'left', value: 'item_code' },
-          { text: 'Name', align: 'left', value: 'description' },
+          { text: 'Test Name', align: 'left', value: 'testname' },
+          { text: 'Short Name', align: 'left', value: 'shortname' },
+          { text: 'Test Type', align: 'left', value: 'testtype' },
           { text: 'Category', align: 'left', value: 'category' },
-          { text: 'Unit Price', align: 'left', value: 'unit_price' },
+          { text: 'Cost', align: 'left', value: 'charge' },
           { text: 'Actions', align: 'center', value: 'actions' },
         ],
         item: [],
         categories: [],
         editedIndex: -1,
         category: {
-          name: '',
-          description: '',
+          testname: '',
+          shortname: '',
+          testtype: '',
+          category: '',
+          charge: '',
+
         },
         editedItem: {
           category: '',
@@ -286,7 +331,7 @@
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
-        apiCall({ url: "/api/item?" + this.query, method: "GET" })
+        apiCall({ url: "/api/radiology?" + this.query, method: "GET" })
           .then(resp => {
             console.log("item is",resp);
             this.item = resp.data;
@@ -394,15 +439,15 @@
       },
       saveCategory(){
         if(this.$refs.form.validate()){
-            this.loadingMethod(true, "Posting Category")
+            this.loadingMethod(true, "Adding Test")
             this.loading = true
-            apiCall({url: '/api/item-category', data: this.category, method: 'POST' })
+            apiCall({url: '/api/radiology', data: this.category, method: 'POST' })
             .then(resp => {
               this.loading = false
               this.saving = false
               this.categories.push(resp)
               this.dialog = false
-              this.message = 'Category Added Succesfully'
+              this.message = 'Test Added Succesfully'
               this.snackbar = true
               this.loadingMethod(false)
             })

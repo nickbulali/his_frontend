@@ -23,14 +23,14 @@
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>Add User</v-toolbar-title>
+            <v-toolbar-title>New TPA</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12 sm12 md12>
+       <v-form ref="form" v-model="valid" lazy-validation>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm12 md12>
                 <v-text-field
                   outline
                   v-model="editedItem.username"
@@ -41,9 +41,9 @@
               <v-flex xs12 sm12 md12>
                 <v-text-field
                   outline
-                 v-model="editedItem.name"
-                  :rules="[v => !!v || 'Name is Required',
-                  v => /^[a-zA-Z\s]+$/.test(v)  || 'Name should have alphabetic chars only']"
+                  v-model="editedItem.name"
+                  :rules="[v => !!v || 'Name is Required' ,
+                  v => /^[a-zA-Z]+$/.test(v)  || 'Name  should have alphabetic chars only']"
                   label="Name">
                 </v-text-field>
               </v-flex>
@@ -55,19 +55,110 @@
                   label="Email Address">
                 </v-text-field>
               </v-flex>
-              <div>
-                <v-btn small color="primary" dark @click.native="passordReset">Reset Password</v-btn>
-              </div>
-              <v-flex xs12 sm12 md12
-                v-if="showPasswordField">
+              <v-flex xs12 sm12 md12>
                 <v-text-field
-                  v-model="password"
-                    outline
-                  :rules="[v => !!v || 'New Password is Required']"
+                  outline
+                  v-model="editedItem.password"
                   type = "text"
                   append-icon="autorenew"
                   @click:append="generate"
-                  label="New Password">
+                  label="Password">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  outline
+                  v-if="editedIndex === -1"
+                  v-model="editedItem.result_url"
+                  :rules="[v => !!v || 'Result URL is Required']"
+                  label="Result URL">
+                </v-text-field>
+                <v-text-field
+                  outline
+                  v-if="editedIndex > -1"
+                  v-model="editedItem.emr.result_url"
+                  :rules="[v => !!v || 'Result URL is Required']"
+                  label="Result URL">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  outline
+                  v-if="editedIndex === -1"
+                  v-model="editedItem.access_username"
+                  :rules="[v => !!v || 'Access Username is Required']"
+                  label="Access Username">
+                </v-text-field>
+                <v-text-field
+                  outline
+                  v-if="editedIndex > -1"
+                  v-model="editedItem.access.username"
+                  :rules="[v => !!v || 'Access Username is Required']"
+                  label="Access Username">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  outline
+                  v-if="editedIndex === -1"
+                  v-model="editedItem.access_password"
+                  :rules="[v => !!v || 'Acess Password is Required']"
+                  label="Access Password">
+                </v-text-field>
+                <v-text-field
+                  outline
+                  v-if="editedIndex > -1"
+                  v-model="editedItem.access.password"
+                  :rules="[v => !!v || 'Acess Password is Required']"
+                  label="Access Password">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  outline
+                  v-if="editedIndex === -1"
+                  v-model="editedItem.client_name"
+                  :rules="[v => !!v || 'client_name is Required']"
+                  label="Client Name">
+                </v-text-field>
+                <v-text-field
+                 outline
+                  v-if="editedIndex > -1"
+                  v-model="editedItem.access.client_name"
+                  :rules="[v => !!v || 'client_name is Required']"
+                  label="Client Name">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  outline
+                  v-if="editedIndex === -1"
+                  v-model="editedItem.client_id"
+                  :rules="[v => !!v || 'Client ID is Required']"
+                  label="Client ID">
+                </v-text-field>
+                <v-text-field
+                  outline
+                  v-if="editedIndex > -1"
+                  v-model="editedItem.access.client_id"
+                  :rules="[v => !!v || 'Client ID is Required']"
+                  label="Client ID">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  outline
+                  v-if="editedIndex === -1"
+                  v-model="editedItem.client_secret"
+                  :rules="[v => !!v || 'Client Secret is Required']"
+                  label="Client Secret">
+                </v-text-field>
+                <v-text-field
+                  outline
+                  v-if="editedIndex > -1"
+                  v-model="editedItem.access.client_secret"
+                  :rules="[v => !!v || 'Client Secret is Required']"
+                  label="Client Secret">
                 </v-text-field>
               </v-flex>
               </v-layout>
@@ -87,12 +178,12 @@
       </v-card>
     </v-dialog>
     <v-container class="my-5">
-      <span class="title">Users</span>
+      <span class="title">Third Party Applications</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add User
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>New TPA
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -177,7 +268,6 @@
         message:'',
         y: 'top',
         color: 'success',
-          showPasswordField: false,
         valid: true,
         delete: false,
         loader: false,

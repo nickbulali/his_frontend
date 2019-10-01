@@ -8,107 +8,72 @@
       >
         {{ message }}
     </v-snackbar>
-    <v-dialog v-model="dialog" max-width="600px">
-      <v-card>
-        <v-toolbar dark color="primary" class="elevation-0">
-          <v-spacer></v-spacer>
-            <v-toolbar-title>Add Category</v-toolbar-title>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-text-field
-                    v-model="category.name"
-                    :rules="[v => !!v || 'Name is Required']"
-                    outline
-                    label="Name"
-                    required>
-                  </v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-textarea
-                    v-model="category.description"
-                    :rules="[v => !!v || 'Description is Required']"
-                    outline
-                    label="Description"
-                    required>
-                  </v-textarea>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
-              Cancel
-              <v-icon right dark>close</v-icon>
-            </v-btn>
-            <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="saveCategory">Save
-              <v-icon right dark>cloud_upload</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-form>
+    <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          {{ loadingDialog.message }}
+          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+        </v-card-text>
       </v-card>
     </v-dialog>
     <v-dialog v-model="productDialog" max-width="600px">
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
+            <v-toolbar-title>New Appointment</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-form ref="productform" v-model="valid" lazy-validation>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <v-flex xs12 sm12 md12>
-                  <v-select
-                    :items="categories"
-                    :rules="[v => !!v || 'Unit is Required']"
-                    v-model="editedItem.category"
-                    item-text="name"
+             
+              <v-flex xs12 sm12 md12>
+                <v-select
+                    outline
+                    :items="patient"
+                    item-text="name.text"
                     item-value="id"
-                    label="Category"
-                    outline
-                  ></v-select>
+                    label="Patients"
+                    :rules="[v => !!v || 'Staff Name is Required']"
+                    v-model="editedItem.patient_id">
+                </v-select>
                 </v-flex>
-                <v-flex xs12 sm12 md12>
-                  <v-text-field
+               
+                 <v-flex xs12 sm12 md12>
+                <v-select
                     outline
-                    v-model="editedItem.item_code"
-                    :rules="[v => !!v || 'Item Code is Required']"
-                    label="Item Code">
-                  </v-text-field>
+                    :items="users"
+                    label="Staff"
+                    item-text="username"
+                    item-value="id"
+                    v-model="editedItem.user_id"
+                    >
+                </v-select>
+
                 </v-flex>
-                <v-flex xs12 sm12 md12>
-                  <v-text-field
-                    outline
-                    v-model="editedItem.description"
-                    :rules="[v => !!v || 'Name is Required']"
-                    label="Name">
-                  </v-text-field>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                  <v-text-field
-                    outline
-                    v-model="editedItem.unit_price"
-                    :rules="[v => !!v || 'Unit Price is Required']"
-                    label="Unit Price">
-                  </v-text-field>
-                </v-flex>
+                 <v-flex xs12 sm12 md12>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
+                      <v-date-picker v-model="editedItem.appointment_date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                 <v-flex xs12 sm12 md12>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_time" slot="activator" label="Appointment Time "></v-text-field>
+                      <v-time-picker v-model="editedItem.appointment_time"></v-time-picker>
+                    </v-menu>
+                  </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click.native="close">
+            <v-btn round outline color="blue lighten-1" flat @click.native="close" data-dismiss="productDialog">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading">
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading"  >
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -116,20 +81,15 @@
       </v-card>
     </v-dialog>
     <v-container class="my-5">
-      <span class="title">Charge Sheet</span>
+      <span class="title">Appointment Report</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Category
-                  <v-icon right dark>playlist_add</v-icon>
-                </v-btn>
+            
               </v-flex>
               <v-flex sm12 md6>
-                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
-                  New Item
-                  <v-icon right dark>playlist_add</v-icon>
-                </v-btn>
+
               </v-flex>
             </v-layout>
           </v-flex>
@@ -150,18 +110,18 @@
           </v-flex>
         </v-layout>
         <v-data-table
+          hide-actions
           :headers="headers"
           :items="item"
           :loading="loader"
-          hide-actions
           class="elevation-1"
         >
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
-          <td class="text-xs-left">{{ props.item.item_code }}</td>
-          <td class="text-xs-left">{{ props.item.description }}</td>
-          <td class="text-xs-left">{{ props.item.item_category.name }}</td>
-          <td class="text-xs-left">{{ props.item.unit_price }}</td>
+          <td class="text-xs-left">{{ props.item.patient.name.text }}</td>
+          <td class="text-xs-left">{{ props.item.appointment_date }}</td>
+          <td class="text-xs-left">{{ props.item.appointment_time }}</td>
+          <td class="text-xs-left">{{ props.item.appointment_status }}</td>
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -239,10 +199,10 @@
             sortable: false,
             value: 'id'
           },
-          { text: 'Item Code', align: 'left', value: 'item_code' },
-          { text: 'Name', align: 'left', value: 'description' },
-          { text: 'Category', align: 'left', value: 'category' },
-          { text: 'Unit Price', align: 'left', value: 'unit_price' },
+          { text: 'Name', align: 'left', value: 'name' },
+          { text: 'Date', align: 'left', value: 'appointment_date' },
+          { text: 'Time', align: 'left', value: 'appointment_time' },
+          { text: 'Staff', align: 'left', value: 'user_id' },
           { text: 'Actions', align: 'center', value: 'actions' },
         ],
         item: [],
@@ -253,16 +213,18 @@
           description: '',
         },
         editedItem: {
-          category: '',
-          item_code: '',
-          description: '',
-          unit_price: '',
+          patient_id:'',
+          user_id: '',
+          appointment_date: '',
+          appointment_time:'',
         },
+        patient: [],
         defaultItem: {
-          category: '',
-          item_code: '',
-          description: '',
-          unit_price: '',
+          patient_id:'',
+          user_id: '',
+          appointment_date: '',
+          appointment_time:'',
+         
         },
         pagination: {
           page: 1,
@@ -286,9 +248,9 @@
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
-        apiCall({ url: "/api/item?" + this.query, method: "GET" })
+        apiCall({ url: "/api/appointment/report?" + this.query, method: "GET" })
           .then(resp => {
-            console.log("item is",resp);
+            console.log("appointment is",resp);
             this.item = resp.data;
             this.loader=false
             this.pagination.total = resp.total;
@@ -298,14 +260,29 @@
             console.log(error.response);
           });
 
-          apiCall({ url: "/api/item-category", method: "GET" })
-          .then(resp => {
-            console.log("item",resp);
-            this.categories = resp.data;
-          })
-          .catch(error => {
-            console.log(error.response);
-          });
+        apiCall({url: '/api/users?', method: 'GET' })
+        .then(resp => {
+          console.log(resp.data)
+          this.users = resp.data;
+             this.loader=false
+          this.pagination.per_page = resp.per_page;
+          this.pagination.total = resp.total;
+        })
+        .catch(error => {
+          console.log(error.response)
+        });
+
+          apiCall({url: '/api/patient?' , method: 'GET' })
+        .then(resp => {
+          console.log(resp.data)
+          this.patient = resp.data;
+          this.loader=false
+          this.pagination.per_page = resp.per_page;
+          this.pagination.total = resp.total;
+        })
+        .catch(error => {
+          console.log(error.response)
+        });
       },
       close () {
         this.productDialog = false
@@ -327,10 +304,10 @@
         this.saving = true;
         // update
         if (this.editedIndex > -1) {
-          this.loadingMethod(true, "Updating Chargesheet")
+          this.loadingMethod(true, "Updating Appointments")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/item/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+            apiCall({url: '/api/appointment/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
               this.loading = false
               Object.assign(this.item[this.editedIndex], this.editedItem)
@@ -338,7 +315,7 @@
               this.productDialog = false
               this.resetDialogReferences();
               this.saving = false;
-              this.message = 'Patient Information Updated Succesfully';
+              this.message = 'Appointments Updated Succesfully';
               this.snackbar = true;
               this.loadingMethod(false)
             })
@@ -382,7 +359,7 @@
         if (this.delete) {
           const index = this.item.indexOf(item)
           this.item.splice(index, 1)
-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
+          apiCall({url: '/api/appointment/'+item.id, method: 'DELETE' })
           .then(resp => {
             console.log(resp)
           })
