@@ -50,8 +50,8 @@
                   </v-flex>
                   <v-flex xs4 sm4 md4>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due" slot="activator" label="Date Due"></v-text-field>
-                      <v-date-picker v-model="invoice.due"></v-date-picker>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due_date" slot="activator" label="Date Due"></v-text-field>
+                      <v-date-picker v-model="invoice.due_date"></v-date-picker>
                     </v-menu>
                   </v-flex>
                 <v-flex xs12>
@@ -95,7 +95,7 @@
             item-text="description"
             item-value="id"
             v-bind:value="details.id"
-            v-model="invoiceItem.item_id"
+            v-model="item.description"
 
             @change="addItem()"
 
@@ -105,19 +105,19 @@
        
            :key="details.id"
            outline
-           v-model="invoiceItem.unit_price"
+           v-model="item.unit_price"
 
            >    
          </v-text-field></td>
          <td ><v-text-field
             @input="getSubTotal()"
           outline
-          v-model="invoiceItem.quantity"
+          v-model="item.quantity"
 
           >    
         </v-text-field></td>
         <td class="total" >           <v-input
-            color="success" loading
+            color="success" loading  v-model="invoice.total"
           >
          <b>  {{item.unit_price*item.quantity}}</b>
           </v-input></td>
@@ -274,12 +274,7 @@
         tax: '',
         total: ''
         },
-        invoiceItem:{
-        item_id: '',
-        invoice_id: '',
-        unit_price: '',
-        qty: ''
-        },
+        
         details: [],
         state:['paid','not paid'],
         inputRules: [
@@ -378,6 +373,7 @@
           if(this.$refs.form.validate()){
             this.loading = true
             apiCall({url: '/api/invoice', data: this.invoice, method: 'POST' })
+            apiCall({url: '/api/item', data: this.item, method: 'POST' })
             .then(resp => {
           
               // this.item.push(resp)
