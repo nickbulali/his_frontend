@@ -32,15 +32,16 @@
               <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.username"
                   :rules="[v => !!v || 'Username is Required']"
-                  label="Username">    
+                  label="Username"
+                  >    
                 </v-text-field>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                  v-model="editedItem.name"
                   :rules="[v => !!v || 'Name is Required',
                   v => /^[a-zA-Z\s]+$/.test(v)  || 'Name should have alphabetic chars only']"
@@ -49,7 +50,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.email"
                   :rules="[v => !!v || 'Email is Required',v => /.+@.+/.test(v)  || 'Email not valid' ]"
                   label="Email Address">

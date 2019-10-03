@@ -26,34 +26,34 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <v-flex xs12>
-                                    <v-autocomplete :items="invoices" v-model="payment.invoice_id" outline item-text="number" item-value="id" label="Invoice" required>
+                                    <v-autocomplete :items="invoices" v-model="payment.invoice_id" single-line item-text="number" item-value="id" label="Invoice" required>
                                     </v-autocomplete>
                                 </v-flex>
                                 <v-flex xs12>
-                                    <v-text-field v-model="payment.number" :rules="[v => !!v || 'Payment Number is Required']" outline disabled label="Number" hint="Auto Generated" required>
+                                    <v-text-field v-model="payment.number" :rules="[v => !!v || 'Payment Number is Required']" single-line disabled label="Number" hint="Auto Generated" required>
                                     </v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
                                     <v-menu>
-                                        <v-text-field :rules="inputRules" :value="formattedDate" slot="activator" label="Date" prepend-inner-icon="date_range" outline>
+                                        <v-text-field :rules="inputRules" :value="formattedDate" slot="activator" label="Date" prepend-inner-icon="date_range" single-line>
                                         </v-text-field>
                                         <v-date-picker v-model="payment.date"></v-date-picker>
                                     </v-menu>
                                 </v-flex>
                                 <v-flex xs12>
-                                    <v-text-field v-model="payment.method" :rules="[v => !!v || 'Method Of Payment is Required']" outline label="Payment Method" required>
+                                    <v-text-field v-model="payment.method" :rules="[v => !!v || 'Method Of Payment is Required']" single-line label="Payment Method" required>
                                     </v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
-                                    <v-textarea v-model="payment.description" :rules="[v => !!v || 'Description is Required']" outline label="Description" required>
+                                    <v-textarea v-model="payment.description" :rules="[v => !!v || 'Description is Required']" single-line label="Description" required>
                                     </v-textarea>
                                 </v-flex>
                                 <v-flex xs12>
-                                    <v-text-field v-model="payment.amount" :rules="[v => !!v || 'Amount is Required']" outline label="Amount" hint="Auto Generated" required>
+                                    <v-text-field v-model="payment.amount" :rules="[v => !!v || 'Amount is Required']" single-line label="Amount" hint="Auto Generated" required>
                                     </v-text-field>
                                 </v-flex>
                                 <v-flex xs12>
-                                    <v-text-field v-model="payment.balance" :rules="[v => !!v || 'Balance is Required']" outline label="Balance" hint="Auto Generated" required>
+                                    <v-text-field v-model="payment.balance" :rules="[v => !!v || 'Balance is Required']" single-line label="Balance" hint="Auto Generated" required>
                                     </v-text-field>
                                 </v-flex>
                             </v-layout>
