@@ -38,13 +38,13 @@
           </v-flex>
                 <v-flex xs4 sm4 md4>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Created Is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Created Is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
                       <v-date-picker v-model="invoice.date"></v-date-picker>
                     </v-menu>
                   </v-flex>
                   <v-flex xs4 sm4 md4>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due" slot="activator" label="Date Due"></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due" slot="activator" label="Date Due"></v-text-field>
                       <v-date-picker v-model="invoice.due"></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -52,7 +52,7 @@
                   <v-textarea
                     v-model="invoice.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    outline
+                    single-line
                     label="Description"
                     required>
                   </v-textarea>
@@ -84,7 +84,7 @@
           
             <v-autocomplete
 
-            outline
+            single-line
             :items="details"
             item-text="description"
             item-value="id"
@@ -98,14 +98,14 @@
           <td><v-text-field
        
            :key="details.id"
-           outline
+           single-line
            v-model="item.unit_price"
 
            >    
          </v-text-field></td>
          <td ><v-text-field
             @input="getSubTotal()"
-          outline
+          single-line
           v-model="item.quantity"
 
           >    
@@ -128,7 +128,7 @@
         <td colspan="3"></td>
         <td>Total: ${{ total }}</td>
       </tr>
-          <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
+          <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Generate Invoice <v-icon right dark>payment</v-icon>
                 </v-btn>
     </table>

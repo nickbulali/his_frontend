@@ -34,7 +34,7 @@
                   <v-text-field
                     v-model="category.name"
                     :rules="[v => !!v || 'Name is Required']"
-                    outline
+                    single-line
                     label="Name"
                     required>
                   </v-text-field>
@@ -43,7 +43,7 @@
                   <v-textarea
                     v-model="category.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    outline
+                    single-line
                     label="Description"
                     required>
                   </v-textarea>
@@ -53,11 +53,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+            <v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="saveCategory">Save
+            <v-btn round single-line xs12 sm6 :loading="loading" color="primary darken-1" flat @click="saveCategory">Save
               <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -77,7 +77,7 @@
              <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                  v-model="editedItem.name"
                   :rules="[v => !!v || 'Name is Required' ,
                   v => /^[a-zA-Z\s]+$/.test(v)  || 'Name should have alphabetic chars only']"
@@ -86,7 +86,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.phone"
                     :rules="[v => !!v || 'Phone is Required']"
                     label="Phone">
@@ -94,7 +94,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                   v-model="editedItem.email"
                   :rules="[v => !!v || 'Email is Required',v => /.+@.+/.test(v)  || 'Email not valid' ]"
                   label="Email Address">
@@ -102,7 +102,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.address"
                     :rules="[v => !!v || 'Address is Required']"
                     label="Address">
@@ -113,11 +113,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click.native="close">
+            <v-btn round single-line color="blue lighten-1" flat @click.native="close">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading">
+            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -131,7 +131,7 @@
             <v-layout row wrap>
             
               <v-flex sm12 md6>
-                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
+                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" single-line>
                   New Supplier
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
@@ -167,7 +167,7 @@
         <td class="text-xs-left">{{ props.item.phone }}</td>
         <td class="justify-left layout px-0">
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -177,7 +177,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"

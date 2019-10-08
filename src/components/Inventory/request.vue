@@ -22,7 +22,7 @@
         <v-toolbar dark color="primary" class="elevation-0">
           <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn round outline color="blue lighten-1" flat @click.native="close">
+          <v-btn round single-line color="blue lighten-1" flat @click.native="close">
             Cancel
             <v-icon right dark>close</v-icon>
           </v-btn>
@@ -33,7 +33,7 @@
               <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                   <v-select
-                     outline
+                     single-line
                      :items="items"
                     :rules="[v => !!v || 'Instrument is Required']"
                     v-model="editedItem.item_id"
@@ -44,7 +44,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.curr_bal"
                     :rules="[v => !!v || 'Current Balance is Required']"
                     label="Current Balance">
@@ -53,7 +53,7 @@
 
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.quantity_requested"
                     :rules="[v => !!v || 'Quantity Requested. is Required']"
                     label="Quantity Requested.">
@@ -61,7 +61,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field 
-                   outline
+                   single-line
                     v-model="editedItem.remarks"
                     :rules="[v => !!v || 'Remarks is Required']"
                     label="Remarks">
@@ -72,7 +72,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>          
-            <v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save">
+            <v-btn round single-line xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -87,7 +87,7 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Request
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" single-line>Add Request
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -129,7 +129,7 @@
         <td class="justify-center layout px-0">
     
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -139,7 +139,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"
