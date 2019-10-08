@@ -12,7 +12,44 @@
 				<v-icon left>notifications</v-icon>
 			</v-btn>
 			<!--dropdown menu-->
-			<v-menu left transition="slide-y-reverse-transition">
+
+
+
+   	<v-menu left transition="slide-y-reverse-transition">
+        <v-btn primary flat slot="activator">
+          <v-flex
+            xs12
+            sm6
+            md8
+            align-center
+            justify-center
+            layout
+            text-xs-center
+          >
+            <v-avatar
+       
+              color="red"
+            
+            >
+            <span class="white--text headline">A</span>
+        <!--       <img :src="home_url+'/storage/profile_pictures/'+pic" alt=""> -->
+            </v-avatar>
+          </v-flex>
+          {{name}}
+        </v-btn>
+        <v-list>
+          <v-list-tile to="/account/profile">
+            <v-list-tile-title>Edit Profile</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile @click="signOut">
+            <v-list-tile-title>Logout</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+
+
+
+			<!-- <v-menu left transition="slide-y-reverse-transition">
 				<v-layout  slot="activator">
 					<v-avatar color="red">
 						<span class="white--text headline">A</span>
@@ -30,7 +67,7 @@
 						</v-list-tile-title>
 					</v-list-tile>
 				</v-list>
-			</v-menu>
+			</v-menu> -->
 		</v-toolbar>
 		<v-navigation-drawer app v-model="drawer" absolute temporary class="darkened white--text">
 			<sidebar></sidebar>

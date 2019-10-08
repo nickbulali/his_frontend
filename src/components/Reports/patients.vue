@@ -8,7 +8,18 @@
       >
         {{ message }}
     </v-snackbar>
+    <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          {{ loadingDialog.message }}
+          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
+   <!--    <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template> -->
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
@@ -23,7 +34,7 @@
                   <v-text-field
                     v-model="category.name"
                     :rules="[v => !!v || 'Name is Required']"
-                    single-line
+                    outline
                     label="Name"
                     required>
                   </v-text-field>
@@ -32,7 +43,7 @@
                   <v-textarea
                     v-model="category.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    single-line
+                    outline
                     label="Description"
                     required>
                   </v-textarea>
@@ -72,12 +83,12 @@
                     item-text="name"
                     item-value="id"
                     label="Category"
-                    single-line
+                    outline
                   ></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
+                    outline
                     v-model="editedItem.item_code"
                     :rules="[v => !!v || 'Item Code is Required']"
                     label="Item Code">
@@ -85,7 +96,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
+                    outline
                     v-model="editedItem.description"
                     :rules="[v => !!v || 'Name is Required']"
                     label="Name">
@@ -93,7 +104,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
+                    outline
                     v-model="editedItem.unit_price"
                     :rules="[v => !!v || 'Unit Price is Required']"
                     label="Unit Price">
@@ -115,22 +126,12 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-container class="my-5">
-      <span class="title">Charge Sheet</span>
+  	<v-container class="my-5">
+      <span class="title">Patients Report</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
-              <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Category
-                  <v-icon right dark>playlist_add</v-icon>
-                </v-btn>
-              </v-flex>
-              <v-flex sm12 md6>
-                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
-                  New Item
-                  <v-icon right dark>playlist_add</v-icon>
-                </v-btn>
-              </v-flex>
+            
             </v-layout>
           </v-flex>
           <v-flex sm12 md6 offset-md2 text-xs-right>
@@ -149,19 +150,18 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-        <v-data-table
+    		<v-data-table
           :headers="headers"
           :items="item"
           :loading="loader"
-          hide-actions
           class="elevation-1"
         >
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
-          <td class="text-xs-left">{{ props.item.item_code }}</td>
-          <td class="text-xs-left">{{ props.item.description }}</td>
-          <td class="text-xs-left">{{ props.item.item_category.name }}</td>
-          <td class="text-xs-left">{{ props.item.unit_price }}</td>
+          <td class="text-xs-left">{{ props.item.name.text }}</td>
+          <td class="text-xs-left">{{ props.item.birth_date }}</td>
+          <td class="text-xs-left">{{ props.item.gender.display }}</td>
+          <td class="text-xs-left">{{ props.item.blood_group.display }}</td>
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -195,7 +195,7 @@
           circle>
         </v-pagination>
       </div>
-    </v-container>
+  	</v-container>
 
   </div>
 </template>
@@ -239,13 +239,15 @@
             sortable: false,
             value: 'id'
           },
-          { text: 'Item Code', align: 'left', value: 'item_code' },
-          { text: 'Name', align: 'left', value: 'description' },
-          { text: 'Category', align: 'left', value: 'category' },
-          { text: 'Unit Price', align: 'left', value: 'unit_price' },
+          { text: 'Name', align: 'left', value: 'name' },
+          { text: 'DOB', align: 'left', value: 'gender' },
+          { text: 'Gender', align: 'left', value: 'birth_date' },
+          { text: 'Blood Group', align: 'left', value: 'blood_group' },
           { text: 'Actions', align: 'center', value: 'actions' },
         ],
-        item: [],
+          patient: [],
+          item:[],
+          marital: [],
         categories: [],
         editedIndex: -1,
         category: {
@@ -286,7 +288,7 @@
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
-        apiCall({ url: "/api/item?" + this.query, method: "GET" })
+        apiCall({ url: "/api/patient?" + this.query, method: "GET" })
           .then(resp => {
             console.log("item is",resp);
             this.item = resp.data;
@@ -298,14 +300,7 @@
             console.log(error.response);
           });
 
-          apiCall({ url: "/api/item-category", method: "GET" })
-          .then(resp => {
-            console.log("item",resp);
-            this.categories = resp.data;
-          })
-          .catch(error => {
-            console.log(error.response);
-          });
+         
       },
       close () {
         this.productDialog = false
@@ -323,58 +318,7 @@
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
-      save () {
-        this.saving = true;
-        // update
-        if (this.editedIndex > -1) {
-          this.loadingMethod(true, "Updating Chargesheet")
-          if(this.$refs.productform.validate()){
-            this.loading = true
-            apiCall({url: '/api/item/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
-            .then(resp => {
-              this.loading = false
-              Object.assign(this.item[this.editedIndex], this.editedItem)
-              console.log(resp)
-              this.productDialog = false
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Patient Information Updated Succesfully';
-              this.snackbar = true;
-              this.loadingMethod(false)
-            })
-            .catch(error => {
-              this.loading = false
-              console.log(error.response)
-              this.loadingMethod(false)
-            })
-            this.close()
-          }
-        // store
-        } else {
-          this.loadingMethod(true, "Adding Chargesheet Entry")
-          if(this.$refs.productform.validate()){
-            this.loading = true
-            apiCall({url: '/api/item', data: this.editedItem, method: 'POST' })
-            .then(resp => {
-              this.loading = false
-              this.item.push(resp)
-              console.log(this.editedItem)
-              this.productDialog = false
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Item Added Succesfully';
-              this.snackbar = true;
-              this.loadingMethod(false)
-            })
-            .catch(error => {
-              this.loading = false
-              console.log(error.response)
-              this.loadingMethod(false)
-            })
-            this.close()
-          }
-        }
-      },
+
       deleteItem (item) {
 
         confirm('Are you sure you want to delete this item?') && (this.delete = true)

@@ -8,7 +8,18 @@
       >
         {{ message }}
     </v-snackbar>
+    <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          {{ loadingDialog.message }}
+          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
+      <template v-slot:activator="{ on }">
+       <!--  <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
+      </template>
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
@@ -23,7 +34,7 @@
                   <v-text-field
                     v-model="category.name"
                     :rules="[v => !!v || 'Name is Required']"
-                    single-line
+                    outline
                     label="Name"
                     required>
                   </v-text-field>
@@ -32,7 +43,7 @@
                   <v-textarea
                     v-model="category.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    single-line
+                    outline
                     label="Description"
                     required>
                   </v-textarea>
@@ -63,40 +74,38 @@
         <v-form ref="productform" v-model="valid" lazy-validation>
           <v-card-text>
             <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12 sm12 md12>
-                  <v-select
-                    :items="categories"
-                    :rules="[v => !!v || 'Unit is Required']"
-                    v-model="editedItem.category"
-                    item-text="name"
-                    item-value="id"
-                    label="Category"
-                    single-line
-                  ></v-select>
-                </v-flex>
+             <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
-                    v-model="editedItem.item_code"
-                    :rules="[v => !!v || 'Item Code is Required']"
-                    label="Item Code">
+                    outline
+                 v-model="editedItem.name"
+                  :rules="[v => !!v || 'Name is Required' ,
+                  v => /^[a-zA-Z\s]+$/.test(v)  || 'Name should have alphabetic chars only']"
+                  label="Name">
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
-                    v-model="editedItem.description"
-                    :rules="[v => !!v || 'Name is Required']"
-                    label="Name">
+                    outline
+                    v-model="editedItem.phone"
+                    :rules="[v => !!v || 'Phone is Required']"
+                    label="Phone">
                   </v-text-field>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
-                    v-model="editedItem.unit_price"
-                    :rules="[v => !!v || 'Unit Price is Required']"
-                    label="Unit Price">
+                    outline
+                  v-model="editedItem.email"
+                  :rules="[v => !!v || 'Email is Required',v => /.+@.+/.test(v)  || 'Email not valid' ]"
+                  label="Email Address">
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <v-text-field
+                    outline
+                    v-model="editedItem.address"
+                    :rules="[v => !!v || 'Address is Required']"
+                    label="Address">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -116,18 +125,14 @@
       </v-card>
     </v-dialog>
     <v-container class="my-5">
-      <span class="title">Charge Sheet</span>
+      <span class="title">Suppliers</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
-              <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Category
-                  <v-icon right dark>playlist_add</v-icon>
-                </v-btn>
-              </v-flex>
+            
               <v-flex sm12 md6>
                 <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
-                  New Item
+                  New Supplier
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -150,19 +155,17 @@
           </v-flex>
         </v-layout>
         <v-data-table
+          hide-actions
           :headers="headers"
           :items="item"
           :loading="loader"
-          hide-actions
           class="elevation-1"
         >
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
-          <td class="text-xs-left">{{ props.item.item_code }}</td>
-          <td class="text-xs-left">{{ props.item.description }}</td>
-          <td class="text-xs-left">{{ props.item.item_category.name }}</td>
-          <td class="text-xs-left">{{ props.item.unit_price }}</td>
-          <td class="justify-center layout px-0">
+        <td>{{ props.item.name }}</td>
+        <td class="text-xs-left">{{ props.item.phone }}</td>
+        <td class="justify-left layout px-0">
           <v-btn
             outline
             small
@@ -184,8 +187,8 @@
             <v-icon right dark>delete</v-icon>
           </v-btn>
         </td>
-        </template>
-      </v-data-table>
+      </template>
+    </v-data-table>
       <div v-if="length" class="text-xs-center">
         <v-pagination
           :length="length"
@@ -239,31 +242,29 @@
             sortable: false,
             value: 'id'
           },
-          { text: 'Item Code', align: 'left', value: 'item_code' },
-          { text: 'Name', align: 'left', value: 'description' },
-          { text: 'Category', align: 'left', value: 'category' },
-          { text: 'Unit Price', align: 'left', value: 'unit_price' },
-          { text: 'Actions', align: 'center', value: 'actions' },
+        { text: 'Name', value: 'name' },
+        { text: 'Phone', value: 'phone' },
+        { text: 'Actions', value: 'name', sortable: false },
         ],
-        item: [],
-        categories: [],
+        supplier: [],
+      
         editedIndex: -1,
         category: {
           name: '',
           description: '',
         },
-        editedItem: {
-          category: '',
-          item_code: '',
-          description: '',
-          unit_price: '',
-        },
-        defaultItem: {
-          category: '',
-          item_code: '',
-          description: '',
-          unit_price: '',
-        },
+         editedItem: {
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+      },
+      defaultItem: {
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+      },
         pagination: {
           page: 1,
           per_page: 0,
@@ -286,7 +287,7 @@
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
-        apiCall({ url: "/api/item?" + this.query, method: "GET" })
+        apiCall({ url: "/api/supplier?" + this.query, method: "GET" })
           .then(resp => {
             console.log("item is",resp);
             this.item = resp.data;
@@ -327,10 +328,10 @@
         this.saving = true;
         // update
         if (this.editedIndex > -1) {
-          this.loadingMethod(true, "Updating Chargesheet")
+          this.loadingMethod(true, "Updating Suppliers")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/item/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+            apiCall({url: '/api/supplier/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
               this.loading = false
               Object.assign(this.item[this.editedIndex], this.editedItem)
@@ -338,7 +339,7 @@
               this.productDialog = false
               this.resetDialogReferences();
               this.saving = false;
-              this.message = 'Patient Information Updated Succesfully';
+              this.message = 'Supplier Information Updated Succesfully';
               this.snackbar = true;
               this.loadingMethod(false)
             })
@@ -351,10 +352,10 @@
           }
         // store
         } else {
-          this.loadingMethod(true, "Adding Chargesheet Entry")
+          this.loadingMethod(true, "Adding Supplier")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/item', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/supplier', data: this.editedItem, method: 'POST' })
             .then(resp => {
               this.loading = false
               this.item.push(resp)
@@ -362,7 +363,7 @@
               this.productDialog = false
               this.resetDialogReferences();
               this.saving = false;
-              this.message = 'Item Added Succesfully';
+              this.message = 'Supplier Added Succesfully';
               this.snackbar = true;
               this.loadingMethod(false)
             })
@@ -382,7 +383,7 @@
         if (this.delete) {
           const index = this.item.indexOf(item)
           this.item.splice(index, 1)
-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
+          apiCall({url: '/api/supplier/'+item.id, method: 'DELETE' })
           .then(resp => {
             console.log(resp)
           })
