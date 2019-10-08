@@ -32,7 +32,7 @@
             <v-layout wrap>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.username"
                   :rules="[v => !!v || 'Username is Required']"
                   label="Username">    
@@ -40,7 +40,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.name"
                   :rules="[v => !!v || 'Name is Required' ,
                   v => /^[a-zA-Z]+$/.test(v)  || 'Name  should have alphabetic chars only']"
@@ -49,7 +49,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.email"
                   :rules="[v => !!v || 'Email is Required',v => /.+@.+/.test(v)  || 'Email not valid' ]"
                   label="Email Address">
@@ -57,7 +57,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.password"
                   type = "text"
                   append-icon="autorenew"
@@ -67,14 +67,14 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex === -1"
                   v-model="editedItem.result_url"
                   :rules="[v => !!v || 'Result URL is Required']"
                   label="Result URL">
                 </v-text-field>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex > -1"
                   v-model="editedItem.emr.result_url"
                   :rules="[v => !!v || 'Result URL is Required']"
@@ -83,14 +83,14 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex === -1"
                   v-model="editedItem.access_username"
                   :rules="[v => !!v || 'Access Username is Required']"
                   label="Access Username">
                 </v-text-field>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex > -1"
                   v-model="editedItem.access.username"
                   :rules="[v => !!v || 'Access Username is Required']"
@@ -99,14 +99,14 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex === -1"
                   v-model="editedItem.access_password"
                   :rules="[v => !!v || 'Acess Password is Required']"
                   label="Access Password">
                 </v-text-field>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex > -1"
                   v-model="editedItem.access.password"
                   :rules="[v => !!v || 'Acess Password is Required']"
@@ -115,14 +115,14 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex === -1"
                   v-model="editedItem.client_name"
                   :rules="[v => !!v || 'client_name is Required']"
                   label="Client Name">
                 </v-text-field>
                 <v-text-field
-                 outline
+                 single-line
                   v-if="editedIndex > -1"
                   v-model="editedItem.access.client_name"
                   :rules="[v => !!v || 'client_name is Required']"
@@ -131,14 +131,14 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex === -1"
                   v-model="editedItem.client_id"
                   :rules="[v => !!v || 'Client ID is Required']"
                   label="Client ID">
                 </v-text-field>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex > -1"
                   v-model="editedItem.access.client_id"
                   :rules="[v => !!v || 'Client ID is Required']"
@@ -147,14 +147,14 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex === -1"
                   v-model="editedItem.client_secret"
                   :rules="[v => !!v || 'Client Secret is Required']"
                   label="Client Secret">
                 </v-text-field>
                 <v-text-field
-                  outline
+                  single-line
                   v-if="editedIndex > -1"
                   v-model="editedItem.access.client_secret"
                   :rules="[v => !!v || 'Client Secret is Required']"
@@ -166,11 +166,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+            <v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
+            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -183,7 +183,7 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>New TPA
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" single-line>New TPA
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -220,7 +220,7 @@
       
           <td class="justify-center layout px-0">
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -230,7 +230,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"

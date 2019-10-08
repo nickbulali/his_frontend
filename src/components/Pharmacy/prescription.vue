@@ -33,7 +33,7 @@
               <v-layout wrap>
                    <v-flex xs12 sm12 md12>
                 <v-autocomplete
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -47,7 +47,7 @@
                 <v-flex xs12 sm12 md12>
                 <v-text-field
                  
-                  outline
+                  single-line
                   v-model="generateBill.patient_id"
                   item-text="name.text"
                   item-value="id"
@@ -58,7 +58,7 @@
                 <v-flex xs12 sm12 md12>
                 <v-autocomplete
                 
-                    outline
+                    single-line
                     :items="drugs"
                     item-text="generic_name"
                     item-value="id"
@@ -71,7 +71,7 @@
                 <v-flex xs12 sm12 md12>
                 <v-text-field
                 
-                  outline
+                  single-line
                   v-model="generateBill.quantity"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Quantity">    
@@ -81,7 +81,7 @@
                                     <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
                         <v-text-field
                       
-                  outline
+                  single-line
                   v-model="input.one"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Drug">    
@@ -89,7 +89,7 @@
       
                 <v-text-field
                       
-                  outline
+                  single-line
                   v-model="input.two"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Quantity">    
@@ -103,14 +103,14 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-              <v-btn v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
+              <v-btn v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
                   Add row <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
-            <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
+            <v-btn round single-line color="blue lighten-1" flat @click="billDialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
+            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
                   Bill <v-icon right dark>payment</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -135,7 +135,7 @@
               <v-layout wrap>
                    <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -147,7 +147,7 @@
                 </v-flex>
                     <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     v-bind:items="drugs"
                     item-text="generic_name"
                     item-value="generic_name"
@@ -160,7 +160,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.price"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Price">    
@@ -168,7 +168,7 @@
               </v-flex>
                <v-flex xs12 sm12 md12>
                 <v-select
-                     outline
+                     single-line
                     :items="dosages"
                     item-text="description"
                     item-value="id"
@@ -180,7 +180,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="medication"
                     item-text="display"
                     item-value="id"
@@ -192,7 +192,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.quantity"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Quantity">    
@@ -201,7 +201,7 @@
                       <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
                         <v-text-field
                       
-                  outline
+                  single-line
                   v-model="input.one"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Drug">    
@@ -209,7 +209,7 @@
       
                 <v-text-field
                       
-                  outline
+                  single-line
                   v-model="input.two"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Quantity">    
@@ -219,13 +219,13 @@
               </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.start_time" slot="activator" label="Start Time "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.start_time" slot="activator" label="Start Time "></v-text-field>
                       <v-date-picker v-model="editedItem.start_time"></v-date-picker>
                     </v-menu>
                   </v-flex>
                   <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.end_time" slot="activator" label="End Time "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.end_time" slot="activator" label="End Time "></v-text-field>
                       <v-date-picker v-model="editedItem.end_time"></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -233,7 +233,7 @@
                   <v-textarea
                     v-model="editedItem.drugs"
                    
-                    outline
+                    single-line
                     label="Comments"
                     required>
                   </v-textarea>
@@ -244,7 +244,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
+            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -257,7 +257,7 @@
           <v-flex sm12 md6>
             <v-layout row >
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Issue Drugs
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" single-line>Issue Drugs
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -300,7 +300,7 @@
    
           <td class="justify-center layout px-0">
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -315,11 +315,11 @@
           @click = "BillItem(props.item)" 
           flat 
           small 
-          outline>Bill
+          single-line>Bill
                   <v-icon right dark>payment</v-icon>
                 </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"

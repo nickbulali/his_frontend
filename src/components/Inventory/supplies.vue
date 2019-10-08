@@ -22,7 +22,7 @@
         <v-toolbar dark color="primary" class="elevation-0">
           <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn round outline color="blue lighten-1" flat @click.native="close">
+          <v-btn round single-line color="blue lighten-1" flat @click.native="close">
             Cancel
             <v-icon right dark>close</v-icon>
           </v-btn>
@@ -33,7 +33,7 @@
               <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.name"
                     :rules="[v => !!v || 'Name is Required']"
                     label="Name">
@@ -41,7 +41,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.unit"
                     :rules="[v => !!v || 'Unit is Required']"
                     label="Unit">
@@ -49,7 +49,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.min"
                     :rules="[v => !!v || 'Min. Level is Required']"
                     label="Min. Level">
@@ -57,7 +57,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.max"
                     :rules="[v => !!v || 'Max. Level is Required']"
                     label="Max. Level">
@@ -65,7 +65,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.storage_req"
                     :rules="[v => !!v || 'Storage Req. is Required']"
                     label="Storage Req.">
@@ -73,7 +73,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.remarks"
                     :rules="[v => !!v || 'Remarks is Required']"
                     label="Remarks">
@@ -84,7 +84,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save" :loading="loading">
+            <v-btn round single-line xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save" :loading="loading">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -96,7 +96,7 @@
         <v-toolbar dark color="primary" class="elevation-0">
           <v-toolbar-title>Edit Stock Entry</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn round outline color="blue lighten-1" flat @click.native="close">
+          <v-btn round single-line color="blue lighten-1" flat @click.native="close">
             Cancel
             <v-icon right dark>close</v-icon>
           </v-btn>
@@ -107,7 +107,7 @@
               <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedStockItem.lot_no"
                     :rules="[v => !!v || 'Lot no. is Required']"
                     label="Lot No.">
@@ -115,7 +115,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedStockItem.batch_no"
                     :rules="[v => !!v || 'Batch no. is Required']"
                     label="Batch No.">
@@ -123,13 +123,13 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-menu>
-                    <v-text-field :rules="[v => !!v || 'Expiry Date is Required']" :value="editedStockItem.expiry_date" slot="activator" label="Expiry Date" outline></v-text-field>
+                    <v-text-field :rules="[v => !!v || 'Expiry Date is Required']" :value="editedStockItem.expiry_date" slot="activator" label="Expiry Date" single-line></v-text-field>
                     <v-date-picker v-model="editedStockItem.expiry_date"></v-date-picker>
                   </v-menu>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedStockItem.manufacturer"
                     :rules="[v => !!v || 'Manufacturer is Required']"
                     label="Manufacturer">
@@ -137,7 +137,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-select
-                  outline
+                  single-line
                   :items="suppliers"
                   v-model="editedStockItem.supplier_id"
                   item-text="name"
@@ -147,7 +147,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedStockItem.quantity_supplied"
                     :rules="[v => !!v || 'Quantity Supplied is Required']"
                     label="Quantity Supplied">
@@ -155,7 +155,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedStockItem.cost_per_unit"
                     :rules="[v => !!v || 'Cost per Unit is Required']"
                     label="Cost per Unit">
@@ -163,13 +163,13 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-menu>
-                    <v-text-field :rules="[v => !!v || 'Date Received is Required']" :value="editedStockItem.date_received" slot="activator" label="Date Received" outline></v-text-field>
+                    <v-text-field :rules="[v => !!v || 'Date Received is Required']" :value="editedStockItem.date_received" slot="activator" label="Date Received" single-line></v-text-field>
                     <v-date-picker v-model="editedStockItem.date_received" ></v-date-picker>
                   </v-menu>
                   </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedStockItem.remarks"
                     :rules="[v => !!v || 'Remarks is Required']"
                     label="Remarks">
@@ -180,7 +180,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="saveUpdateStock" :loading="loading">
+            <v-btn round single-line xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="saveUpdateStock" :loading="loading">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -223,7 +223,7 @@
                   </v-flex>
                   <v-flex xs6 sm6 md6>
                     <v-text-field
-                      outline
+                      single-line
                       readonly
                       v-model="requestItem.stock_id"
                       :rules="[v => !!v || 'Stock ID is Required']"
@@ -232,7 +232,7 @@
                   </v-flex>
                   <v-flex xs6 sm6 md6>
                     <v-text-field
-                      outline
+                      single-line
                       v-model="requestItem.quantity"
                       :rules="[v => !!v || 'Quantity Signed Out is Required']"
                       label="Quantity Signed Out">
@@ -240,13 +240,13 @@
                   </v-flex>
                   <v-flex xs6 sm6 md6>
                     <v-menu>
-                      <v-text-field :rules="[v => !!v || 'Date Issued is Required']" :value="requestItem.date_issued" slot="activator" label="Date Issued" outline></v-text-field>
+                      <v-text-field :rules="[v => !!v || 'Date Issued is Required']" :value="requestItem.date_issued" slot="activator" label="Date Issued" single-line></v-text-field>
                       <v-date-picker v-model="requestItem.date_issued"></v-date-picker>
                     </v-menu>
                   </v-flex>
                   <v-flex xs6 sm6 md6>
                     <v-text-field
-                      outline
+                      single-line
                       v-model="requestItem.received_by"
                       :rules="[v => !!v || 'Received By is Required']"
                       label="Received By">
@@ -254,7 +254,7 @@
                   </v-flex>
                   <v-flex xs6 sm6 md6>
                     <v-text-field
-                      outline
+                      single-line
                       v-model="requestItem.remarks"
                       :rules="[v => !!v || 'Remarks is Required']"
                       label="Remarks">
@@ -297,7 +297,7 @@
             <v-layout wrap>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="stockItem.lot_no"
                   :rules="[v => !!v || 'Lot no. is Required']"
                   label="Lot no.">
@@ -305,7 +305,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="stockItem.batch_no"
                   :rules="[v => !!v || 'Batch no. is Required']"
                   label="Batch no.">
@@ -313,13 +313,13 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-menu>
-                  <v-text-field :rules="[v => !!v || 'Expiry Date is Required']" :value="stockItem.expiry_date" slot="activator" label="Expiry Date" outline></v-text-field>
+                  <v-text-field :rules="[v => !!v || 'Expiry Date is Required']" :value="stockItem.expiry_date" slot="activator" label="Expiry Date" single-line></v-text-field>
                   <v-date-picker v-model="stockItem.expiry_date"></v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="stockItem.manufacturer"
                   :rules="[v => !!v || 'Manufacturer is Required']"
                   label="Manufacturer">
@@ -327,7 +327,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-select
-                  outline
+                  single-line
                   :items="suppliers"
                   v-model="stockItem.supplier_id"
                   :rules="[v => !!v || 'Supplier is Required']"
@@ -338,7 +338,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="stockItem.quantity_supplied"
                   :rules="[v => !!v || 'Quantity Supplied is Required']"
                   label="Quantity Supplied">
@@ -346,7 +346,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="stockItem.cost_per_unit"
                   :rules="[v => !!v || 'Cost Per Unit is Required']"
                   label="Cost Per Unit">
@@ -354,13 +354,13 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-menu>
-                  <v-text-field :rules="[v => !!v || 'Date Received is Required']" :value="stockItem.date_received" slot="activator" label="Date Received" outline></v-text-field>
+                  <v-text-field :rules="[v => !!v || 'Date Received is Required']" :value="stockItem.date_received" slot="activator" label="Date Received" single-line></v-text-field>
                   <v-date-picker v-model="stockItem.date_received"></v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="stockItem.remarks"
                   :rules="[v => !!v || 'Remarks is Required']"
                   label="Remarks">
@@ -404,7 +404,7 @@
             <td class="text-xs-left">{{ props.item.expiry_date }}</td>
             <td class="justify-left layout px-0">
               <v-btn
-                outline
+                single-line
                 small
                 title="Edit"
                 color="teal"
@@ -414,7 +414,7 @@
                 <v-icon right dark>edit</v-icon>
               </v-btn>
               <v-btn
-                outline
+                single-line
                 small
                 title="Edit"
                 color="warning"
@@ -434,7 +434,7 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Supply
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" single-line>Add Supply
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -474,7 +474,7 @@
         <td class="text-xs-left">{{ props.item.stockValue }}</td>
         <td class="justify-left layout px-0">
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -484,7 +484,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="green"
@@ -494,7 +494,7 @@
             <v-icon right dark>book</v-icon>
           </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"
