@@ -45,17 +45,6 @@
                 </v-flex>
 
                 <v-flex xs12 sm12 md12>
-                <v-text-field
-                 
-                  outline
-                  v-model="generateBill.patient_id"
-                  item-text="name.text"
-                  item-value="id"
-                  :rules="[v => !!v || 'Patient Name is Required']"
-                  label="Patient">    
-                </v-text-field>
-              </v-flex>
-                <v-flex xs12 sm12 md12>
                 <v-autocomplete
                 
                     outline
@@ -83,7 +72,7 @@
                       
                   outline
                   v-model="input.one"
-                  :rules="[v => !!v || 'Quantity is Required']"
+                  :rules="[v => !!v || 'Drug Name is Required']"
                   label="Drug">    
                 </v-text-field>
       

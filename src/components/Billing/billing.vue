@@ -7,7 +7,7 @@
             <table>
               <tr>
                 <td class="title">
-                  <img src="http://ilabafrica.ac.ke/wp-content/uploads/2016/01/ILABLOGO1.png" style="width:100%; max-width:300px;">
+                 Create Invoice
                 </td>
               </tr>
             </table>
@@ -27,7 +27,7 @@
           <v-text-field
             label="Invoice Number"
             v-model="invoice.number"
-            disabled
+            
           ></v-text-field>
           </v-flex>
                    <v-flex xs12 sm12 md12>
@@ -77,6 +77,7 @@
           </td>
         </tr>
 
+       
         <tr class="heading">
           <td>Item</td>
           <td>Unit Cost</td>
@@ -95,7 +96,7 @@
             item-text="description"
             item-value="id"
             v-bind:value="details.id"
-            v-model="item.description"
+            v-model="invoice.item_id"
 
             @change="addItem()"
 
@@ -105,19 +106,18 @@
        
            :key="details.id"
            outline
-           v-model="item.unit_price"
-
+           v-model="invoice.unit_price"
            >    
          </v-text-field></td>
          <td ><v-text-field
             @input="getSubTotal()"
           outline
-          v-model="item.quantity"
+          v-model="invoice.qty"
 
           >    
         </v-text-field></td>
         <td class="total" >           <v-input
-            color="success" loading  v-model="invoice.total"
+            color="success" loading  v-model="invoice.sub_total"
           >
          <b>  {{item.unit_price*item.quantity}}</b>
           </v-input></td>
@@ -132,8 +132,9 @@
 
       <tr class="total">
         <td colspan="3"></td>
-        <td>Total: ${{ total }}</td>
+        <td  v-model="invoice.total">Total: ${{ total }}</td>
       </tr>
+
           <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Generate Invoice <v-icon right dark>payment</v-icon>
                 </v-btn>
@@ -269,12 +270,16 @@
         due_date: '',
         description: '',
         status: 'not paid',
-        sub_total: '',
-        discount: '',
-        tax: '',
-        total: ''
+        sub_total: '0',
+        discount: '0',
+        tax: '0',
+        total: '0',
+        item_id: '',
+        unit_price: '',
+        qty: ''
         },
         
+
         details: [],
         state:['paid','not paid'],
         inputRules: [
@@ -308,8 +313,8 @@
        addItem(){
         var i =0
         for (i; i <= this.details.length; i++) {
-          if(this.details[i].id == this.items[i].description){
-            console.log("found")
+          if(this.details[i].id == this.items[i].item_id){
+            console.log("found",this.details[i].id)
             this.items[i].unit_price = this.details[i].unit_price
           }
         }
@@ -368,16 +373,15 @@
         });
       },
 
-       save(){
-          this.loadingMethod(true, "Adding Invoice")
-          if(this.$refs.form.validate()){
+        save(){
+          
             this.loading = true
             apiCall({url: '/api/invoice', data: this.invoice, method: 'POST' })
-            apiCall({url: '/api/item', data: this.item, method: 'POST' })
             .then(resp => {
           
               // this.item.push(resp)
               // console.log("Post is:",this.item.push(resp))
+              this.productDialog = false
               this.resetDialogReferences();
               this.saving = false;
               this.message = 'Invoice Added Succesfully';
@@ -390,8 +394,9 @@
               this.loadingMethod(false)
             })
             this.close()
-          }
+          
       },
+
       editItem (item) {
         this.editedIndex = this.patient.indexOf(item)
         this.editedItem = Object.assign({}, item)
