@@ -69,7 +69,7 @@
 				</v-list>
 			</v-menu> -->
 		</v-toolbar>
-		<v-navigation-drawer app v-model="drawer" absolute temporary class="darkened white--text">
+		<v-navigation-drawer app v-model="drawer" absolute temporary class="darkened white--text" style="position:fixed">
 			<sidebar></sidebar>
 		</v-navigation-drawer>
 	</nav>
