@@ -68,6 +68,18 @@
                   label="Number">    
                 </v-text-field>
               </v-flex>
+              <v-flex xs12 sm12 md12>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date created is Required']" :value="editedItem.date" slot="activator" label="Date Created"></v-text-field>
+                      <v-date-picker v-model="editedItem.date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                  <v-flex xs12 sm12 md12>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Due Date is Required']" :value="editedItem.due_date" slot="activator" label="Due Date"></v-text-field>
+                      <v-date-picker v-model="editedItem.due_date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
                  <v-flex xs12 sm12 md12>
                 <v-text-field
                   outline
@@ -76,6 +88,14 @@
                   label="Status">    
                 </v-text-field>
               </v-flex>
+              <v-flex xs12>
+                  <v-textarea
+                    v-model="editedItem.description"
+                    outline
+                    label="Description"
+                    required>
+                  </v-textarea>
+                </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
                   outline
@@ -100,34 +120,6 @@
                   label="Total">    
                 </v-text-field>
               </v-flex>
-                 <v-flex xs12 sm12 md12>
-                    <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date created is Required']" :value="editedItem.date" slot="activator" label="Date Created"></v-text-field>
-                      <v-date-picker v-model="editedItem.date"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Due Date is Required']" :value="editedItem.due_date" slot="activator" label="Due Date"></v-text-field>
-                      <v-date-picker v-model="editedItem.due_date"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex xs12>
-                  <v-textarea
-                    v-model="editedItem.terms_and_conditions"
-                    outline
-                    label="Terms and Conditions"
-                    required>
-                  </v-textarea>
-                </v-flex>
-                  <v-flex xs12>
-                  <v-textarea
-                    v-model="editedItem.reference"
-                    outline
-                    label="Reference"
-                    required>
-                  </v-textarea>
-                </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -154,11 +146,14 @@
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.date }}</td>
-          <td @click="viewInvoice(props.item)" class="text-xs-left">{{ props.item.number }}</td>
+           <td class="text-xs-left">{{ props.item.due_date }}</td>
+           <td class="text-xs-left">{{ props.item.number }}</td>
           <td class="text-xs-left">{{ props.item.patient.name.text }} {{ props.item.patient.name.family }}</td>
-          <td class="text-xs-left">{{ props.item.due_date }}</td>
-          <td class="text-xs-right">{{ props.item.total }}</td>
           <td class="text-xs-right">{{ props.item.status }}</td>
+          <td class="text-xs-right">{{ props.item.description }}</td>
+          <td class="text-xs-right">{{ props.item.discount }}</td>
+          <td class="text-xs-right">{{ props.item.sub_total }}</td>
+          <td class="text-xs-right">{{ props.item.total }}</td>
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -228,10 +223,9 @@
         due_date:'',
         status:'',
         total:'',
-        reference: '',
         sub_total: '',
         discount: '',
-        terms_and_conditions: ''
+        description: ''
 
       },
          
@@ -246,11 +240,14 @@
                 value: 'id'
               },
               { text: 'Date', align: 'left', value: 'date' },
+              { text: 'Due Date', align: 'left', value: 'date' },
               { text: 'Number', align: 'left', value: 'number' },
               { text: 'Patient', align: 'left', value: 'customer' },
-              { text: 'Due Date', align: 'left', value: 'due_date' },
+              { text: 'Status', align: 'left', value: 'status' },
+              { text: 'Description', align: 'left', value: 'description' },
+              { text: 'Discount', align: 'left', value: 'discount' },
+              { text: 'Sub Total', align: 'right', value: 'sub_total' },
               { text: 'Total', align: 'right', value: 'total' },
-              { text: 'Status', align: 'right', value: 'status' },
                { text: 'Actions', align: 'center', value: 'actions' },
             ],
             item:[],
