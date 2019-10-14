@@ -32,15 +32,16 @@
               <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.username"
                   :rules="[v => !!v || 'Username is Required']"
-                  label="Username">    
+                  label="Username"
+                  >    
                 </v-text-field>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                  v-model="editedItem.name"
                   :rules="[v => !!v || 'Name is Required',
                   v => /^[a-zA-Z\s]+$/.test(v)  || 'Name should have alphabetic chars only']"
@@ -49,7 +50,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.email"
                   :rules="[v => !!v || 'Email is Required',v => /.+@.+/.test(v)  || 'Email not valid' ]"
                   label="Email Address">
@@ -62,7 +63,7 @@
                 v-if="showPasswordField">
                 <v-text-field
                   v-model="password"
-                    outline
+                    single-line
                   :rules="[v => !!v || 'New Password is Required']"
                   type = "text"
                   append-icon="autorenew"
@@ -75,11 +76,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+            <v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
+            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -92,7 +93,7 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add User
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" single-line>Add User
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -129,7 +130,7 @@
       
           <td class="justify-center layout px-0">
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -139,7 +140,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"

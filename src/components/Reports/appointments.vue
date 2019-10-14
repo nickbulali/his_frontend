@@ -30,7 +30,7 @@
              
               <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -42,7 +42,7 @@
                
                  <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="users"
                     label="Staff"
                     item-text="username"
@@ -54,13 +54,13 @@
                 </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
                       <v-date-picker v-model="editedItem.appointment_date"></v-date-picker>
                     </v-menu>
                   </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_time" slot="activator" label="Appointment Time "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_time" slot="activator" label="Appointment Time "></v-text-field>
                       <v-time-picker v-model="editedItem.appointment_time"></v-time-picker>
                     </v-menu>
                   </v-flex>
@@ -69,11 +69,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click.native="close" data-dismiss="productDialog">
+            <v-btn round single-line color="blue lighten-1" flat @click.native="close" data-dismiss="productDialog">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading"  >
+            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading"  >
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -124,7 +124,7 @@
           <td class="text-xs-left">{{ props.item.appointment_status }}</td>
           <td class="justify-center layout px-0">
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -134,7 +134,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"

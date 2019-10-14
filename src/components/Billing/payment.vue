@@ -39,7 +39,7 @@
           </v-flex>
                     <v-flex xs12 sm12 md12>
                 <v-autocomplete
-                    outline
+                    single-line
                     :items="invoice"
                     item-text="number"
                     item-value="id"
@@ -51,7 +51,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date is Required']" :value="paymentNew.date" slot="activator" label="Date"></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date is Required']" :value="paymentNew.date" slot="activator" label="Date"></v-text-field>
                       <v-date-picker v-model="paymentNew.date"></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -59,14 +59,14 @@
                   <v-textarea
                     v-model="paymentNew.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    outline
+                    single-line
                     label="Description"
                     required>
                   </v-textarea>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                  <v-select  
-                  outline
+                  single-line
                   v-model="paymentNew.method"
                   :rules="[v => !!v || 'Method is Required']"
                   label="Payment Method"
@@ -83,7 +83,7 @@
           </v-flex>
           <v-flex xs12 sm12 md12>
                  <v-text-field  
-                  outline
+                  single-line
                   v-model="paymentNew.amount"
                   :rules="[v => !!v || 'Amount is Required']"
                   label="Amount">    
@@ -91,7 +91,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                  <v-text-field  
-                  outline
+                  single-line
                   v-model="paymentNew.balance"
                   :rules="[v => !!v || 'Balance is Required']"
                   label="Balance">    
@@ -102,11 +102,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+            <v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="save">Save
+            <v-btn round single-line xs12 sm6 :loading="loading" color="primary darken-1" flat @click="save">Save
               <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -128,13 +128,13 @@
           <v-text-field
             label="Payment Number"
             v-model="editPayment.number"
-            outline
+            single-line
             disabled
           ></v-text-field>
           </v-flex>
                     <v-flex xs12 sm12 md12>
                 <v-autocomplete
-                    outline
+                    single-line
                     :items="invoice"
                     item-text="number"
                     item-value="id"
@@ -146,7 +146,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date is Required']" :value="editPayment.date" slot="activator" label="Date"></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date is Required']" :value="editPayment.date" slot="activator" label="Date"></v-text-field>
                       <v-date-picker v-model="editPayment.date"></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -154,14 +154,14 @@
                   <v-textarea
                     v-model="editPayment.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    outline
+                    single-line
                     label="Description"
                     required>
                   </v-textarea>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                  <v-select  
-                  outline
+                  single-line
                   v-model="editPayment.method"
                   :rules="[v => !!v || 'Method is Required']"
                   label="Payment Method"
@@ -170,7 +170,7 @@
               </v-flex>
                 <v-flex xs12 sm12 md12>
           <v-select
-          outline
+          single-line
             label="Status"
             v-model="editPayment.status"
             :items="state"
@@ -179,7 +179,7 @@
           </v-flex>
           <v-flex xs12 sm12 md12>
                  <v-text-field  
-                  outline
+                  single-line
                   v-model="editPayment.amount"
                   :rules="[v => !!v || 'Amount is Required']"
                   label="Amount">    
@@ -187,7 +187,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                  <v-text-field  
-                  outline
+                  single-line
                   v-model="editPayment.balance"
                   :rules="[v => !!v || 'Balance is Required']"
                   label="Balance">    
@@ -198,11 +198,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click.native="close">
+            <v-btn round single-line color="blue lighten-1" flat @click.native="close">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="saveUpdate" :loading="loading">
+            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="saveUpdate" :loading="loading">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -215,7 +215,7 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Make Payment
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" single-line>Make Payment
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -256,7 +256,7 @@
           <td class="text-xs-left">{{ props.item.amount }}</td>
           <td class="justify-center layout px-0">
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -266,7 +266,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"

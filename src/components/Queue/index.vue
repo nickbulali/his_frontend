@@ -32,7 +32,7 @@
 										<v-text-field
 											v-model="vitals.body_temperature"
 											:rules="[v => !!v || 'Body Temparature is Required']"
-											outline
+											single-line
 											label="Body Temparature"
 											required>
 										</v-text-field>
@@ -41,7 +41,7 @@
 										<v-text-field
 											v-model="vitals.respiratory_rate"
 											:rules="[v => !!v || 'Respiratory Rate is Required']"
-											outline
+											single-line
 											label="Respiratory Rate"
 											required>
 										</v-text-field>
@@ -50,7 +50,7 @@
 										<v-text-field
 											v-model="vitals.heart_rate"
 											:rules="[v => !!v || 'Heart Rate is Required']"
-											outline
+											single-line
 											label="Heart Rate"
 											required>
 										</v-text-field>
@@ -59,7 +59,7 @@
 										<v-text-field
 											v-model="vitals.blood_pressure"
 											:rules="[v => !!v || 'Blood Pressure is Required']"
-											outline
+											single-line
 											label="Blood Pressure"
 											required>
 										</v-text-field>
@@ -68,7 +68,7 @@
 										<v-text-field
 											v-model="vitals.height"
 											:rules="[v => !!v || 'Height is Required']"
-											outline
+											single-line
 											label="Height"
 											required>
 										</v-text-field>
@@ -77,7 +77,7 @@
 										<v-text-field
 											v-model="vitals.weight"
 											:rules="[v => !!v || 'Weight is Required']"
-											outline
+											single-line
 											label="Weight"
 											required>
 										</v-text-field>
@@ -86,7 +86,7 @@
 										<v-text-field
 											v-model="vitals.body_mass_index"
 											:rules="[v => !!v || 'Body Mass Index is Required']"
-											outline
+											single-line
 											label="Body Mass Index"
 											required>
 										</v-text-field>
@@ -95,7 +95,7 @@
 										<v-text-field
 											v-model="vitals.body_surface_area"
 											:rules="[v => !!v || 'Body Surface Area is Required']"
-											outline
+											single-line
 											label="Body Surface Area"
 											required>
 										</v-text-field>
@@ -105,11 +105,11 @@
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+							<v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
 								Cancel
 								<v-icon right dark>close</v-icon>
 							</v-btn>
-							<v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="savevitals(patient)">Save
+							<v-btn round single-line xs12 sm6 :loading="loading" color="primary darken-1" flat @click="savevitals(patient)">Save
 								<v-icon right dark>cloud_upload</v-icon>
 							</v-btn>
 						</v-card-actions>
@@ -121,7 +121,7 @@
     		<v-card class="pa-3">
     			<v-card-text>
 		        <div class="his_card_top_right">
-		          <v-btn outline fab small title="View History" color="green"  @click="">
+		          <v-btn single-line fab small title="View History" color="green"  @click="">
 		            <v-icon dark>description</v-icon>
 		          </v-btn>
 		        </div>
@@ -207,7 +207,7 @@
 											<div class="caption purple--text" v-if="item.queue_status.code=='lab'">{{item.queue_status.display}}</div>
 										</v-flex>
 										<v-flex xs2>
-											<v-btn outline fab small color="brown" @click="patientDetails(item.patient)">
+											<v-btn single-line fab small color="brown" @click="patientDetails(item.patient)">
 												<v-icon dark>visibility</v-icon>
 											</v-btn>
 										</v-flex>
@@ -256,7 +256,7 @@
 										>
 										</v-progress-circular>
 										<div class="his_card_footer">
-											<v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
+											<v-btn dark class="his_card_button" small title="Edit" color="black" flat single-line round @click="">
 												<v-icon left dark>directions_walk</v-icon>
 													View All Visits
 											</v-btn>
@@ -276,7 +276,7 @@
 										>
 										</v-progress-circular>
 										<div class="his_card_footer">
-											<v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
+											<v-btn dark class="his_card_button" small title="Edit" color="black" flat single-line round @click="">
 												<v-icon left dark>directions_walk</v-icon>
 													View All Visits
 											</v-btn>

@@ -4,7 +4,7 @@
       <span class="title">Invoices</span>
         <v-layout>
           <v-flex sm12 md6>
-                <v-btn color="primary" to="/billing/billing" dark class="mb-2" outline>Generate Bill
+                <v-btn color="primary" to="/billing/billing" dark class="mb-2" single-line>Generate Bill
                   <v-icon right dark>payment</v-icon>
                 </v-btn>
               </v-flex>
@@ -47,7 +47,7 @@
               <v-layout wrap>
                    <v-flex xs12 sm12 md12>
                 <v-autocomplete
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -59,7 +59,7 @@
                 </v-flex>
                        <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.number"
                   :rules="[v => !!v || 'Number is Required']"
                   label="Number">    
@@ -67,7 +67,7 @@
               </v-flex>
                  <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.status"
                   :rules="[v => !!v || 'Status is Required']"
                   label="Status">    
@@ -75,7 +75,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.discount"
                   :rules="[v => !!v || 'Discount is Required']"
                   label="Discount">    
@@ -83,7 +83,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.sub_total"
                   :rules="[v => !!v || 'Sub_total is Required']"
                   label="Sub Total">    
@@ -91,7 +91,7 @@
               </v-flex>
                  <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.total"
                   :rules="[v => !!v || 'Total is Required']"
                   label="Total">    
@@ -99,20 +99,20 @@
               </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date created is Required']" :value="editedItem.date" slot="activator" label="Date Created"></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date created is Required']" :value="editedItem.date" slot="activator" label="Date Created"></v-text-field>
                       <v-date-picker v-model="editedItem.date"></v-date-picker>
                     </v-menu>
                   </v-flex>
                   <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Due Date is Required']" :value="editedItem.due_date" slot="activator" label="Due Date"></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Due Date is Required']" :value="editedItem.due_date" slot="activator" label="Due Date"></v-text-field>
                       <v-date-picker v-model="editedItem.due_date"></v-date-picker>
                     </v-menu>
                   </v-flex>
                   <v-flex xs12>
                   <v-textarea
                     v-model="editedItem.terms_and_conditions"
-                    outline
+                    single-line
                     label="Terms and Conditions"
                     required>
                   </v-textarea>
@@ -120,7 +120,7 @@
                   <v-flex xs12>
                   <v-textarea
                     v-model="editedItem.reference"
-                    outline
+                    single-line
                     label="Reference"
                     required>
                   </v-textarea>
@@ -130,11 +130,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+            <v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
+            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -158,7 +158,7 @@
           <td class="text-xs-right">{{ props.item.status }}</td>
           <td class="justify-center layout px-0">
           <v-btn
-            outline
+            single-line
             small
             title="Edit"
             color="teal"
@@ -168,7 +168,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
             <v-btn
-            outline
+            single-line
             small
             title="Delete"
             color="pink"
