@@ -22,7 +22,7 @@
         <v-toolbar dark color="primary" class="elevation-0">
           <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn round single-line color="blue lighten-1" flat @click.native="close">
+          <v-btn round outline color="blue lighten-1" flat @click.native="close">
             Cancel
             <v-icon right dark>close</v-icon>
           </v-btn>
@@ -72,7 +72,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>          
-            <v-btn round single-line xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save">
+            <v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -87,7 +87,7 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" single-line>Add Request
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Request
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -129,7 +129,7 @@
         <td class="justify-center layout px-0">
     
           <v-btn
-            single-line
+            outline
             small
             title="Edit"
             color="teal"
@@ -139,7 +139,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            single-line
+            outline
             small
             title="Delete"
             color="pink"

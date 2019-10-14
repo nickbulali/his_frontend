@@ -105,11 +105,11 @@
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
+							<v-btn round outline color="blue lighten-1" flat @click="dialog = false">
 								Cancel
 								<v-icon right dark>close</v-icon>
 							</v-btn>
-							<v-btn round single-line xs12 sm6 :loading="loading" color="primary darken-1" flat @click="savevitals(patient)">Save
+							<v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="savevitals(patient)">Save
 								<v-icon right dark>cloud_upload</v-icon>
 							</v-btn>
 						</v-card-actions>
@@ -121,7 +121,7 @@
     		<v-card class="pa-3">
     			<v-card-text>
 		        <div class="his_card_top_right">
-		          <v-btn single-line fab small title="View History" color="green"  @click="">
+		          <v-btn outline fab small title="View History" color="green"  @click="">
 		            <v-icon dark>description</v-icon>
 		          </v-btn>
 		        </div>
@@ -207,7 +207,7 @@
 											<div class="caption purple--text" v-if="item.queue_status.code=='lab'">{{item.queue_status.display}}</div>
 										</v-flex>
 										<v-flex xs2>
-											<v-btn single-line fab small color="brown" @click="patientDetails(item.patient)">
+											<v-btn outline fab small color="brown" @click="patientDetails(item.patient)">
 												<v-icon dark>visibility</v-icon>
 											</v-btn>
 										</v-flex>
@@ -256,7 +256,7 @@
 										>
 										</v-progress-circular>
 										<div class="his_card_footer">
-											<v-btn dark class="his_card_button" small title="Edit" color="black" flat single-line round @click="">
+											<v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
 												<v-icon left dark>directions_walk</v-icon>
 													View All Visits
 											</v-btn>
@@ -276,7 +276,7 @@
 										>
 										</v-progress-circular>
 										<div class="his_card_footer">
-											<v-btn dark class="his_card_button" small title="Edit" color="black" flat single-line round @click="">
+											<v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
 												<v-icon left dark>directions_walk</v-icon>
 													View All Visits
 											</v-btn>

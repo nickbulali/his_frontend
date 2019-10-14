@@ -6,7 +6,7 @@
 		        <v-toolbar dark color="primary" class="elevation-0">
 		        	<v-toolbar-title>Upload an Image</v-toolbar-title>
 		        	<v-spacer></v-spacer>
-		        	<v-btn round single-line color="blue lighten-1" flat @click.native="dialog=false">
+		        	<v-btn round outline color="blue lighten-1" flat @click.native="dialog=false">
 		            	Cancel
 		            	<v-icon right dark>close</v-icon>
 		          	</v-btn>
@@ -33,7 +33,7 @@
 									>
 				              	</v-flex>
 				              	<v-flex xs3 offset-xs9 text-xs-right>
-					            	<v-btn round single-line xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="submitFile">
+					            	<v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="submitFile">
 					                	Save <v-icon right dark>cloud_upload</v-icon>
 					              	</v-btn>
 				              	</v-flex>
@@ -118,7 +118,7 @@
 														</v-radio-group>
 													</v-flex>
 													<v-flex xs3 offset-xs9 text-xs-right>
-														<v-btn round single-line xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save">
+														<v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save">
 															Save <v-icon right dark>cloud_upload</v-icon>
 														</v-btn>
 													</v-flex>
@@ -219,7 +219,7 @@
 													></v-text-field>
 												</v-flex>
 												<v-flex xs3 offset-xs9 text-xs-right>
-													<v-btn round single-line xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="savePassword">
+													<v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="savePassword">
 														Save <v-icon right dark>cloud_upload</v-icon>
 													</v-btn>
 												</v-flex>

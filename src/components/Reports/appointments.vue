@@ -69,11 +69,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round single-line color="blue lighten-1" flat @click.native="close" data-dismiss="productDialog">
+            <v-btn round outline color="blue lighten-1" flat @click.native="close" data-dismiss="productDialog">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading"  >
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading"  >
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -124,7 +124,7 @@
           <td class="text-xs-left">{{ props.item.appointment_status }}</td>
           <td class="justify-center layout px-0">
           <v-btn
-            single-line
+            outline
             small
             title="Edit"
             color="teal"
@@ -134,7 +134,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            single-line
+            outline
             small
             title="Delete"
             color="pink"

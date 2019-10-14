@@ -46,11 +46,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
+            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click="save(patient)">
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click="save(patient)">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -90,11 +90,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round single-line color="blue lighten-1" flat @click="dialog = false">
+            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click="
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click="
   savemed(patient)">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
@@ -134,7 +134,7 @@
               src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
             >
               <div class="his_card_top_right">
-                <v-btn single-line fab small color="blue">
+                <v-btn outline fab small color="blue">
                   <v-icon dark>add</v-icon>
                 </v-btn>
               </div>
@@ -368,7 +368,7 @@
                       <v-flex xs12 sm12 md4 v-for="(encounter,index) in encounters" :key="encounter.id">
                         <div class="his_card">
                           <div class="his_card_top_right">
-                            <v-btn single-line fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
+                            <v-btn outline fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
                               <v-icon dark>visibility</v-icon>
                             </v-btn>
                           </div>
@@ -417,7 +417,7 @@
                       >
                       </v-progress-circular>
                     <div class="his_card_footer">
-                      <v-btn dark class="his_card_button" small title="Edit" color="black" flat single-line round @click="">
+                      <v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
                         <v-icon left dark>directions_walk</v-icon>
                           View All Visits
                       </v-btn>
