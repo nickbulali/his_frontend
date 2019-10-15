@@ -512,7 +512,7 @@
           this.loadingMethod(true, "Appointment Added Succesfully")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/appointment', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/appointment', data: this.defaultItem, method: 'POST' })
             .then(resp => {
           
               // this.item.push(resp)

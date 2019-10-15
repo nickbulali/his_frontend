@@ -286,7 +286,11 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
+<<<<<<< HEAD
                 <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Cash Payment
+=======
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Make Payment
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -413,6 +417,7 @@
         item:[],
         payment:[],
         editedIndex: -1,
+<<<<<<< HEAD
 
 
           payment: {
@@ -424,6 +429,8 @@
          balance: '',
          date: null,
        },
+=======
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
         paymentNew: {
           invoice_id: '',
           description: '',
@@ -434,9 +441,12 @@
           amount: '',
           balance: ''
         },
+<<<<<<< HEAD
                 confirmMpesa: false,
         confirmMpesaLoader: false,
            stkLoader: false,
+=======
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
         editPayment: {
           invoice_id: '',
           description: '',
@@ -523,6 +533,7 @@
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
+<<<<<<< HEAD
 
        requestSTK(){
         if(this.$refs.mpesaForm.validate()){
@@ -568,6 +579,8 @@
         
       },
 
+=======
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
      
           save(){
           this.loadingMethod(true, "Adding Payment")

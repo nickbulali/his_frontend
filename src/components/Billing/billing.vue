@@ -7,7 +7,11 @@
             <table>
               <tr>
                 <td class="title">
+
                   <img src="http://ilabafrica.ac.ke/wp-content/uploads/2016/01/ILABLOGO1.png" style="width:100%; max-width:300px;">
+
+                 Create Invoice
+
                 </td>
               </tr>
             </table>
@@ -27,6 +31,7 @@
           <v-text-field
             label="Invoice Number"
             v-model="invoice.number"
+
             disabled
           ></v-text-field>
           </v-flex>
@@ -57,6 +62,43 @@
                     required>
                   </v-textarea>
                 </v-flex>
+            
+          ></v-text-field>
+          </v-flex>
+                   <v-flex xs12 sm12 md12>
+                <v-autocomplete
+                    outline
+                    :items="patient"
+                    item-text="name.text"
+                    item-value="id"
+                    label="Patient"
+                    :rules="[v => !!v || 'Patient Name is Required']"
+                    v-model="invoice.patient_id"
+                    >
+                </v-autocomplete>
+                </v-flex>
+                <v-flex xs4 sm4 md4>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Created Is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
+                      <v-date-picker v-model="invoice.date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                  <v-flex xs4 sm4 md4>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due_date" slot="activator" label="Date Due"></v-text-field>
+                      <v-date-picker v-model="invoice.due_date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                <v-flex xs12>
+                  <v-textarea
+                    v-model="invoice.description"
+                    :rules="[v => !!v || 'Description is Required']"
+                    outline
+                    label="Description"
+                    required>
+                  </v-textarea>
+                </v-flex>
+
                 <v-flex xs12 sm12 md12>
           <v-select
             label="Status"
@@ -70,6 +112,9 @@
             </table>
           </td>
         </tr>
+
+
+       
 
         <tr class="heading">
           <td>Item</td>
@@ -89,7 +134,7 @@
             item-text="description"
             item-value="id"
             v-bind:value="details.id"
-            v-model="item.description"
+            v-model="invoice.item_id"
 
             @change="addItem()"
 
@@ -99,19 +144,18 @@
        
            :key="details.id"
            outline
-           v-model="item.unit_price"
-
+           v-model="invoice.unit_price"
            >    
          </v-text-field></td>
          <td ><v-text-field
             @input="getSubTotal()"
           outline
-          v-model="item.quantity"
+          v-model="invoice.qty"
 
           >    
         </v-text-field></td>
         <td class="total" >           <v-input
-            color="success" loading
+            color="success" loading  v-model="invoice.sub_total"
           >
          <b>  {{item.unit_price*item.quantity}}</b>
           </v-input></td>
@@ -126,8 +170,11 @@
 
       <tr class="total">
         <td colspan="3"></td>
-        <td>Total: ${{ total }}</td>
+        <td  v-model="invoice.total">Total: ${{ total }}</td>
       </tr>
+
+
+
           <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Generate Invoice <v-icon right dark>payment</v-icon>
                 </v-btn>
@@ -253,48 +300,41 @@
         loader: false,
         dialog: false,
         delete: false,
+
         invoice:[],
+
          message:new Date().toJSON().slice(0,10).replace(/-/g,'/'),
         selected: {},
         items: [],
         invoice: {
         number: '',
+
         patient: '',
         date: '',
         due: '',
         description: '',
         status: 'not paid'
         },
+        patient_id: '',
+        date: '',
+        due_date: '',
+        description: '',
+        status: 'not paid',
+        sub_total: '0',
+        discount: '0',
+        tax: '0',
+        total: '0',
+        item_id: '',
+        unit_price: '',
+        qty: ''
+        },
+        
+
+
         details: [],
         state:['paid','not paid'],
         inputRules: [
         v => v.length >= !v  || 'Field is required'
-        ],
-        headers: [
-        {
-          text: 'ID',
-          align: 'left',
-          sortable: false,
-          value: 'id'
-        },
-        { text: 'Date', align: 'left', value: 'date' },
-        { text: 'Number', align: 'left', value: 'number' },
-        { text: 'Patient', align: 'left', value: 'customer' },
-        { text: 'Due Date', align: 'left', value: 'due_date' },
-        { text: 'Total', align: 'right', value: 'total' },
-        { text: 'Status', align: 'right', value: 'status' },
-        { text: 'Actions', align: 'center', value: 'actions' },
-        ],
-        invoiceHeaders: [
-        {
-          text: 'Item Description',
-          align: 'left',
-          sortable: false,
-          value: 'item_description'
-        },
-        { text: 'Unit Price', align: 'left', value: 'unit_price' },
-        { text: 'Quantity', align: 'left', value: 'quantity' },
-        { text: 'Total', align: 'left', value: 'total' },
         ],
         pagination: {
           page: 1,
@@ -317,14 +357,15 @@
             console.log(currentDateWithFormat);
      
         },
+        
       addRow() {
         this.items.push({ description: "", quantity: 1, unit_price: 0, total:'' });
       },
        addItem(){
         var i =0
         for (i; i <= this.details.length; i++) {
-          if(this.details[i].id == this.items[i].description){
-            console.log("found")
+          if(this.details[i].id == this.items[i].item_id){
+            console.log("found",this.details[i].id)
             this.items[i].unit_price = this.details[i].unit_price
           }
         }
@@ -371,7 +412,10 @@
             console.log(error.response);
           });
 
+
         apiCall({ url: "/api/item", method: "GET" })
+        apiCall({ url: "/api/item?", method: "GET" })
+
         .then(resp => {
           console.log("item is",resp);
           this.details = resp.data;
@@ -382,6 +426,7 @@
           console.log(error.response);
         });
       },
+
 
       save(){
 
@@ -394,13 +439,32 @@
               this.resetDialogReferences();
               this.saving = false;
               this.message = 'Patient Invoice generated Succesfully';
+        save(){
+          
+            this.loading = true
+            apiCall({url: '/api/invoice', data: this.invoice, method: 'POST' })
+            .then(resp => {
+          
+              // this.item.push(resp)
+              // console.log("Post is:",this.item.push(resp))
+              this.productDialog = false
+              this.resetDialogReferences();
+              this.saving = false;
+              this.message = 'Invoice Added Succesfully';
+
               this.snackbar = true;
+              this.loadingMethod(false)
             })
             .catch(error => {
+              this.loading = false
               console.log(error.response)
+              this.loadingMethod(false)
             })
             this.close()
+
+
       },
+
       editItem (item) {
         this.editedIndex = this.patient.indexOf(item)
         this.editedItem = Object.assign({}, item)
