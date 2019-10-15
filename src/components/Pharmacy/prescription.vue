@@ -17,106 +17,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="billDialog" max-width="500px">
-      <template v-slot:activator="{ on }">
-      <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
-      </template>
-      <v-card>
-        <v-toolbar dark color="primary" class="elevation-0">
-          <v-spacer></v-spacer>
-            <v-toolbar-title>Generate Bill</v-toolbar-title>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                   <v-flex xs12 sm12 md12>
-                <v-autocomplete
-                    outline
-                    :items="patient"
-                    item-text="name.text"
-                    item-value="id"
-                    label="Patients"
-                    :rules="[v => !!v || 'Patient Name is Required']"
-                    v-model="generateBill.patient_id"
-                    >
-                </v-autocomplete>
-                </v-flex>
-
-                <v-flex xs12 sm12 md12>
-                <v-text-field
-                 
-                  outline
-                  v-model="generateBill.patient_id"
-                  item-text="name.text"
-                  item-value="id"
-                  :rules="[v => !!v || 'Patient Name is Required']"
-                  label="Patient">    
-                </v-text-field>
-              </v-flex>
-                <v-flex xs12 sm12 md12>
-                <v-autocomplete
-                
-                    outline
-                    :items="drugs"
-                    item-text="generic_name"
-                    item-value="id"
-                    label="Drugs"
-                    :rules="[v => !!v || 'Drug Name is Required']"
-                    v-model="generateBill.drug_id"
-                    >
-                </v-autocomplete>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                <v-text-field
-                
-                  outline
-                  v-model="generateBill.quantity"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Quantity">    
-                </v-text-field>
-              </v-flex>
-
-                                    <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
-                        <v-text-field
-                      
-                  outline
-                  v-model="input.one"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Drug">    
-                </v-text-field>
-      
-                <v-text-field
-                      
-                  outline
-                  v-model="input.two"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Quantity">    
-                </v-text-field>
-
- 
-              </v-flex>
-
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-              <v-btn v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
-                  Add row <v-icon right dark>cloud_upload</v-icon>
-                </v-btn>
-            <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
-              Cancel
-              <v-icon right dark>close</v-icon>
-            </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
-                  Bill <v-icon right dark>payment</v-icon>
-                </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
+  
 
 
     <v-dialog v-model="dialog" max-width="600px">
@@ -158,14 +59,7 @@
                     autocomplete>
                 </v-select>
                 </v-flex>
-                <v-flex xs12 sm12 md12>
-                <v-text-field
-                  outline
-                  v-model="editedItem.price"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Price">    
-                </v-text-field>
-              </v-flex>
+
                <v-flex xs12 sm12 md12>
                 <v-select
                      outline
@@ -190,7 +84,7 @@
                     >
                 </v-select>
                 </v-flex>
-                <v-flex xs12 sm12 md12>
+<!--                 <v-flex xs12 sm12 md12>
                 <v-text-field
                   outline
                   v-model="editedItem.quantity"
@@ -215,7 +109,7 @@
                   label="Quantity">    
                 </v-text-field>
 
- 
+  -->
               </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
@@ -231,7 +125,7 @@
                   </v-flex>
                   <v-flex xs12>
                   <v-textarea
-                    v-model="editedItem.drugs"
+                    v-model="editedItem.Comments"
                    
                     outline
                     label="Comments"
@@ -289,7 +183,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.patient.name.text}}</td>
-               <td class="text-xs-left">{{ props.item.drugs.generic_name}}</td>
+          <td class="text-xs-left">{{ props.item.drugs.generic_name}}</td>
           <td class="text-xs-left">{{ props.item.medication_status.display }}</td>
           <td class="text-xs-left">{{ props.item.quantity }}</td>
           <td class="text-xs-left">{{ props.item.dosage.description}}</td>
@@ -366,7 +260,7 @@
           message: ""
         },
         dialog: false,
-              generateBill: {
+        generateBill: {
         
         patient_id: '',
         date: '',
@@ -429,6 +323,7 @@
         end_time:'',
         start_time:''
       },
+      
         inputs: [],
         pagination: {
           page: 1,
@@ -442,13 +337,19 @@
       this.initialize();
     },
     methods: {
-          addRow() {
-      this.inputs.push({
-        one: '',
-        two: ''
-      })
-
-    },
+      addRow() {
+        this.items.push({ description: "", quantity: 1, unit_price: 0, total:'' });
+      },
+      addItem(){
+        var i =0
+        for (i; i <= this.details.length; i++) {
+          if(this.details[i].id == this.items[i].description){
+            console.log("found")
+            this.items[i].unit_price = this.details[i].unit_price
+          }
+        }
+         
+      },
       loadingMethod(load, message="") {
         this.loadingDialog.loading = load;
         this.loadingDialog.message = message

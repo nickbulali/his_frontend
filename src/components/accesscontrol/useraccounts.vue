@@ -119,7 +119,6 @@
           :headers="headers"
           :items="user"
           :loading="loader"
-          class="elevation-1"
         >
         <template v-slot:items="props">
           <td>{{ props.item.username }}</td>
@@ -176,7 +175,7 @@
         message:'',
         y: 'top',
         color: 'success',
-          showPasswordField: false,
+        
         valid: true,
         delete: false,
         loader: false,
@@ -318,7 +317,7 @@
               this.editedItem.adminPasswordChange = true
               this.editedItem.password = this.password
             }
-            apiCall({url: '/api/user/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+            apiCall({url: '/api/users/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
               Object.assign(this.user[this.editedIndex], this.editedItem)
               console.log(resp)
@@ -335,7 +334,7 @@
         // store
         } else {
           if(this.$refs.form.validate()){
-            apiCall({url: '/api/user', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/users', data: this.editedItem, method: 'POST' })
             .then(resp => {
               this.user.push(resp)
               console.log(resp)

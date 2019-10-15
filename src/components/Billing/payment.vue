@@ -18,91 +18,85 @@
     </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+        
       </template>
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>Add Payment</v-toolbar-title>
+            <v-toolbar-title>MAKE PAYMENT</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <v-form ref="paymentForm" v-model="valid" lazy-validation>
+        <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <v-flex xs12>
-                       <v-autocomplete
-                      :items = "invoices"
-                      v-model="payment.invoice_id"
-                      outline
-                      item-text="number"
-                      item-value="id"
-                      label="Invoice"
-                      required>
-                    </v-autocomplete>                
-                </v-flex>
-                 <v-flex xs12>
-                  <v-text-field
-                    v-model="payment.number"
-                    :rules="[v => !!v || 'Payment Number is Required']"
+                <v-flex xs12 sm12 md12>
+          <v-text-field
+            label="Payment Number"
+            v-model="paymentNew.number"
+            disabled
+          ></v-text-field>
+          </v-flex>
+                    <v-flex xs12 sm12 md12>
+                <v-autocomplete
                     outline
-                    disabled
-                    label="Number"
-                     hint="Auto Generated"
-                    required>
-                  </v-text-field>
+                    :items="invoice"
+                    item-text="number"
+                    item-value="id"
+                    label="Invoice Number"
+                    :rules="[v => !!v || 'Invoice Number is Required']"
+                    v-model="paymentNew.invoice_id"
+                    >
+                </v-autocomplete>
                 </v-flex>
-                 <v-flex xs12>
-                  <v-menu>
-                      <v-text-field
-                        :rules="inputRules"
-                        :value="formattedDate"
-                        slot="activator"
-                        label="Date"
-                        prepend-inner-icon="date_range"
-                        outline>
-                      </v-text-field>
-                      <v-date-picker v-model="payment.date"></v-date-picker>
+                <v-flex xs12 sm12 md12>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date is Required']" :value="paymentNew.date" slot="activator" label="Date"></v-text-field>
+                      <v-date-picker v-model="paymentNew.date"></v-date-picker>
                     </v-menu>
-                </v-flex>
-                 <v-flex xs12>
-                  <v-text-field
-                    v-model="payment.method"
-                    :rules="[v => !!v || 'Method Of Payment is Required']"
-                    outline
-                    label="Payment Method"
-                    required>
-                  </v-text-field>
-                </v-flex>
+                  </v-flex>
                 <v-flex xs12>
                   <v-textarea
-                    v-model="payment.description"
+                    v-model="paymentNew.description"
                     :rules="[v => !!v || 'Description is Required']"
                     outline
                     label="Description"
                     required>
                   </v-textarea>
                 </v-flex>
-                <v-flex xs12>
-                  <v-text-field
-                    v-model="payment.amount"
-                    :rules="[v => !!v || 'Amount is Required']"
-                    outline
-                    label="Amount"
-                     hint="Auto Generated"
-                    required>
-                  </v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-text-field
-                    v-model="payment.balance"
-                    :rules="[v => !!v || 'Balance is Required']"
-                    outline
-                    label="Balance"
-                     hint="Auto Generated"
-                    required>
-                  </v-text-field>
-                </v-flex>
+                <v-flex xs12 sm12 md12>
+                 <v-select  
+                  outline
+                  v-model="paymentNew.method"
+                  :rules="[v => !!v || 'Method is Required']"
+                  label="Payment Method"
+                  :items="paymentMethod">    
+                </v-select>
+              </v-flex>
+                <v-flex xs12 sm12 md12>
+          <v-select
+            label="Status"
+            v-model="paymentNew.status"
+            :items="state"
+            :rules="[v => !!v || 'Status is Required']"
+          ></v-select>
+          </v-flex>
+          <v-flex xs12 sm12 md12>
+                 <v-text-field  
+                  outline
+                  v-model="paymentNew.amount"
+                  :rules="[v => !!v || 'Amount is Required']"
+                  label="Amount">    
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                 <v-text-field  
+                  outline
+                  v-model="paymentNew.balance"
+                  :rules="[v => !!v || 'Balance is Required']"
+                  label="Balance">    
+                </v-text-field>
+              </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -112,20 +106,178 @@
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="savePayment">Save
+            <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat @click="save">Save
               <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
     </v-dialog>
+
+<v-dialog v-model="mpesadialog" max-width="600px">
+<!--     <template v-slot:activator="{ on }">
+      <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+    </template> -->
+    <v-card>
+      <v-toolbar dark color="primary" class="elevation-0">
+        <v-spacer></v-spacer>
+        <v-toolbar-title>Add Payment</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar> 
+      <v-form ref="mpesaForm" v-model="valid" lazy-validation>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+               <v-autocomplete
+               :items = "invoices"
+               v-model="payment.invoice_id"
+               outline
+               item-text="number"
+               item-value="id"
+               label="Invoice"
+               required>
+             </v-autocomplete>                
+           </v-flex>
+
+           <v-flex xs12>
+            <v-text-field
+            v-model="payment.mpesaPhoneNumber"
+            :rules="[v => !!v || 'Method Of Payment is Required']"
+            outline
+            label="Patient Phone Number"
+            required>
+          </v-text-field>
+        </v-flex>
+
+        <v-flex xs12>
+          <v-text-field
+          v-model="payment.amount"
+          :rules="[v => !!v || 'Amount is Required']"
+          outline
+          label="Amount"
+          hint="Auto Generated"
+          required>
+        </v-text-field>
+      </v-flex>
+
+    </v-layout>
+  </v-container>
+</v-card-text>
+<v-card-actions>
+  <v-spacer></v-spacer>
+  <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+    Cancel
+    <v-icon right dark>close</v-icon>
+  </v-btn>
+  <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat  @click="requestSTK">Pay
+    <v-icon right dark>cloud_upload</v-icon>
+  </v-btn>
+    <v-btn v-if="confirmMpesa" dark round outline @click="confirmMpesaStatus" :loading="confirmMpesaLoader" color="success darken-1">Confirm Payment
+    <v-icon right dark>payment</v-icon>
+  </v-btn>
+
+
+</v-card-actions>
+</v-form>
+</v-card>
+</v-dialog>
+
+
     <v-dialog v-model="productDialog" max-width="600px">
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
+            <v-toolbar-title>Edit Payment</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
+        <v-form ref="productform" v-model="valid" lazy-validation>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+               <v-flex xs12 sm12 md12>
+          <v-text-field
+            label="Payment Number"
+            v-model="editPayment.number"
+            outline
+            disabled
+          ></v-text-field>
+          </v-flex>
+                    <v-flex xs12 sm12 md12>
+                <v-autocomplete
+                    outline
+                    :items="invoice"
+                    item-text="number"
+                    item-value="id"
+                    label="Invoice Number"
+                    :rules="[v => !!v || 'Invoice Number is Required']"
+                    v-model="editPayment.invoice_id"
+                    >
+                </v-autocomplete>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date is Required']" :value="editPayment.date" slot="activator" label="Date"></v-text-field>
+                      <v-date-picker v-model="editPayment.date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                <v-flex xs12>
+                  <v-textarea
+                    v-model="editPayment.description"
+                    :rules="[v => !!v || 'Description is Required']"
+                    outline
+                    label="Description"
+                    required>
+                  </v-textarea>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                 <v-select  
+                  outline
+                  v-model="editPayment.method"
+                  :rules="[v => !!v || 'Method is Required']"
+                  label="Payment Method"
+                   :items="paymentMethod">    
+                </v-select>
+              </v-flex>
+                <v-flex xs12 sm12 md12>
+          <v-select
+          outline
+            label="Status"
+            v-model="editPayment.status"
+            :items="state"
+            :rules="[v => !!v || 'Status is Required']"
+          ></v-select>
+          </v-flex>
+          <v-flex xs12 sm12 md12>
+                 <v-text-field  
+                  outline
+                  v-model="editPayment.amount"
+                  :rules="[v => !!v || 'Amount is Required']"
+                  label="Amount">    
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                 <v-text-field  
+                  outline
+                  v-model="editPayment.balance"
+                  :rules="[v => !!v || 'Balance is Required']"
+                  label="Balance">    
+                </v-text-field>
+              </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn round outline color="blue lighten-1" flat @click.native="close">
+              Cancel
+              <v-icon right dark>close</v-icon>
+            </v-btn>
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="saveUpdate" :loading="loading">
+              Save <v-icon right dark>cloud_upload</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <v-container class="my-5">
@@ -134,10 +286,15 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Payment
-                  <v-icon right dark>add</v-icon>
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Cash Payment
+                  <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
+                      <v-flex sm12 md6>
+          <v-btn color="green" @click = "mpesadialog = true" dark class="mb-2" outline>M-Pesa Payment
+            <v-icon right dark>playlist_add</v-icon>
+          </v-btn>
+        </v-flex>
             </v-layout>
           </v-flex>
           <v-flex sm12 md6 offset-md2 text-xs-right>
@@ -158,20 +315,20 @@
         </v-layout>
         <v-data-table
           :headers="headers"
-          :items="item"
+          :items="data"
           :loading="loader"
           class="elevation-1"
         >
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.number }}</td>
-            <td class="text-xs-left">{{ props.item.invoice_id }}</td>
+          <td class="text-xs-left">{{ props.item.invoice.number }}</td>
+          <td class="text-xs-left">{{ props.item.date }}</td>
           <td class="text-xs-left">{{ props.item.method }}</td>
-          <td class="text-xs-left">{{ props.item.date}}</td>
+          <td class="text-xs-left">{{ props.item.description }}</td>
+          <td class="text-xs-left">{{ props.item.status }}</td>
+          <td class="text-xs-left">{{ props.item.balance }}</td>
           <td class="text-xs-left">{{ props.item.amount }}</td>
-           <td class="text-xs-left">{{ props.item.balance }}</td>
-            <td class="text-xs-left">{{ props.item.description }}</td>
-           
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -179,8 +336,7 @@
             title="Edit"
             color="teal"
             flat
-            router :to="{name:'ShowPayment', params:{id: props.item.id}}"
-           >
+            @click="editItem(props.item)">
             Edit
             <v-icon right dark>edit</v-icon>
           </v-btn>
@@ -217,7 +373,6 @@
   export default {
     data () {
       return {
-        form:{},
         search: '',
         query: '',
         snackbar: false,
@@ -233,21 +388,8 @@
           message: ""
         },
         dialog: false,
+        mpesadialog:false,
         productDialog: false,
-        invoice: {
-         
-          number: '',
-      
-        },
-        payment: {
-           invoice_id: '',
-          number: '',
-          description: '',
-          method: '',
-          amount: '',
-          balance: '',
-          date: null,
-        },
         inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],
@@ -260,25 +402,50 @@
           },
           { text: 'Payment Number', align: 'left', value: 'number' },
           { text: 'Invoice Number', align: 'left', value: 'invoice_id' },
-          { text: 'Method', align: 'left', value: 'method' },
           { text: 'Date', align: 'left', value: 'date' },
-          { text: 'Amount', align: 'left', value: 'amount' },
-          { text: 'Balance', align: 'left', value: 'balance' },
+          { text: 'Method', align: 'left', value: 'method' },
           { text: 'Description', align: 'left', value: 'description' },
+          { text: 'Status', align: 'left', value: 'status' },
+          { text: 'Balance', align: 'left', value: 'balance' },
+          { text: 'Amount', align: 'left', value: 'amount' },
           { text: 'Actions', align: 'center', value: 'actions' },
         ],
-        item: [],
-        categories: [],
+        item:[],
+        payment:[],
         editedIndex: -1,
-        category: {
-          
+
+
+          payment: {
+         invoice_id: '',
+         number: '',
+         description: '',
+         method: '',
+         amount: '',
+         balance: '',
+         date: null,
+       },
+        paymentNew: {
+          invoice_id: '',
+          description: '',
+          status: 'not complete',
+          date: '',
+          method: '',
+          number: '',
+          amount: '',
+          balance: ''
         },
-        editedItem: {
-          category: '',
-        
-        },
-        defaultItem: {
-          category: '',
+                confirmMpesa: false,
+        confirmMpesaLoader: false,
+           stkLoader: false,
+        editPayment: {
+          invoice_id: '',
+          description: '',
+          status: '',
+          date: '',
+          method: '',
+          number: '',
+          amount: '',
+          balance: ''
         },
         pagination: {
           page: 1,
@@ -286,6 +453,8 @@
           total: 0,
           visible: 10
         },
+        state:['complete','not complete'],
+        paymentMethod:['cash','insurance','credit card','mpesa','bank'],
       }
     },
     created() {
@@ -302,25 +471,36 @@
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
-        apiCall({ url: "/api/payments?" + this.query, method: "GET" })
+        apiCall({ url: "/api/payment?" + this.query, method: "GET" })
           .then(resp => {
-            console.log("item is",resp);
-            this.item = resp.data;
+            console.log("payment is",resp);
+            this.data = resp.data;
             this.loader=false
             this.pagination.total = resp.total;
             this.pagination.per_page = resp.per_page;
           })
-           apiCall({ url: "/api/invoice", method: "GET" })
-          .then(resp => {
-            console.log(resp);
-            this.invoices = resp.data;
-            /*this.loader=false*/
-          })
-           apiCall({ url: "/api/payments/create", method: "GET" })
+          .catch(error => {
+            console.log(error.response);
+          });
+
+             apiCall({ url: "/api/payment/create", method: "GET" })
           .then(resp => {
             console.log("payment create", resp.form.number);
-            this.payment.number = resp.form.number;
+            this.paymentNew.number = resp.form.number;
+            console
             /*this.loader=false*/
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
+
+           apiCall({ url: "/api/invoice?" + this.query, method: "GET" })
+          .then(resp => {
+            console.log("invoice is",resp);
+            this.invoice = resp.data;
+            this.loader=false
+            this.pagination.total = resp.total;
+            this.pagination.per_page = resp.per_page;
           })
           .catch(error => {
             console.log(error.response);
@@ -336,74 +516,123 @@
       },
       editItem (item) {
         this.editedIndex = this.item.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.editPayment = Object.assign({}, item)
         this.productDialog = true
       },
       resetDialogReferences() {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
-      save () {
-        this.saving = true;
-        // update
-        if (this.editedIndex > -1) {
-          this.loadingMethod(true, "Updating Chargesheet")
-          if(this.$refs.productform.validate()){
-            this.loading = true
-            apiCall({url: '/api/item/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
-            .then(resp => {
-              this.loading = false
-              Object.assign(this.item[this.editedIndex], this.editedItem)
-              console.log(resp)
-              this.productDialog = false
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Patient Information Updated Succesfully';
-              this.snackbar = true;
-              this.loadingMethod(false)
-            })
-            .catch(error => {
-              this.loading = false
-              console.log(error.response)
-              this.loadingMethod(false)
-            })
-            this.close()
-          }
-        // store
-        } else {
-          this.loadingMethod(true, "Adding Chargesheet Entry")
-          if(this.$refs.productform.validate()){
-            this.loading = true
-            apiCall({url: '/api/item', data: this.editedItem, method: 'POST' })
-            .then(resp => {
-              this.loading = false
-              this.item.push(resp)
-              console.log(this.editedItem)
-              this.productDialog = false
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Item Added Succesfully';
-              this.snackbar = true;
-              this.loadingMethod(false)
-            })
-            .catch(error => {
-              this.loading = false
-              console.log(error.response)
-              this.loadingMethod(false)
-            })
-            this.close()
-          }
-        }
-      },
-      deleteItem (item) {
 
-        confirm('Are you sure you want to delete this item?') && (this.delete = true)
+       requestSTK(){
+        if(this.$refs.mpesaForm.validate()){
+          this.stkLoader = true
+          apiCall({url: "/api/mpesa-post", data: this.payment, method: 'POST'})
+          .then(resp => {
+            this.stkLoader = false
+            this.confirmMpesa = true
+          })
+          .catch(error => {
+            this.message = "M-Pesa Request Unsuccessful"
+            this.stkLoader = false
+            this.snackbarColor = "error"
+            this.snackbar = true
+          });
+        }
+
+      },
+      confirmMpesaStatus(){
+        apiCall({url: "/api/mpesa-confirm-payment", data: this.payment, method: 'POST'})
+        .then(resp => {
+          if(resp.status == "error"){
+            this.message = "M-Pesa Payment Still Processing"
+            this.snackbarColor = "yellow darken-2"
+            this.snackbar = true
+          } else {
+            this.message = "Payment Completed Successfully"
+            this.snackbarColor = "success"
+            this.snackbar = true
+            this.mpesaMessage = resp.message
+            this.level1 = false
+            this.level2 = false
+            this.level3 = false
+            this.level4 = true
+          }
+
+        })
+        .catch(error => {
+          this.message = "M-Pesa Payment Still Processing"
+          this.snackbarColor = "yellow"
+          this.snackbar = true
+        });
+        
+      },
+
+     
+          save(){
+          this.loadingMethod(true, "Adding Payment")
+          if(this.$refs.form.validate()){
+            this.loading = true
+            apiCall({url: '/api/payment', data: this.paymentNew, method: 'POST' })
+            .then(resp => {
+          
+              // this.item.push(resp)
+              // console.log("Post is:",this.item.push(resp))
+              this.productDialog = false
+              this.resetDialogReferences();
+              this.saving = false;
+              this.message = 'Payment Added Succesfully';
+              this.snackbar = true;
+              this.loadingMethod(false)
+            })
+            .catch(error => {
+              this.loading = false
+              console.log(error.response)
+              this.loadingMethod(false)
+            })
+            this.close()
+          }
+      },
+
+      saveUpdate () {
+
+        this.saving = true;
+          this.loadingMethod(true, "Updating Payment")
+          if(this.$refs.productform.validate()){
+
+            this.loading = true
+            apiCall({url: '/api/payment/'+ this.editPayment.id, data: this.editPayment, method: 'PUT' })
+            .then(resp => {
+              this.loading = false
+              this.productDialog = false
+              this.saving = false;
+              this.message = 'Payment Updated Succesfully';
+              this.snackbar = true;
+
+              this.loadingMethod(false)
+            })
+            .catch(error => {
+              this.loading = false
+              console.log(this.item)
+              this.loadingMethod(false)
+            })
+            this.close()
+          }
+
+      },
+    
+ deleteItem (item) {
+
+        confirm('Are you sure you want to delete this Payment Entry?') && (this.delete = true)
 
         if (this.delete) {
-          const index = this.item.indexOf(item)
-          this.item.splice(index, 1)
-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
+          const index = this.payment.indexOf(item)
+         this.payment.splice(index, 1)
+          apiCall({url: '/api/payment/'+item.id, method: 'DELETE' })
           .then(resp => {
+              this.message = 'Payment Deleted Succesfully';
+              this.snackbar = true;
+         
             console.log(resp)
           })
           .catch(error => {
@@ -412,36 +641,14 @@
         }
 
       },
-      savePayment(){
-        if(this.$refs.paymentForm.validate()){
-            this.loadingMethod(true, "Adding Payment")
-            this.loading = true
-            apiCall({url: '/api/payment', data: this.payment, method: 'POST' })
-            .then(resp => {
-              this.loading = false
-              this.saving = false
-              this.categories.push(resp)
-              this.dialog = false
-              this.message = 'Payment Added Succesfully'
-              this.snackbar = true
-              this.loadingMethod(false)
-            })
-            .catch(error => {
-              this.loading = false
-              console.log(error.response)
-              this.loadingMethod(false)
-            })
-            this.close()
-          }
-      }
+
+   
     },
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+        return this.editedIndex === -1 ? 'New Payment' : 'Edit Payment'
       },
-    formattedDate(){
-          return this.payment.date ? format(this.payment.date, 'Do MMM YYYY') : ''
-        },
+
       length: function() {
         return Math.ceil(this.pagination.total / this.pagination.per_page);
       },

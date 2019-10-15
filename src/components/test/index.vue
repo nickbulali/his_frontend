@@ -16,22 +16,21 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-
-    <v-dialog v-model="billDialog" max-width="500px">
-      <template v-slot:activator="{ on }">
-      <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
-      </template>
+    <v-dialog v-model="dialog" max-width="600px">
+<!--       <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template> -->
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>Generate Bill</v-toolbar-title>
+            <v-toolbar-title>Add Test</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                   <v-flex xs12 sm12 md12>
+       <v-form ref="form" v-model="valid" lazy-validation>
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                <v-flex xs12 sm12 md12>
                 <v-autocomplete
                     outline
                     :items="patient"
@@ -39,229 +38,143 @@
                     item-value="id"
                     label="Patients"
                     :rules="[v => !!v || 'Patient Name is Required']"
-                    v-model="generateBill.patient_id"
+                    v-model="testRequest.patient_id"
                     >
                 </v-autocomplete>
                 </v-flex>
-
-                <v-flex xs12 sm12 md12>
-                <v-text-field
-                 
-                  outline
-                  v-model="generateBill.patient_id"
-                  item-text="name.text"
-                  item-value="id"
-                  :rules="[v => !!v || 'Patient Name is Required']"
-                  label="Patient">    
-                </v-text-field>
-              </v-flex>
-                <v-flex xs12 sm12 md12>
-                <v-autocomplete
-                
+                  <v-flex xs12 sm12 md12>
+                    <v-select
+                      outline
+                      :items="visitTypes"
+                      v-model="testRequest.encounter_class_id"
+                      item-text="display"
+                      item-value="id"
+                      :rules="[v => !!v || 'Visit Type is Required']"
+                      label="Visit Type"
+                      >
+                    </v-select>
+                  </v-flex>
+                  <v-flex xs12 sm12 md12>
+                    <v-select
+                     outline
+                      :items="locations"
+                      v-model="testRequest.location_id"
+                      item-text="name"
+                      item-value="id"
+                      label="Location">
+                    </v-select>
+                  </v-flex>
+                  <v-flex xs12 sm12 md12>
+                    <v-text-field
                     outline
-                    :items="drugs"
-                    item-text="generic_name"
+                      v-model="testRequest.practitioner_name"
+                      :rules="[v => !!v || 'Requesting Physician is Required']"
+                      label="Requesting Physician">
+                    </v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm12 md12>
+                    <v-autocomplete
+                      outline
+                      v-bind:items="testTypes"
+                      v-model="testRequest.testTypeIds"
+                      label="Tests"
+                      item-text="name"
+                      item-value="id"
+                      multiple chips
+                      :rules="[value => !!value || 'A test is Required']">
+                    </v-autocomplete>
+                  </v-flex>
+                  <v-flex xs3 offset-xs9 text-xs-right>
+                    <v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save" :loading="loading">
+                      Save <v-icon right dark>cloud_upload</v-icon>
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+        </v-form>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="productDialog" max-width="600px">
+      <v-card>
+        <v-toolbar dark color="primary" class="elevation-0">
+          <v-spacer></v-spacer>
+            <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-form ref="productform" v-model="valid" lazy-validation>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 sm12 md12>
+                  <v-select
+                    :items="categories"
+                    :rules="[v => !!v || 'Unit is Required']"
+                    v-model="editedItem.category"
+                    item-text="name"
                     item-value="id"
-                    label="Drugs"
-                    :rules="[v => !!v || 'Drug Name is Required']"
-                    v-model="generateBill.drug_id"
-                    >
-                </v-autocomplete>
+                    label="Category"
+                    outline
+                  ></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
-                <v-text-field
-                
-                  outline
-                  v-model="generateBill.quantity"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Quantity">    
-                </v-text-field>
-              </v-flex>
-
-            <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
-                        <v-text-field
-                      
-                  outline
-                  v-model="input.one"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Drug">    
-                </v-text-field>
-      
-                <v-text-field
-                      
-                  outline
-                  v-model="input.two"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Quantity">    
-                </v-text-field>
-
- 
-              </v-flex>
-
+                  <v-text-field
+                    outline
+                    v-model="editedItem.item_code"
+                    :rules="[v => !!v || 'Item Code is Required']"
+                    label="Item Code">
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <v-text-field
+                    outline
+                    v-model="editedItem.description"
+                    :rules="[v => !!v || 'Name is Required']"
+                    label="Name">
+                  </v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                  <v-text-field
+                    outline
+                    v-model="editedItem.unit_price"
+                    :rules="[v => !!v || 'Unit Price is Required']"
+                    label="Unit Price">
+                  </v-text-field>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-              <v-btn v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
-                  Add row <v-icon right dark>cloud_upload</v-icon>
-                </v-btn>
-            <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
+            <v-btn round outline color="blue lighten-1" flat @click.native="close">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
-                  Bill <v-icon right dark>payment</v-icon>
-                </v-btn>
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading">
+              Save <v-icon right dark>cloud_upload</v-icon>
+            </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
     </v-dialog>
-
-
-    <v-dialog v-model="dialog" max-width="600px">
-      <template v-slot:activator="{ on }">
-      <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
-      </template>
-      <v-card>
-        <v-toolbar dark color="primary" class="elevation-0">
-          <v-spacer></v-spacer>
-            <v-toolbar-title>Issue Drug</v-toolbar-title>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                   <v-flex xs12 sm12 md12>
-                <v-select
-                    outline
-                    :items="patient"
-                    item-text="name.text"
-                    item-value="id"
-                    label="Patients"
-                    :rules="[v => !!v || 'Patient Name is Required']"
-                    v-model="editedItem.patient_id"
-                    autocomplete>
-                </v-select>
-                </v-flex>
-                    <v-flex xs12 sm12 md12>
-                <v-select
-                    outline
-                    v-bind:items="drugs"
-                    item-text="generic_name"
-                    item-value="generic_name"
-                    label="Drugs"
-                    :rules="[v => !!v || 'Drug Name is Required']"
-                    v-model="editedItem.drugs"
-                       multiple
-                    autocomplete>
-                </v-select>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                <v-text-field
-                  outline
-                  v-model="editedItem.price"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Price">    
-                </v-text-field>
-              </v-flex>
-               <v-flex xs12 sm12 md12>
-                <v-select
-                     outline
-                    :items="dosages"
-                    item-text="description"
-                    item-value="id"
-                    label="Dosages"
-                    :rules="[v => !!v || 'Dosages is Required']"
-                    v-model="editedItem.dosage_id"
-                    >
-                </v-select>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                <v-select
-                    outline
-                    :items="medication"
-                    item-text="display"
-                    item-value="id"
-                    label="Medication Status"
-                    :rules="[v => !!v || 'Medication Status is Required']"
-                    v-model="editedItem.medication_status_id"
-                    >
-                </v-select>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                <v-text-field
-                  outline
-                  v-model="editedItem.quantity"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Quantity">    
-                </v-text-field>
-                     </v-flex>
-                      <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
-                        <v-text-field
-                      
-                  outline
-                  v-model="input.one"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Drug">    
-                </v-text-field>
-      
-                <v-text-field
-                      
-                  outline
-                  v-model="input.two"
-                  :rules="[v => !!v || 'Quantity is Required']"
-                  label="Quantity">    
-                </v-text-field>
-
- 
-              </v-flex>
-                 <v-flex xs12 sm12 md12>
-                    <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.start_time" slot="activator" label="Start Time "></v-text-field>
-                      <v-date-picker v-model="editedItem.start_time"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.end_time" slot="activator" label="End Time "></v-text-field>
-                      <v-date-picker v-model="editedItem.end_time"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex xs12>
-                  <v-textarea
-                    v-model="editedItem.drugs"
-                   
-                    outline
-                    label="Comments"
-                    required>
-                  </v-textarea>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
-                  Save <v-icon right dark>cloud_upload</v-icon>
-                </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
-    <v-container class="my-8">
-      <span class="title">Drugs</span>
+    <v-container class="my-5">
+      <span class="title">Tests</span>
+     <!--  {{  tests}} -->
         <v-layout row justify-right>
           <v-flex sm12 md6>
-            <v-layout row >
+            <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Issue Drugs
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Test
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
-     
+      
+<!--               <v-flex sm12 md6>
+                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
+                  New Item
+                  <v-icon right dark>playlist_add</v-icon>
+                </v-btn>
+              </v-flex> -->
             </v-layout>
           </v-flex>
           <v-flex sm12 md6 offset-md2 text-xs-right>
@@ -282,21 +195,18 @@
         </v-layout>
         <v-data-table
           :headers="headers"
-          :items="prescription"
+          :items="tests"
           :loading="loader"
           class="elevation-1"
         >
+  
         <template v-slot:items="props">
-          <td>{{ props.item.id }}</td>
-          <td class="text-xs-left">{{ props.item.patient.name.text}}</td>
-          <td class="text-xs-left">{{ props.item.drugs.generic_name}}</td>
-          <td class="text-xs-left">{{ props.item.medication_status.display }}</td>
-          <td class="text-xs-left">{{ props.item.quantity }}</td>
-          <td class="text-xs-left">{{ props.item.dosage.description}}</td>
-          <td class="text-xs-left">{{ props.item.start_time }}</td>
-          <td class="text-xs-left">{{ props.item.end_time }}</td>
-      
-   
+          <td>{{ props.item.id}}</td>
+          <td class="text-xs-left">{{ props.item.encounter.patient.name.text }}</td>
+          <td class="text-xs-left">{{ props.item.created_at}}</td>
+          <td class="text-xs-left">{{ props.item.test_type.name }}</td>
+          <td class="text-xs-left">{{ props.item.requested_by}}</td>
+          <td class="text-xs-left">{{ props.item.test_status.name}}</td>
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -308,15 +218,6 @@
             Edit
             <v-icon right dark>edit</v-icon>
           </v-btn>
-
-          <v-btn 
-          color="primary" 
-          @click = "BillItem(props.item)" 
-          flat 
-          small 
-          outline>Bill
-                  <v-icon right dark>payment</v-icon>
-                </v-btn>
           <v-btn
             outline
             small
@@ -359,22 +260,13 @@
         valid: true,
         delete: false,
         loader: false,
-        billDialog:false,
         loading: false,
         loadingDialog: {
           loading: false,
           message: ""
         },
         dialog: false,
-              generateBill: {
-        
-        patient_id: '',
-        date: '',
-        price: '',
-        quantity: '',
-        date: ''
-      },
-        showPasswordField: false,
+         tests: [],
         productDialog: false,
         invoice: {
           patient: '',
@@ -386,50 +278,50 @@
         inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],
-   
-      
-       headers: [
-              {
-                text: 'ID',
-                align: 'left',
-                sortable: false,
-                value: 'id'
-              },
-              { text: 'Name', align: 'left', value: 'patient_id' },
-              { text: 'Drug', align: 'left', value: 'drugs' },
-              { text: 'Medication Status', align: 'left', value: 'medication_status_id' },
-              { text: 'Quantity', align: 'left', value: 'quantity' },
-              { text: 'Dosage', align: 'right', value: 'dosage_id' },
-              { text: 'Start Time', align: 'right', value: 'start_time' },
-              { text: 'End Time', align: 'right', value: 'end_time' },
-              { text: 'Actions', align: 'center', value: 'actions' },
-            ],
-      drugs: [],
-      dosages:[],
-      prescription:[],
-      editedIndex: -1,
-      editedItem: {
-        
+        headers: [
+          {
+            text: 'ID',
+            align: 'left',
+            sortable: false,
+            value: 'id'
+          },
+          { text: 'Patient Name', align: 'left', value: 'encounter_id' },
+          { text: 'Visit Type', align: 'left', value: 'identifier' },
+          { text: 'Location', align: 'left', value: 'requested_by' },
+          { text: 'Requested By', align: 'left', value: 'id' },
+          { text: 'Test Type', align: 'left', value: 'id' },
+          { text: 'Actions', align: 'center', value: 'actions' },
+        ],
+        item: [],
+        categories: [],
+        editedIndex: -1,
+        category: {
+          name: '',
+          description: '',
+        },
+        editedItem: {
+          category: '',
+          item_code: '',
+          description: '',
+          unit_price: '',
+        },
+        defaultItem: {
+          category: '',
+          item_code: '',
+          description: '',
+          unit_price: '',
+        },
+          visitTypes: [],
+      testTypes: [],
+      locations: [],
+      testRequest: {
         patient_id: '',
-        medication_status_id: '',
-        quantity:'',
-        dosage_id:'',
-        drugs:[],
-        end_time:'',
-        start_time:'',
-        price:''
+        bed_no: '',
+        location_id: '',
+        practitioner_name: '',
+        encounter_class_id: '',
+        testTypeIds: [],
       },
-      defaultItem: {
-        
-        patient_id: '',
-        medication_status_id: '',
-        quantity:'',
-        dosage_id:'',
-        drugs:[],
-        end_time:'',
-        start_time:''
-      },
-        inputs: [],
         pagination: {
           page: 1,
           per_page: 0,
@@ -442,23 +334,27 @@
       this.initialize();
     },
     methods: {
-          addRow() {
-      this.inputs.push({
-        one: '',
-        two: ''
-      })
-
-    },
       loadingMethod(load, message="") {
         this.loadingDialog.loading = load;
         this.loadingDialog.message = message
       },
-     initialize () {
-         this.loader = true
-         this.query = 'page='+ this.pagination.page;
+      initialize() {
+        this.loader=true
+        this.query = 'page='+ this.pagination.page;
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
+        apiCall({ url: "/api/item?" + this.query, method: "GET" })
+          .then(resp => {
+            console.log("item is",resp);
+            this.item = resp.data;
+            this.loader=false
+            this.pagination.total = resp.total;
+            this.pagination.per_page = resp.per_page;
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
       apiCall({url: '/api/patient?' , method: 'GET' })
         .then(resp => {
           console.log(resp.data)
@@ -470,128 +366,75 @@
         .catch(error => {
           console.log(error.response)
         })
-      apiCall({ url: "/api/dosage", method: "GET" })
-        .then(resp => {
-          this.dosages = resp;
-          console.log("The Dosage is:",this.dosages);
-          this.loader=false
-      
+
+          apiCall({ url: "/api/test?", method: "GET" })
+          .then(resp => {
+            console.log("Tests are",resp.data);
+            this.tests = resp.data;
+            this.pagination.total = resp.total;
+            this.pagination.per_page = resp.per_page;
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
+
+          apiCall({url: '/api/labtesttype', method: 'GET' })
+          .then(resp => {
+            console.log("Test Types are: ",resp)
+            this.testTypes = resp.data;
+        }).catch(error => {
+            console.log(error.response)
         })
-        .catch(error => {
-          console.log(error.response)
+
+        apiCall({url: '/api/location', method: 'GET' })
+          .then(resp => {
+            this.locations = resp.data;
+            console.log("Locations are: ",resp)
+        }).catch(error => {
+            console.log(error.response)
         })
-        apiCall({ url: "/api/medicationstatus", method: "GET" })
-        .then(resp => {
-          this.medication = resp;
-          console.log("The Dosage is:",this.medication);
-          this.loader=false
-      
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
-         apiCall({url: '/api/medications?' + this.query, method: 'GET' })
-        .then(resp => {
-          console.log("The Prescriptions are",resp.data)
-          this.prescription = resp.data;
-          this.loader = false
-          this.pagination.per_page = resp.per_page;
-          this.pagination.total = resp.total;
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
-     apiCall({url: '/api/labtesttype?fetch=all', method: 'GET' })
-        .then(resp => {
-          console.log(resp)
-          this.test = resp;
-          this.loader = false
-      
-        })
-        .catch(error => {
-          console.log(error.response)
+
+        apiCall({url: '/api/encounterclass', method: 'GET' })
+          .then(resp => {
+            this.visitTypes = resp;
+            console.log(resp)
+        }).catch(error => {
+            console.log(error.response)
         })
       },
-       close () {
-        this.dialog = false
-
+      close () {
+        this.productDialog = false
         // if not saving reset dialog references to datatables
         if (!this.saving) {
           this.resetDialogReferences();
         }
       },
       editItem (item) {
-        this.editedIndex = this.prescription.indexOf(item)
+        this.editedIndex = this.item.indexOf(item)
         this.editedItem = Object.assign({}, item)
-        this.editedItem.drugs=this.drugs.price
-
-        console.log("The Price is", this.editedItem.drugs)
-        this.dialog = true
-      },
-      BillItem (item) {
-        this.editedIndex = this.prescription.indexOf(item)
-        this.generateBill = Object.assign({}, item)
-        this.billDialog = true
-
+        this.productDialog = true
       },
       resetDialogReferences() {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
-      resetDialogReferences() {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-        this.showPasswordField = false
-        this.password = ''
-      },
-
-           passordReset () {
-        if (this.showPasswordField){
-          this.showPasswordField = false
-          this.password = ''
-        }else{
-          this.showPasswordField = true;
-        }
-      },
-
-     
       save () {
-
-        this.saving = true;
-        // update
-        if (this.editedIndex > -1) {
-          if(this.$refs.form.validate()){
-            apiCall({url: '/api/medications/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+        if(this.$refs.form.validate()){
+            this.loading = true
+            apiCall({url: '/api/patient/testrequest', data: this.testRequest, method: 'POST' })
             .then(resp => {
-              Object.assign(this.prescription[this.editedIndex], this.editedItem)
+              this.loading = false
               console.log(resp)
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Patient Prescription Updated Succesfully';
+              EventBus.$emit('update-test-list', resp);
+              this.message = 'New Test Added  Succesfully';
               this.snackbar = true;
             })
             .catch(error => {
+              this.loading = false
               console.log(error.response)
             })
-            this.close()
-          }
-        // store
-        } else {
-          if(this.$refs.form.validate()){
-            apiCall({url: '/api/medications', data: this.editedItem, method: 'POST' })
-            .then(resp => {
-              this.prescription.push(resp)
-              console.log("Post This",    this.prescription)
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'New Prescription Added Succesfully';
-              this.snackbar = true;
-            })
-            .catch(error => {
-              console.log(error.response)
-            })
-            this.close()
-          }
+          this.close()
+          this.resetDialogReferences()
         }
       },
       deleteItem (item) {
@@ -599,13 +442,10 @@
         confirm('Are you sure you want to delete this item?') && (this.delete = true)
 
         if (this.delete) {
-          const index = this.prescription.indexOf(item)
-         this.prescription.splice(index, 1)
-          apiCall({url: '/api/medications/'+item.id, method: 'DELETE' })
+          const index = this.item.indexOf(item)
+          this.item.splice(index, 1)
+          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
           .then(resp => {
-              this.message = 'Prescription Deleted Succesfully';
-              this.snackbar = true;
-         
             console.log(resp)
           })
           .catch(error => {
@@ -614,7 +454,28 @@
         }
 
       },
-
+      saveCategory(){
+        if(this.$refs.form.validate()){
+            this.loadingMethod(true, "Posting Category")
+            this.loading = true
+            apiCall({url: '/api/item-category', data: this.category, method: 'POST' })
+            .then(resp => {
+              this.loading = false
+              this.saving = false
+              this.categories.push(resp)
+              this.dialog = false
+              this.message = 'Category Added Succesfully'
+              this.snackbar = true
+              this.loadingMethod(false)
+            })
+            .catch(error => {
+              this.loading = false
+              console.log(error.response)
+              this.loadingMethod(false)
+            })
+            this.close()
+          }
+      }
     },
     computed: {
       formTitle () {
