@@ -91,12 +91,12 @@
           
             <v-autocomplete
 
-            outline
             :items="details"
             item-text="description"
-            item-value="id"
+            
             v-bind:value="details.id"
-            v-model="invoice.item_id"
+            v-model="item.description"
+
 
             @change="addItem()"
 
@@ -105,21 +105,22 @@
           <td><v-text-field
        
            :key="details.id"
-           outline
-           v-model="invoice.unit_price"
+           v-model="item.unit_price"
+    
            >    
          </v-text-field></td>
          <td ><v-text-field
             @input="getSubTotal()"
-          outline
-          v-model="invoice.qty"
+  
+          v-model="item.qty"
+          
 
           >    
         </v-text-field></td>
         <td class="total" >           <v-input
-            color="success" loading  v-model="invoice.sub_total"
+            color="success" loading  v-model="invoice.sub_total" 
           >
-         <b>  {{item.unit_price*item.quantity}}</b>
+         <b>  {{item.unit_price*item.qty}}</b>
           </v-input></td>
         <!--       <td>${{ item.price * item.quantity | currency }}</td> -->
       </tr>
@@ -278,8 +279,7 @@
         unit_price: '',
         qty: ''
         },
-        
-
+      
         details: [],
         state:['paid','not paid'],
         inputRules: [
@@ -308,13 +308,13 @@
         },
         
       addRow() {
-        this.items.push({ description: "", quantity: 1, unit_price: 0, total:'' });
+        this.items.push({ item_id: "", qty: 1, unit_price: 0, total:'' });
       },
-       addItem(){
+        addItem(){
         var i =0
         for (i; i <= this.details.length; i++) {
           if(this.details[i].id == this.items[i].item_id){
-            console.log("found",this.details[i].id)
+            console.log("found")
             this.items[i].unit_price = this.details[i].unit_price
           }
         }
@@ -324,11 +324,11 @@
       getSubTotal(){
         var i =0
         for (i; i <= this.details.length; i++) {
-          if(this.details[i].id == this.items[i].description){
+          if(this.details[i].id == this.items[i].item_id){
             //console.log("details is", this.details[i])
-            console.log("quantity is", this.items[i].quantity*this.details[i].unit_price)
+            console.log("quantity is", this.items[i].qty*this.details[i].unit_price)
             console.log("result", this.item[i].total)
-            this.item[i].total=this.details[i].unit_price*this.item[i].quantity
+            this.item[i].total=this.details[i].unit_price*this.item[i].qty
           }
         }
       },
@@ -437,7 +437,7 @@
         // },
         total() {
           return this.items.reduce(
-            (acc, item) => acc + item.unit_price * item.quantity,
+            (acc, item) => acc + item.unit_price * item.qty,
             0
             );
         },
