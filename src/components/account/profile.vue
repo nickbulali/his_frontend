@@ -238,8 +238,6 @@
 </template>
 <script>
 import apiCall from "../../utils/api";
-// const base_url =process.env.VUE_APP_API_URL v
-
 export default {
   name: "Profile",
   data: () => ({
