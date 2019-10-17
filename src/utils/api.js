@@ -1,5 +1,9 @@
 import axios from 'axios'
+<<<<<<< HEAD
+const base_url = 'http://his_backend.test';
+=======
 const base_url = 'http://127.0.0.1:8000';
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
 const apiCall = ({url, data, method}) => new Promise((resolve, reject) => {
   console.log(url)
   url = base_url+url

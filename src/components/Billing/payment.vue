@@ -113,6 +113,77 @@
         </v-form>
       </v-card>
     </v-dialog>
+
+<v-dialog v-model="mpesadialog" max-width="600px">
+<!--     <template v-slot:activator="{ on }">
+      <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+    </template> -->
+    <v-card>
+      <v-toolbar dark color="primary" class="elevation-0">
+        <v-spacer></v-spacer>
+        <v-toolbar-title>Add Payment</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar> 
+      <v-form ref="mpesaForm" v-model="valid" lazy-validation>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+               <v-autocomplete
+               :items = "invoices"
+               v-model="payment.invoice_id"
+               outline
+               item-text="number"
+               item-value="id"
+               label="Invoice"
+               required>
+             </v-autocomplete>                
+           </v-flex>
+
+           <v-flex xs12>
+            <v-text-field
+            v-model="payment.mpesaPhoneNumber"
+            :rules="[v => !!v || 'Method Of Payment is Required']"
+            outline
+            label="Patient Phone Number"
+            required>
+          </v-text-field>
+        </v-flex>
+
+        <v-flex xs12>
+          <v-text-field
+          v-model="payment.amount"
+          :rules="[v => !!v || 'Amount is Required']"
+          outline
+          label="Amount"
+          hint="Auto Generated"
+          required>
+        </v-text-field>
+      </v-flex>
+
+    </v-layout>
+  </v-container>
+</v-card-text>
+<v-card-actions>
+  <v-spacer></v-spacer>
+  <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+    Cancel
+    <v-icon right dark>close</v-icon>
+  </v-btn>
+  <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat  @click="requestSTK">Pay
+    <v-icon right dark>cloud_upload</v-icon>
+  </v-btn>
+    <v-btn v-if="confirmMpesa" dark round outline @click="confirmMpesaStatus" :loading="confirmMpesaLoader" color="success darken-1">Confirm Payment
+    <v-icon right dark>payment</v-icon>
+  </v-btn>
+
+
+</v-card-actions>
+</v-form>
+</v-card>
+</v-dialog>
+
+
     <v-dialog v-model="productDialog" max-width="600px">
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
@@ -215,10 +286,19 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
+<<<<<<< HEAD
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Cash Payment
+=======
                 <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Make Payment
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
+                      <v-flex sm12 md6>
+          <v-btn color="green" @click = "mpesadialog = true" dark class="mb-2" outline>M-Pesa Payment
+            <v-icon right dark>playlist_add</v-icon>
+          </v-btn>
+        </v-flex>
             </v-layout>
           </v-flex>
           <v-flex sm12 md6 offset-md2 text-xs-right>
@@ -312,6 +392,7 @@
           message: ""
         },
         dialog: false,
+        mpesadialog:false,
         productDialog: false,
         inputRules: [
           v => v.length >= !v  || 'Field is required'
@@ -336,6 +417,20 @@
         item:[],
         payment:[],
         editedIndex: -1,
+<<<<<<< HEAD
+
+
+          payment: {
+         invoice_id: '',
+         number: '',
+         description: '',
+         method: '',
+         amount: '',
+         balance: '',
+         date: null,
+       },
+=======
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
         paymentNew: {
           invoice_id: '',
           description: '',
@@ -346,6 +441,12 @@
           amount: '',
           balance: ''
         },
+<<<<<<< HEAD
+                confirmMpesa: false,
+        confirmMpesaLoader: false,
+           stkLoader: false,
+=======
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
         editPayment: {
           invoice_id: '',
           description: '',
@@ -432,6 +533,54 @@
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
+<<<<<<< HEAD
+
+       requestSTK(){
+        if(this.$refs.mpesaForm.validate()){
+          this.stkLoader = true
+          apiCall({url: "/api/mpesa-post", data: this.payment, method: 'POST'})
+          .then(resp => {
+            this.stkLoader = false
+            this.confirmMpesa = true
+          })
+          .catch(error => {
+            this.message = "M-Pesa Request Unsuccessful"
+            this.stkLoader = false
+            this.snackbarColor = "error"
+            this.snackbar = true
+          });
+        }
+
+      },
+      confirmMpesaStatus(){
+        apiCall({url: "/api/mpesa-confirm-payment", data: this.payment, method: 'POST'})
+        .then(resp => {
+          if(resp.status == "error"){
+            this.message = "M-Pesa Payment Still Processing"
+            this.snackbarColor = "yellow darken-2"
+            this.snackbar = true
+          } else {
+            this.message = "Payment Completed Successfully"
+            this.snackbarColor = "success"
+            this.snackbar = true
+            this.mpesaMessage = resp.message
+            this.level1 = false
+            this.level2 = false
+            this.level3 = false
+            this.level4 = true
+          }
+
+        })
+        .catch(error => {
+          this.message = "M-Pesa Payment Still Processing"
+          this.snackbarColor = "yellow"
+          this.snackbar = true
+        });
+        
+      },
+
+=======
+>>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
      
           save(){
           this.loadingMethod(true, "Adding Payment")

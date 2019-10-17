@@ -7,7 +7,11 @@
             <table>
               <tr>
                 <td class="title">
+
+                  <img src="http://ilabafrica.ac.ke/wp-content/uploads/2016/01/ILABLOGO1.png" style="width:100%; max-width:300px;">
+
                  Create Invoice
+
                 </td>
               </tr>
             </table>
@@ -27,6 +31,37 @@
           <v-text-field
             label="Invoice Number"
             v-model="invoice.number"
+
+            disabled
+          ></v-text-field>
+          </v-flex>
+                   <v-flex xs12 sm12 md12>
+          <v-text-field
+            label="Patient Name"
+            v-model="invoice.patient"
+          ></v-text-field>
+          </v-flex>
+                <v-flex xs4 sm4 md4>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Created Is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
+                      <v-date-picker v-model="invoice.date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                  <v-flex xs4 sm4 md4>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due" slot="activator" label="Date Due"></v-text-field>
+                      <v-date-picker v-model="invoice.due"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                <v-flex xs12>
+                  <v-textarea
+                    v-model="invoice.description"
+                    :rules="[v => !!v || 'Description is Required']"
+                    outline
+                    label="Description"
+                    required>
+                  </v-textarea>
+                </v-flex>
             
           ></v-text-field>
           </v-flex>
@@ -63,6 +98,7 @@
                     required>
                   </v-textarea>
                 </v-flex>
+
                 <v-flex xs12 sm12 md12>
           <v-select
             label="Status"
@@ -77,7 +113,9 @@
           </td>
         </tr>
 
+
        
+
         <tr class="heading">
           <td>Item</td>
           <td>Unit Cost</td>
@@ -127,7 +165,7 @@
 
       <tr >
         <td colspan="4">
-          <button class="btn-add-row" @click="addRow">Add Item</button>
+          <button class="btn btn-info" @click="addRow">Add Item</button>
         </td>
       </tr>
 
@@ -135,6 +173,8 @@
         <td colspan="3"></td>
         <td  v-model="invoice.total">Total: ${{ total }}</td>
       </tr>
+
+
 
           <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Generate Invoice <v-icon right dark>payment</v-icon>
@@ -261,10 +301,14 @@
         loader: false,
         dialog: false,
         delete: false,
+
+        invoice:[],
+
          message:new Date().toJSON().slice(0,10).replace(/-/g,'/'),
         selected: {},
         items: [],
-        invoice: {
+        
+        invoice:{
         number: '',
         patient_id: '',
         date: '',
@@ -279,7 +323,7 @@
         unit_price: '',
         qty: ''
         },
-      
+
         details: [],
         state:['paid','not paid'],
         inputRules: [
@@ -361,7 +405,10 @@
             console.log(error.response);
           });
 
+
+        apiCall({ url: "/api/item", method: "GET" })
         apiCall({ url: "/api/item?", method: "GET" })
+
         .then(resp => {
           console.log("item is",resp);
           this.details = resp.data;
@@ -373,6 +420,18 @@
         });
       },
 
+
+      save(){
+
+        this.saving = true;
+        // save
+            apiCall({url: '/api/invoice', data: this.invoice, method: 'POST' })
+            .then(resp => {
+              Object.assign(this.patient[this.invoice], this.invoice)
+              console.log(resp)
+              this.resetDialogReferences();
+              this.saving = false;
+              this.message = 'Patient Invoice generated Succesfully';
         save(){
           
             this.loading = true
@@ -385,6 +444,7 @@
               this.resetDialogReferences();
               this.saving = false;
               this.message = 'Invoice Added Succesfully';
+
               this.snackbar = true;
               this.loadingMethod(false)
             })
@@ -394,7 +454,8 @@
               this.loadingMethod(false)
             })
             this.close()
-          
+
+
       },
 
       editItem (item) {
