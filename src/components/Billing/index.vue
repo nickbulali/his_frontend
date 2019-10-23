@@ -26,8 +26,7 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-<<<<<<< HEAD
-=======
+
         
          
      
@@ -134,7 +133,7 @@
       </v-card>
     </v-dialog>
 
->>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
+
         <v-data-table
           :headers="headers"
           :items="data"
@@ -147,18 +146,18 @@
            <td class="text-xs-left">{{ props.item.due_date }}</td>
            <td class="text-xs-left">{{ props.item.number }}</td>
           <td class="text-xs-left">{{ props.item.patient.name.text }} {{ props.item.patient.name.family }}</td>
-<<<<<<< HEAD
+
           <td class="text-xs-left">{{ props.item.due_date }}</td>
           <td class="text-xs-right">{{ props.item.total }}</td>
     <td class="justify-center layout px-0">
-=======
+
           <td class="text-xs-right">{{ props.item.status }}</td>
           <td class="text-xs-right">{{ props.item.description }}</td>
           <td class="text-xs-right">{{ props.item.discount }}</td>
           <td class="text-xs-right">{{ props.item.sub_total }}</td>
           <td class="text-xs-right">{{ props.item.total }}</td>
           <td class="justify-center layout px-0">
->>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
+
           <v-btn
             outline
             small
@@ -215,7 +214,6 @@
         query: '',
         valid: true,
         loader: false,
-<<<<<<< HEAD
 
         invoice: {
           patient: '',
@@ -224,7 +222,7 @@
           date: null,
           due: null,
         },
-=======
+
         dialog: false,
         delete: false,
         invoice:[],
@@ -244,7 +242,7 @@
 
       },
          
->>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
+
         inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],

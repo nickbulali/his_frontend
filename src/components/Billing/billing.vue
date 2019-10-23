@@ -432,30 +432,13 @@
               this.resetDialogReferences();
               this.saving = false;
               this.message = 'Patient Invoice generated Succesfully';
-        save(){
-          
-            this.loading = true
-            apiCall({url: '/api/invoice', data: this.invoice, method: 'POST' })
-            .then(resp => {
-          
-              // this.item.push(resp)
-              // console.log("Post is:",this.item.push(resp))
-              this.productDialog = false
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Invoice Added Succesfully';
-
-              this.snackbar = true;
-              this.loadingMethod(false)
-            })
+              })
             .catch(error => {
               this.loading = false
               console.log(error.response)
               this.loadingMethod(false)
             })
             this.close()
-
-
       },
 
       editItem (item) {
