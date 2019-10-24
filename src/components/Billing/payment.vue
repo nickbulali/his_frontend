@@ -84,6 +84,7 @@
           <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
+                  prefix="Ksh"
                   v-model="paymentNew.amount"
                   :rules="[v => !!v || 'Amount is Required']"
                   label="Amount">    
@@ -92,6 +93,7 @@
               <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
+                  prefix="Ksh"
                   v-model="paymentNew.balance"
                   :rules="[v => !!v || 'Balance is Required']"
                   label="Balance">    
@@ -155,6 +157,7 @@
           v-model="payment.amount"
           :rules="[v => !!v || 'Amount is Required']"
           outline
+          prefix="Ksh"
           label="Amount"
           hint="Auto Generated"
           required>
@@ -251,6 +254,7 @@
           <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
+                  prefix="Ksh"
                   v-model="editPayment.amount"
                   :rules="[v => !!v || 'Amount is Required']"
                   label="Amount">    
@@ -259,6 +263,7 @@
               <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
+                  prefix="Ksh"
                   v-model="editPayment.balance"
                   :rules="[v => !!v || 'Balance is Required']"
                   label="Balance">    
@@ -286,11 +291,10 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-<<<<<<< HEAD
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Cash Payment
-=======
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Make Payment
->>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
+
+
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Make Payment</v-btn>
+
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -417,7 +421,6 @@
         item:[],
         payment:[],
         editedIndex: -1,
-<<<<<<< HEAD
 
 
           payment: {
@@ -429,8 +432,6 @@
          balance: '',
          date: null,
        },
-=======
->>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
         paymentNew: {
           invoice_id: '',
           description: '',
@@ -441,12 +442,11 @@
           amount: '',
           balance: ''
         },
-<<<<<<< HEAD
+
                 confirmMpesa: false,
         confirmMpesaLoader: false,
            stkLoader: false,
-=======
->>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
+
         editPayment: {
           invoice_id: '',
           description: '',
@@ -533,7 +533,7 @@
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
-<<<<<<< HEAD
+
 
        requestSTK(){
         if(this.$refs.mpesaForm.validate()){
@@ -579,8 +579,6 @@
         
       },
 
-=======
->>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
      
           save(){
           this.loadingMethod(true, "Adding Payment")
@@ -634,7 +632,7 @@
 
       },
     
- deleteItem (item) {
+deleteItem (item) {
 
         confirm('Are you sure you want to delete this Payment Entry?') && (this.delete = true)
 
@@ -654,6 +652,8 @@
         }
 
       },
+
+
 
    
     },

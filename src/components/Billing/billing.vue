@@ -7,11 +7,7 @@
             <table>
               <tr>
                 <td class="title">
-
-                  <img src="http://ilabafrica.ac.ke/wp-content/uploads/2016/01/ILABLOGO1.png" style="width:100%; max-width:300px;">
-
                  Create Invoice
-
                 </td>
               </tr>
             </table>
@@ -31,37 +27,6 @@
           <v-text-field
             label="Invoice Number"
             v-model="invoice.number"
-
-            disabled
-          ></v-text-field>
-          </v-flex>
-                   <v-flex xs12 sm12 md12>
-          <v-text-field
-            label="Patient Name"
-            v-model="invoice.patient"
-          ></v-text-field>
-          </v-flex>
-                <v-flex xs4 sm4 md4>
-                    <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Created Is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
-                      <v-date-picker v-model="invoice.date"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex xs4 sm4 md4>
-                    <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due" slot="activator" label="Date Due"></v-text-field>
-                      <v-date-picker v-model="invoice.due"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                <v-flex xs12>
-                  <v-textarea
-                    v-model="invoice.description"
-                    :rules="[v => !!v || 'Description is Required']"
-                    outline
-                    label="Description"
-                    required>
-                  </v-textarea>
-                </v-flex>
             
           ></v-text-field>
           </v-flex>
@@ -98,7 +63,6 @@
                     required>
                   </v-textarea>
                 </v-flex>
-
                 <v-flex xs12 sm12 md12>
           <v-select
             label="Status"
@@ -113,9 +77,7 @@
           </td>
         </tr>
 
-
        
-
         <tr class="heading">
           <td>Item</td>
           <td>Unit Cost</td>
@@ -129,12 +91,12 @@
           
             <v-autocomplete
 
+            outline
             :items="details"
             item-text="description"
-            
+            item-value="id"
             v-bind:value="details.id"
-            v-model="item.description"
-
+            v-model="invoice.item_id"
 
             @change="addItem()"
 
@@ -143,29 +105,29 @@
           <td><v-text-field
        
            :key="details.id"
-           v-model="item.unit_price"
-    
+           outline
+           prefix="Ksh"
+           v-model="invoice.unit_price"
            >    
          </v-text-field></td>
          <td ><v-text-field
             @input="getSubTotal()"
-  
-          v-model="item.qty"
-          
+          outline
+          v-model="invoice.qty"
 
           >    
         </v-text-field></td>
         <td class="total" >           <v-input
-            color="success" loading  v-model="invoice.sub_total" 
+            color="success" loading  v-model="invoice.sub_total"
           >
-         <b>  {{item.unit_price*item.qty}}</b>
+         <b>  {{item.unit_price*item.quantity}}</b>
           </v-input></td>
         <!--       <td>${{ item.price * item.quantity | currency }}</td> -->
       </tr>
 
       <tr >
         <td colspan="4">
-          <button class="btn btn-info" @click="addRow">Add Item</button>
+          <button class="btn-add-row" @click="addRow">Add Item</button>
         </td>
       </tr>
 
@@ -173,8 +135,6 @@
         <td colspan="3"></td>
         <td  v-model="invoice.total">Total: ${{ total }}</td>
       </tr>
-
-
 
           <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Generate Invoice <v-icon right dark>payment</v-icon>
@@ -301,14 +261,10 @@
         loader: false,
         dialog: false,
         delete: false,
-
-        invoice:[],
-
          message:new Date().toJSON().slice(0,10).replace(/-/g,'/'),
         selected: {},
         items: [],
-        
-        invoice:{
+        invoice: {
         number: '',
         patient_id: '',
         date: '',
@@ -323,6 +279,7 @@
         unit_price: '',
         qty: ''
         },
+        
 
         details: [],
         state:['paid','not paid'],
@@ -352,13 +309,13 @@
         },
         
       addRow() {
-        this.items.push({ item_id: "", qty: 1, unit_price: 0, total:'' });
+        this.items.push({ description: "", quantity: 1, unit_price: 0, total:'' });
       },
-        addItem(){
+       addItem(){
         var i =0
         for (i; i <= this.details.length; i++) {
           if(this.details[i].id == this.items[i].item_id){
-            console.log("found")
+            console.log("found",this.details[i].id)
             this.items[i].unit_price = this.details[i].unit_price
           }
         }
@@ -368,11 +325,11 @@
       getSubTotal(){
         var i =0
         for (i; i <= this.details.length; i++) {
-          if(this.details[i].id == this.items[i].item_id){
+          if(this.details[i].id == this.items[i].description){
             //console.log("details is", this.details[i])
-            console.log("quantity is", this.items[i].qty*this.details[i].unit_price)
+            console.log("quantity is", this.items[i].quantity*this.details[i].unit_price)
             console.log("result", this.item[i].total)
-            this.item[i].total=this.details[i].unit_price*this.item[i].qty
+            this.item[i].total=this.details[i].unit_price*this.item[i].quantity
           }
         }
       },
@@ -405,10 +362,7 @@
             console.log(error.response);
           });
 
-
-        apiCall({ url: "/api/item", method: "GET" })
         apiCall({ url: "/api/item?", method: "GET" })
-
         .then(resp => {
           console.log("item is",resp);
           this.details = resp.data;
@@ -420,18 +374,6 @@
         });
       },
 
-
-      save(){
-
-        this.saving = true;
-        // save
-            apiCall({url: '/api/invoice', data: this.invoice, method: 'POST' })
-            .then(resp => {
-              Object.assign(this.patient[this.invoice], this.invoice)
-              console.log(resp)
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Patient Invoice generated Succesfully';
         save(){
           
             this.loading = true
@@ -444,7 +386,6 @@
               this.resetDialogReferences();
               this.saving = false;
               this.message = 'Invoice Added Succesfully';
-
               this.snackbar = true;
               this.loadingMethod(false)
             })
@@ -454,8 +395,7 @@
               this.loadingMethod(false)
             })
             this.close()
-
-
+          
       },
 
       editItem (item) {
@@ -498,7 +438,7 @@
         // },
         total() {
           return this.items.reduce(
-            (acc, item) => acc + item.unit_price * item.qty,
+            (acc, item) => acc + item.unit_price * item.quantity,
             0
             );
         },
