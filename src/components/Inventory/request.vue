@@ -22,7 +22,7 @@
         <v-toolbar dark color="primary" class="elevation-0">
           <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn round single-line color="blue lighten-1" flat @click.native="close">
+          <v-btn round outline color="blue lighten-1" flat @click.native="close">
             Cancel
             <v-icon right dark>close</v-icon>
           </v-btn>
@@ -129,7 +129,7 @@
         <td class="justify-center layout px-0">
     
           <v-btn
-            single-line
+            outline
             small
             title="Edit"
             color="teal"
@@ -139,7 +139,7 @@
             <v-icon right dark>edit</v-icon>
           </v-btn>
           <v-btn
-            single-line
+            outline
             small
             title="Delete"
             color="pink"

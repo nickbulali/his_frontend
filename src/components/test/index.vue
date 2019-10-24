@@ -103,14 +103,14 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-              <v-btn v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
+              <v-btn v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
                   Add row <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
-            <v-btn round single-line color="blue lighten-1" flat @click="billDialog = false">
+            <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
                   Bill <v-icon right dark>payment</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -244,7 +244,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -299,7 +299,7 @@
    
           <td class="justify-center layout px-0">
           <v-btn
-            single-line
+            outline
             small
             title="Edit"
             color="teal"
@@ -314,11 +314,11 @@
           @click = "BillItem(props.item)" 
           flat 
           small 
-          single-line>Bill
+          outline>Bill
                   <v-icon right dark>payment</v-icon>
                 </v-btn>
           <v-btn
-            single-line
+            outline
             small
             title="Delete"
             color="pink"

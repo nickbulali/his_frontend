@@ -62,11 +62,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round single-line color="blue lighten-1" flat @click.native="close" data-dismiss="productDialog">
+            <v-btn round outline color="blue lighten-1" flat @click.native="close" data-dismiss="productDialog">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="add" :loading="loading"  >
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="add" :loading="loading"  >
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           </v-card-actions>
@@ -134,11 +134,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn round single-line color="blue lighten-1" flat data-dismiss="DetailsVue">
+            <v-btn round outline color="blue lighten-1" flat data-dismiss="DetailsVue">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading">
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save" :loading="loading">
               Save <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
           
@@ -273,7 +273,7 @@
                           
                             <div class="subheading">{{index+1}}. {{ event.patient.name.given }} - {{ event.appointment_time }}</div>
                         <v-btn
-                      single-line
+                      outline
                       small
                       title="Delete"
                       color="pink"
