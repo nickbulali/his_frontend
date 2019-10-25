@@ -103,16 +103,16 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-              <v-btn v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
+              <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
                   Add row <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
-            <v-btn round single-line color="blue lighten-1" flat @click="billDialog = false">
+            <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
             </v-btn>
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
-                  Bill <v-icon right dark>payment</v-icon>
-                </v-btn>
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
+              Bill <v-icon right dark>payment</v-icon>
+            </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -244,7 +244,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn round single-line xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -257,7 +257,7 @@
           <v-flex sm12 md6>
             <v-layout row >
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" single-line>Issue Drugs
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Issue Drugs
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -295,11 +295,9 @@
           <td class="text-xs-left">{{ props.item.dosage.description}}</td>
           <td class="text-xs-left">{{ props.item.start_time }}</td>
           <td class="text-xs-left">{{ props.item.end_time }}</td>
-      
-   
           <td class="justify-center layout px-0">
           <v-btn
-            single-line
+            outline
             small
             title="Edit"
             color="teal"
@@ -308,17 +306,16 @@
             Edit
             <v-icon right dark>edit</v-icon>
           </v-btn>
-
           <v-btn 
-          color="primary" 
-          @click = "BillItem(props.item)" 
-          flat 
-          small 
-          single-line>Bill
-                  <v-icon right dark>payment</v-icon>
-                </v-btn>
+            color="primary" 
+            @click = "BillItem(props.item)" 
+            flat 
+            small 
+            outline>Bill
+            <v-icon right dark>payment</v-icon>
+          </v-btn>
           <v-btn
-            single-line
+            outline
             small
             title="Delete"
             color="pink"

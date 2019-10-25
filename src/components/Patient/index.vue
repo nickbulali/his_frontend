@@ -96,10 +96,10 @@
 		    <v-flex sm12 md3 lg4 v-for="(patient,index) in allPatients.data" :key="patient.id">
 		      <div class="his_card">
 		        <div class="his_card_top_right">
-		        	<v-btn single-line fab small color="red" @click="deletePatient(patient.id)">
+		        	<v-btn outline fab small color="red" @click="deletePatient(patient.id)">
 		            	<v-icon dark>delete</v-icon>
 		          	</v-btn>
-		          <v-btn single-line fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
+		          <v-btn outline fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
 		            <v-icon dark>visibility</v-icon>
 		          </v-btn>
 		        </div>
