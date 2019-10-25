@@ -86,7 +86,7 @@
 				        </v-layout>
 				    </v-form>
 		        <div class="his_card_footer">
-		          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="save">
+		          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" outline @click="save">
 		            <v-icon left dark>add_circle</v-icon>
 		            Add
 		          </v-btn>
@@ -116,12 +116,12 @@
 		        <p class="his_card_title">Number of Visits</p>
 		        <p class="his_card_description">!!x visits!!</p>
 		        <div class="his_card_footer">
-		          <v-btn dark class="his_card_button" small title="Edit" color="green" round @click="addToQueue(patient)">
+		          <v-btn dark class="his_card_button" small title="Edit" color="green" outline @click="addToQueue(patient)">
 		            <v-icon left dark>launch</v-icon>
 		            New Visit
 		          </v-btn>
 		          <div class="his_card_footer_right">
-		            <v-btn dark class="his_card_button" small title="Edit" color="blue" round @click="requestTest(patient)">
+		            <v-btn dark class="his_card_button" small title="Edit" color="blue" outline @click="requestTest(patient)">
 			        	<v-icon left dark>add_circle</v-icon>
 			            View Report
 			        </v-btn>

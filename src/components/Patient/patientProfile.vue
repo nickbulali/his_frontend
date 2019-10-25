@@ -8,6 +8,8 @@
       >
         {{ message }}
     </v-snackbar>
+
+
         <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
       <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
@@ -27,7 +29,7 @@
                   <v-textarea
                     v-model="diagnosis.description"
                    
-                    single-line
+                    outline
                     label="Diagnosis"
                     required>
                   </v-textarea>
@@ -36,7 +38,7 @@
                   <v-textarea
                     v-model="editedItem.patient_id"
                    
-                    single-line
+                    outline
                     label="Diagnosis"
                     required>
                   </v-textarea>
@@ -57,6 +59,8 @@
         </v-form>
       </v-card>
     </v-dialog>
+
+
      <v-dialog v-model="meddialog" max-width="600px">
       <template v-slot:activator="{ on }">
       <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
@@ -74,14 +78,14 @@
                    
               <v-flex sm12 md12>
                 <v-select
-                    single-line
+                    outline
                     v-bind:items="drugs"
                     item-text="generic_name"
                     item-value="generic_name"
                     label="Drugs"
                     :rules="[v => !!v || 'Drug Name is Required']"
                     v-model="editedItem.drugs"
-                    multiple
+                    multiple chips
                     autocomplete>
                 </v-select>
                 </v-flex>
@@ -96,6 +100,52 @@
             </v-btn>
             <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click="
   savemed(patient)">
+                  Save <v-icon right dark>cloud_upload</v-icon>
+                </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
+
+     <v-dialog v-model="testsdialog" max-width="600px">
+      <template v-slot:activator="{ on }">
+      <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
+      </template>
+      <v-card>
+        <v-toolbar dark color="primary" class="elevation-0">
+          <v-spacer></v-spacer>
+            <v-toolbar-title>Laboratory Tests</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                   
+      <v-flex xs12 sm12 md12>
+                    <v-autocomplete
+                      outline
+                      v-bind:items="testTypes"
+                      v-model="testRequest.testTypeIds"
+                      label="Tests"
+                      item-text="name"
+                      item-value="id"
+                      multiple chips
+                      :rules="[value => !!value || 'A test is Required']">
+                    </v-autocomplete>
+                  </v-flex>
+
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+              Cancel
+              <v-icon right dark>close</v-icon>
+            </v-btn>
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click="
+  savetests(patient)">
                   Save <v-icon right dark>cloud_upload</v-icon>
                 </v-btn>
           </v-card-actions>
@@ -131,7 +181,7 @@
               <v-img
               max-width = "250"
               aspect-ratio=1.05
-              src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+              src="https://image.flaticon.com/icons/svg/1512/1512910.svg"
             >
               <div class="his_card_top_right">
                 <v-btn outline fab small color="blue">
@@ -246,7 +296,7 @@
                     Vital Signs
                   </p>
                   <v-spacer></v-spacer>
-                  <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="">
+                  <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" outline @click="">
                     <v-icon left dark>add_circle</v-icon>
                     Add Vital
                   </v-btn>
@@ -301,7 +351,7 @@
                       Visits
                     </p>
                     <v-spacer></v-spacer>
-                    <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="">
+                    <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" outline @click="">
                       <v-icon left dark>add_circle</v-icon>
                       Add New
                     </v-btn>
@@ -384,7 +434,7 @@
                           <p class="his_card_description">{{encounter.created_at | moment("from", true)}}</p>
                           <div class="his_card_footer">
                             <div class="his_card_footer_right">
-                              <v-btn dark class="his_card_button" small title="Edit" color="brown" round @click="requestTest(patient)">
+                              <v-btn dark class="his_card_button" small title="Edit" color="brown" outline @click="requestTest(patient)">
                               <v-icon left dark>add_circle</v-icon>
                                 Add Notes
                             </v-btn>
@@ -452,7 +502,7 @@
                       <p class="his_card_main_heading">Add New</p>
 
                       <div class="his_card_footer">
-                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click = "vit(patient)">
+                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" outline @click = "vit(patient)">
                           <v-icon left dark>add_circle</v-icon> Add
                         </v-btn>
                       </div>
@@ -468,6 +518,51 @@
                 </v-layout>
               </div>
             </v-tab-item>
+            <v-tab
+              ripple
+            >
+            Lab Tests
+            </v-tab>
+            <v-tab-item
+            >
+  <div class="his_card_no_shadow mt-3 pa-2">
+                <v-layout
+                  row
+                  wrap>
+                  <v-flex sm12 md4 lg4>
+                    <div class="his_card_new_patient">
+                      <p class="his_card_main_heading">Add New</p>
+                        <v-form
+                            ref="form"
+                            v-model="valid"
+                            lazy-validation
+                        >
+                          <v-layout row wrap>
+                            <v-flex sm12 md12>
+          
+                            </v-flex>
+                          </v-layout>
+                      </v-form>
+                      <div class="his_card_footer">
+                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" outline @click="lab(patient)">
+                          <v-icon left dark>add_circle</v-icon>
+                          Add
+                        </v-btn>
+                      </div>
+                    </div>
+                  </v-flex>
+               <v-flex xs12 sm12 md6 v-for="Tests in tests" :key="Tests.id" >
+                    <div class="his_card">
+                      <p class="his_card_main_heading">Test Type:{{Tests.test_type.name}}</p>
+                      <p class="his_card_main_heading">Test Status:{{Tests.test_status.name}}</p>
+                      <p class="his_card_small_text">Date of Visit:{{Tests.created_at}}</p>
+
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </div>
+            </v-tab-item>
+
             <v-tab
               ripple
             >
@@ -494,17 +589,23 @@
                           </v-layout>
                       </v-form>
                       <div class="his_card_footer">
-                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="med(patient)">
+                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" outline @click="med(patient)">
                           <v-icon left dark>add_circle</v-icon>
                           Add
                         </v-btn>
                       </div>
                     </div>
                   </v-flex>
+
+
+
                <v-flex xs12 sm12 md6 v-for="meds in prescription" :key="meds.id" >
                     <div class="his_card">
                       <p class="his_card_main_heading">{{meds.drugs}}</p>
                       <p class="his_card_small_text">Date of Visit:{{meds.created_at}}</p>
+
+
+
 
                     </div>
                   </v-flex>
@@ -543,7 +644,7 @@
                           </v-layout>
                       </v-form>
                       <div class="his_card_footer">
-                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="saveAllergy">
+                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" outline @click="saveAllergy">
                           <v-icon left dark>add_circle</v-icon>
                           Add
                         </v-btn>
@@ -563,7 +664,75 @@
                 </v-layout>
               </div>
             </v-tab-item>
+
+            <v-tab
+              ripple
+            >
+              Billing
+            </v-tab>
+            <v-tab-item
+            >
+              <div class="his_card_no_shadow mt-3 pa-2">
+                <v-layout
+                  row
+                  wrap>
+                   <v-flex sm12 md4 lg4>
+                    <v-btn color="primary" to="/billing/billing" dark class="mb-2" outline>Generate Bill
+                  <v-icon right dark>payment</v-icon>
+                </v-btn>
+              </v-flex>
+                    <v-data-table
+          :headers="headers"
+          :items="data"
+          :loading="loader"
+          class="elevation-1"
+        >
+        <template v-slot:items="props">
+          <td>{{ props.item.id }}</td>
+          <td class="text-xs-left">{{ props.item.date }}</td>
+          <td @click="viewInvoice(props.item)" class="text-xs-left">{{ props.item.number }}</td>
+          <td class="text-xs-left">{{ props.item.patient.name.text }} {{ props.item.patient.name.family }}</td>
+          <td class="text-xs-left">{{ props.item.due_date }}</td>
+          <td class="text-xs-right">{{ props.item.total }}</td>
+          <td class="text-xs-right">{{ props.item.status }}</td>
+          <td class="justify-center layout px-0">
+          <v-btn
+            outline
+            small
+            title="Edit"
+            color="teal"
+            flat
+            @click="editItem(props.item)">
+            Edit
+            <v-icon right dark>edit</v-icon>
+          </v-btn>
+            <v-btn
+            outline
+            small
+            title="Delete"
+            color="pink"
+            flat
+            @click="deleteItem(props.item)">
+            Delete
+            <v-icon right dark>delete</v-icon>
+          </v-btn>
+        </td>
+        </template>
+        <template slot="footer">
+          <td>
+            <strong>Total</strong>
+          </td>
+          <td class="text-xs-right" :colspan="headers.length-1">
+            <strong>{{total}}</strong>
+          </td>
+        </template>
+      </v-data-table>
+
+                </v-layout>
+              </div>
+            </v-tab-item>
           </v-tabs>
+
         </v-flex>
       </v-layout>
     </v-container>
@@ -604,15 +773,30 @@
         loading: false,
         valid: false,
         interval: {},
+        tests:[],
         visits: 30,
         snackbar: false,
         y: 'top',
-        color: 'success',
+        color: 'primary',
         message: '',
         screenDialog: false,
+        billDialog:false,
         dialog: false,
         meddialog:false,
+        testsdialog:false,
         patient:{},
+        generateBill: {
+        
+        patient_id: '',
+        date: '',
+        price: '',
+        quantity: '',
+        date: ''
+      },
+          testRequest: {
+        patient_id: '',
+        testTypeIds: [],
+      },
         allergies: [],
         prescription:[],
         diagnosis:{
@@ -624,8 +808,8 @@
         vitals:[],
         prescription:[],
           drugs: [],
-
-
+testTypeIds:[],
+testTypes:[],
       item:[],
             editedItem: {
         
@@ -635,6 +819,21 @@
 
       },
       description:'',
+            headers: [
+              {
+                text: 'ID',
+                align: 'left',
+                sortable: false,
+                value: 'id'
+              },
+              { text: 'Date', align: 'left', value: 'date' },
+              { text: 'Number', align: 'left', value: 'number' },
+              { text: 'Patient', align: 'left', value: 'customer' },
+              { text: 'Due Date', align: 'left', value: 'due_date' },
+              { text: 'Total', align: 'right', value: 'total' },
+              { text: 'Status', align: 'right', value: 'status' },
+               { text: 'Actions', align: 'center', value: 'actions' },
+            ],
         newallergy: '',
           newdiagnosis: '',
         visitsPagination: {
@@ -649,6 +848,11 @@
       this.initialize()
     },
     methods:{
+
+        loadingMethod(load, message="") {
+        this.loadingDialog.loading = load;
+        this.loadingDialog.message = message
+      },
           Diagnosis(patient){
         this.dialog = true
         this.editedItem.patient_id = patient.id
@@ -677,6 +881,14 @@
           console.log(error.response)
         })
 
+          apiCall({url: '/api/labtesttype', method: 'GET' })
+          .then(resp => {
+            console.log("Test Types are: ",resp)
+            this.testTypes = resp.data;
+        }).catch(error => {
+            console.log(error.response)
+        })
+
           apiCall({url: '/api/diagnosis/' + this.$route.params.id, method: 'GET' })
         .then(resp => {
           console.log("diagnosis", resp)
@@ -696,6 +908,7 @@
           console.log(error.response)
         })
 
+
         apiCall({url: '/api/drugs?', method: 'GET' })
         .then(resp => {
           console.log(resp)
@@ -706,6 +919,20 @@
         .catch(error => {
           console.log(error.response)
         })
+
+       
+       apiCall({url: '/api/tests?', method: 'GET' })
+        .then(resp => {
+          console.log(resp)
+          this.tests = resp.data;
+          this.loader = false
+      
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+       
+
 
          apiCall({url: '/api/vitalsigns/' + this.$route.params.id, method: 'GET' })
         .then(resp => {
@@ -779,7 +1006,16 @@
         }
       },
 
-            vit(patient){
+           close () {
+        this.dialog = false
+ 
+        this.meddialog= false
+        this.testsdialog= false
+        // if not saving reset dialog references to datatables
+   
+      },
+
+        vit(patient){
         this.dialog = true
         this.diagnosis.patient_id = patient.id
       },
@@ -787,34 +1023,65 @@
         this.meddialog = true
         this.editedItem.patient_id = patient.id
       },
+        lab(patient){
+        this.testsdialog = true
+        this.testRequest.patient_id = patient.id
+
+              console.log('Test Patient id is',patient.id)
+      },
       patientDetails(patient){
         this.patient = patient
-        console.log(this.patient)
+        console.log("Patient is",this.patient)
       },
    
-
-
       editItem (item) {
         this.editedIndex = this.prescription.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
         this.editedItem.patient_id = this.$route.params.id
+       
             console.log("Patient ID is",this.patient.id)
+      },
+      BillItem (item) {
+        this.editedIndex = this.prescription.indexOf(item)
+        this.generateBill = Object.assign({}, item)
+        this.billDialog = true
+
       },
       resetDialogReferences() {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
-
-
-
-
+  savetests(patient) {
+        if(this.$refs.form.validate()){
+            this.loading = true
+            apiCall({url: '/api/tests', data: this.testRequest, method: 'POST' })
+            .then(resp => {
+              this.loading = false
+              console.log("Patient id is", this.testRequest.patient_id )
+              EventBus.$emit('update-test-list', resp);
+                 this.resetDialogReferences();
+              this.saving = false;
+              this.message = 'New Test Added  Succesfully';
+              this.snackbar = true;
+              this.testsdialog = false
+            })
+            .catch(error => {
+              this.loading = false
+              console.log(error.response)
+            })
+          this.close()
+          this.resetDialogReferences()
+        }
+      },
   savemed(patient) {
 
         this.saving = true;
         // update
         if (this.editedIndex > -1) {
           if(this.$refs.form.validate()){
+            this.loadingMethod(true, "Updating Patient Diagnosis")
+            this.loading = true
             apiCall({url: '/api/diagnosis/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
               Object.assign(this.diagnosis[this.editedIndex], this.editedItem)
@@ -839,7 +1106,7 @@
               console.log("Post This",    this.editedItem.patient_id)
               this.resetDialogReferences();
               this.saving = false;
-                this.meddialog = false
+              this.meddialog = false
               this.message = 'New Prescription Added Succesfully';
               this.snackbar = true;
             })

@@ -39,7 +39,7 @@
           </v-flex>
                     <v-flex xs12 sm12 md12>
                 <v-autocomplete
-                    single-line
+                    outline
                     :items="invoice"
                     item-text="number"
                     item-value="id"
@@ -51,7 +51,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  single-line :rules="[v => !!v || 'Date is Required']" :value="paymentNew.date" slot="activator" label="Date"></v-text-field>
+                      <v-text-field  outline :rules="[v => !!v || 'Date is Required']" :value="paymentNew.date" slot="activator" label="Date"></v-text-field>
                       <v-date-picker v-model="paymentNew.date"></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -59,14 +59,14 @@
                   <v-textarea
                     v-model="paymentNew.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    single-line
+                    outline
                     label="Description"
                     required>
                   </v-textarea>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                  <v-select  
-                  single-line
+                  outline
                   v-model="paymentNew.method"
                   :rules="[v => !!v || 'Method is Required']"
                   label="Payment Method"
@@ -83,7 +83,7 @@
           </v-flex>
           <v-flex xs12 sm12 md12>
                  <v-text-field  
-                  single-line
+                  outline
                   v-model="paymentNew.amount"
                   :rules="[v => !!v || 'Amount is Required']"
                   label="Amount">    
@@ -91,7 +91,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                  <v-text-field  
-                  single-line
+                  outline
                   v-model="paymentNew.balance"
                   :rules="[v => !!v || 'Balance is Required']"
                   label="Balance">    
@@ -113,6 +113,77 @@
         </v-form>
       </v-card>
     </v-dialog>
+
+<v-dialog v-model="mpesadialog" max-width="600px">
+<!--     <template v-slot:activator="{ on }">
+      <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+    </template> -->
+    <v-card>
+      <v-toolbar dark color="primary" class="elevation-0">
+        <v-spacer></v-spacer>
+        <v-toolbar-title>Add Payment</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar> 
+      <v-form ref="mpesaForm" v-model="valid" lazy-validation>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+               <v-autocomplete
+               :items = "invoices"
+               v-model="payment.invoice_id"
+               outline
+               item-text="number"
+               item-value="id"
+               label="Invoice"
+               required>
+             </v-autocomplete>                
+           </v-flex>
+
+           <v-flex xs12>
+            <v-text-field
+            v-model="payment.mpesaPhoneNumber"
+            :rules="[v => !!v || 'Method Of Payment is Required']"
+            outline
+            label="Patient Phone Number"
+            required>
+          </v-text-field>
+        </v-flex>
+
+        <v-flex xs12>
+          <v-text-field
+          v-model="payment.amount"
+          :rules="[v => !!v || 'Amount is Required']"
+          outline
+          label="Amount"
+          hint="Auto Generated"
+          required>
+        </v-text-field>
+      </v-flex>
+
+    </v-layout>
+  </v-container>
+</v-card-text>
+<v-card-actions>
+  <v-spacer></v-spacer>
+  <v-btn round outline color="blue lighten-1" flat @click="dialog = false">
+    Cancel
+    <v-icon right dark>close</v-icon>
+  </v-btn>
+  <v-btn round outline xs12 sm6 :loading="loading" color="primary darken-1" flat  @click="requestSTK">Pay
+    <v-icon right dark>cloud_upload</v-icon>
+  </v-btn>
+    <v-btn v-if="confirmMpesa" dark round outline @click="confirmMpesaStatus" :loading="confirmMpesaLoader" color="success darken-1">Confirm Payment
+    <v-icon right dark>payment</v-icon>
+  </v-btn>
+
+
+</v-card-actions>
+</v-form>
+</v-card>
+</v-dialog>
+
+
     <v-dialog v-model="productDialog" max-width="600px">
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
@@ -128,13 +199,13 @@
           <v-text-field
             label="Payment Number"
             v-model="editPayment.number"
-            single-line
+            outline
             disabled
           ></v-text-field>
           </v-flex>
                     <v-flex xs12 sm12 md12>
                 <v-autocomplete
-                    single-line
+                    outline
                     :items="invoice"
                     item-text="number"
                     item-value="id"
@@ -146,7 +217,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  single-line :rules="[v => !!v || 'Date is Required']" :value="editPayment.date" slot="activator" label="Date"></v-text-field>
+                      <v-text-field  outline :rules="[v => !!v || 'Date is Required']" :value="editPayment.date" slot="activator" label="Date"></v-text-field>
                       <v-date-picker v-model="editPayment.date"></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -154,14 +225,14 @@
                   <v-textarea
                     v-model="editPayment.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    single-line
+                    outline
                     label="Description"
                     required>
                   </v-textarea>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                  <v-select  
-                  single-line
+                  outline
                   v-model="editPayment.method"
                   :rules="[v => !!v || 'Method is Required']"
                   label="Payment Method"
@@ -170,7 +241,7 @@
               </v-flex>
                 <v-flex xs12 sm12 md12>
           <v-select
-          single-line
+          outline
             label="Status"
             v-model="editPayment.status"
             :items="state"
@@ -179,7 +250,7 @@
           </v-flex>
           <v-flex xs12 sm12 md12>
                  <v-text-field  
-                  single-line
+                  outline
                   v-model="editPayment.amount"
                   :rules="[v => !!v || 'Amount is Required']"
                   label="Amount">    
@@ -187,7 +258,7 @@
               </v-flex>
               <v-flex xs12 sm12 md12>
                  <v-text-field  
-                  single-line
+                  outline
                   v-model="editPayment.balance"
                   :rules="[v => !!v || 'Balance is Required']"
                   label="Balance">    
@@ -209,7 +280,7 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-container class="my-5">
+    <v-container class="my-8">
       <span class="title">Payment</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
@@ -219,6 +290,12 @@
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
+              <div>
+                      <v-flex sm12 md6>
+          <v-btn color="green" @click = "mpesadialog = true" dark class="mb-2" outline>M-Pesa Payment
+            <v-icon right dark>playlist_add</v-icon>
+          </v-btn>
+        </v-flex></div>
             </v-layout>
           </v-flex>
           <v-flex sm12 md6 offset-md2 text-xs-right>
@@ -238,7 +315,6 @@
           </v-flex>
         </v-layout>
         <v-data-table
-          hide-actions
           :headers="headers"
           :items="data"
           :loading="loader"
@@ -250,7 +326,7 @@
           <td class="text-xs-left">{{ props.item.invoice.number }}</td>
           <td class="text-xs-left">{{ props.item.date }}</td>
           <td class="text-xs-left">{{ props.item.method }}</td>
-          <td class="text-xs-left">{{ props.item.description }}</td>
+    <!--       <td class="text-xs-left">{{ props.item.description }}</td> -->
           <td class="text-xs-left">{{ props.item.status }}</td>
           <td class="text-xs-left">{{ props.item.balance }}</td>
           <td class="text-xs-left">{{ props.item.amount }}</td>
@@ -313,6 +389,7 @@
           message: ""
         },
         dialog: false,
+        mpesadialog:false,
         productDialog: false,
         inputRules: [
           v => v.length >= !v  || 'Field is required'
@@ -328,7 +405,7 @@
           { text: 'Invoice Number', align: 'left', value: 'invoice_id' },
           { text: 'Date', align: 'left', value: 'date' },
           { text: 'Method', align: 'left', value: 'method' },
-          { text: 'Description', align: 'left', value: 'description' },
+          // { text: 'Description', align: 'left', value: 'description' },
           { text: 'Status', align: 'left', value: 'status' },
           { text: 'Balance', align: 'left', value: 'balance' },
           { text: 'Amount', align: 'left', value: 'amount' },
@@ -337,6 +414,19 @@
         item:[],
         payment:[],
         editedIndex: -1,
+
+
+          payment: {
+         invoice_id: '',
+         number: '',
+         description: '',
+         method: '',
+         amount: '',
+         balance: '',
+         date: null,
+       },
+
+
         paymentNew: {
           invoice_id: '',
           description: '',
@@ -347,6 +437,11 @@
           amount: '',
           balance: ''
         },
+                confirmMpesa: false,
+        confirmMpesaLoader: false,
+           stkLoader: false,
+
+
         editPayment: {
           invoice_id: '',
           description: '',
@@ -433,6 +528,53 @@
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
+
+       requestSTK(){
+        if(this.$refs.mpesaForm.validate()){
+          this.stkLoader = true
+          apiCall({url: "/api/mpesa-post", data: this.payment, method: 'POST'})
+          .then(resp => {
+            this.stkLoader = false
+            this.confirmMpesa = true
+          })
+          .catch(error => {
+            this.message = "M-Pesa Request Unsuccessful"
+            this.stkLoader = false
+            this.snackbarColor = "error"
+            this.snackbar = true
+          });
+        }
+
+      },
+      confirmMpesaStatus(){
+        apiCall({url: "/api/mpesa-confirm-payment", data: this.payment, method: 'POST'})
+        .then(resp => {
+          if(resp.status == "error"){
+            this.message = "M-Pesa Payment Still Processing"
+            this.snackbarColor = "yellow darken-2"
+            this.snackbar = true
+          } else {
+            this.message = "Payment Completed Successfully"
+            this.snackbarColor = "success"
+            this.snackbar = true
+            this.mpesaMessage = resp.message
+            this.level1 = false
+            this.level2 = false
+            this.level3 = false
+            this.level4 = true
+          }
+
+        })
+        .catch(error => {
+          this.message = "M-Pesa Payment Still Processing"
+          this.snackbarColor = "yellow"
+          this.snackbar = true
+        });
+        
+      },
+
+
+
      
           save(){
           this.loadingMethod(true, "Adding Payment")
