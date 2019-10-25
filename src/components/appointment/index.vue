@@ -272,16 +272,16 @@
                         <span v-for="(event, index) in item[date]"  :key="event.id"  @click="appointmentDetails(event)">
                           
                             <div class="subheading">{{index+1}}. {{ event.patient.name.given }} - {{ event.appointment_time }}</div>
-                          <v-btn
-                            outline
-                            small
-                            title="Delete"
-                            color="pink"
-                            flat
-                            @click="deleteItem(event)">
-                            Delete
-                            <v-icon right dark>delete</v-icon>
-                          </v-btn>
+                        <v-btn
+                      outline
+                      small
+                      title="Delete"
+                      color="pink"
+                      flat
+                      @click="deleteItem(event)">
+                      Delete
+                      <v-icon right dark>delete</v-icon>
+                      </v-btn>
                         </span>
                       </v-flex>
                     </v-layout>

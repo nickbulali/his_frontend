@@ -187,7 +187,6 @@
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
-         
             </v-layout>
           </v-flex>
           <v-flex sm12 md6 offset-md2 text-xs-right>

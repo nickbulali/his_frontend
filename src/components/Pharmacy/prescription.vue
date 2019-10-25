@@ -104,8 +104,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
               <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
-                  Add row <v-icon right dark>cloud_upload</v-icon>
-                </v-btn>
+                Add row <v-icon right dark>cloud_upload</v-icon>
+              </v-btn>
             <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
               Cancel
               <v-icon right dark>close</v-icon>

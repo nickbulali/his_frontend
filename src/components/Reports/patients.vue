@@ -34,7 +34,7 @@
                   <v-text-field
                     v-model="category.name"
                     :rules="[v => !!v || 'Name is Required']"
-                    single-line
+                    outline
                     label="Name"
                     required>
                   </v-text-field>
@@ -43,7 +43,7 @@
                   <v-textarea
                     v-model="category.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    single-line
+                    outline
                     label="Description"
                     required>
                   </v-textarea>
@@ -83,12 +83,12 @@
                     item-text="name"
                     item-value="id"
                     label="Category"
-                    single-line
+                    outline
                   ></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
+                    outline
                     v-model="editedItem.item_code"
                     :rules="[v => !!v || 'Item Code is Required']"
                     label="Item Code">
@@ -96,7 +96,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
+                    outline
                     v-model="editedItem.description"
                     :rules="[v => !!v || 'Name is Required']"
                     label="Name">
@@ -104,7 +104,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    single-line
+                    outline
                     v-model="editedItem.unit_price"
                     :rules="[v => !!v || 'Unit Price is Required']"
                     label="Unit Price">
@@ -142,7 +142,7 @@
             <v-text-field
               hide-details
               prepend-icon="search"
-              single-line
+              outline
               v-model="search"
               label="Search"
               v-on:keyup.enter="initialize()"

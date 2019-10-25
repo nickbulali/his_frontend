@@ -129,8 +129,8 @@
         <td>Total: ${{ total }}</td>
       </tr>
           <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="save">
-                  Generate Invoice <v-icon right dark>payment</v-icon>
-                </v-btn>
+            Generate Invoice <v-icon right dark>payment</v-icon>
+          </v-btn>
     </table>
   </div>
 </template>

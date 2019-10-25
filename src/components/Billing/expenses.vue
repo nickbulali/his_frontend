@@ -132,12 +132,12 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" <v-btn round outline>Add Category
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Category
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
               <v-flex sm12 md6>
-                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" <v-btn round outline>
+                <v-btn @click = "productDialog = true" color="primary" dark class="mb-2" outline>
                   New Item
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
