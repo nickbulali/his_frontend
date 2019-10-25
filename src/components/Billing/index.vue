@@ -4,10 +4,10 @@
       <span class="title">Invoices</span>
         <v-layout>
           <v-flex sm12 md6>
-                <v-btn color="primary" to="/billing/billing" dark class="mb-2" outline>Generate Bill
-                  <v-icon right dark>payment</v-icon>
-                </v-btn>
-              </v-flex>
+            <v-btn color="primary" to="/billing/billing" dark class="mb-2" outline>Generate Bill
+              <v-icon right dark>payment</v-icon>
+            </v-btn>
+          </v-flex>
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
@@ -31,9 +31,6 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-        
-         
-     
      <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
       <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
@@ -137,6 +134,7 @@
       </v-card>
     </v-dialog>
 
+
         <v-data-table
           :headers="headers"
           :items="data"
@@ -155,17 +153,19 @@
           <td class="text-xs-right">{{ props.item.sub_total }}</td>
           <td class="text-xs-right">{{ props.item.total }}</td>
           <td class="justify-center layout px-0">
+
           <v-btn
             outline
             small
             title="Edit"
             color="teal"
             flat
-            @click="editItem(props.item)">
+            router :to="{name:'ShowInvoice', params:{id: props.item.id}}"
+           >
             Edit
             <v-icon right dark>edit</v-icon>
           </v-btn>
-            <v-btn
+          <v-btn
             outline
             small
             title="Delete"
@@ -202,7 +202,7 @@
 
 <script>
   import format from 'date-fns/format'
-  import apiCall from "../../utils/api"
+  import apiCall from "../../utils/api";
   export default {
     data () {
       return {
@@ -210,6 +210,15 @@
         query: '',
         valid: true,
         loader: false,
+
+        invoice: {
+          patient: '',
+          number: '',
+          reference: '',
+          date: null,
+          due: null,
+        },
+
         dialog: false,
         delete: false,
         invoice:[],
@@ -229,6 +238,7 @@
 
       },
          
+
         inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],
@@ -250,7 +260,6 @@
               { text: 'Total', align: 'right', value: 'total' },
                { text: 'Actions', align: 'center', value: 'actions' },
             ],
-            item:[],
         invoiceHeaders: [
               {
                 text: 'Item Description',
@@ -262,6 +271,7 @@
               { text: 'Quantity', align: 'left', value: 'quantity' },
               { text: 'Total', align: 'left', value: 'total' },
         ],
+        data: [],
         pagination: {
           page: 1,
           per_page: 0,
@@ -291,93 +301,13 @@
           })
           .catch(error => {
             console.log(error.response);
-          })
-          apiCall({url: '/api/patient?' , method: 'GET' })
-        .then(resp => {
-          console.log(resp.data)
-          this.patient = resp.data;
-          this.loader=false
-          this.pagination.per_page = resp.per_page;
-          this.pagination.total = resp.total;
-        })
-        .catch(error => {
-          console.log(error.response)
-        })
-
-
-                apiCall({ url: "/api/item?" + this.query, method: "GET" })
-          .then(resp => {
-            console.log("item is",resp);
-            this.item = resp.data;
-            this.loader=false
-            this.pagination.total = resp.total;
-            this.pagination.per_page = resp.per_page;
-          })
-          .catch(error => {
-            console.log(error.response);
           });
-
-          apiCall({ url: "/api/item-category", method: "GET" })
-          .then(resp => {
-            console.log("item",resp);
-            this.categories = resp.data;
-          })
-          .catch(error => {
-            console.log(error.response);
-          });
-
       },
-           
-    save(){
+      viewInvoice(invoice){
 
-        this.saving = true;
-        // update
-        if (this.editedIndex > -1) {
-          if(this.$refs.form.validate()){
-            apiCall({url: '/api/invoice/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
-            .then(resp => {
-              Object.assign(this.patient[this.editedIndex], this.editedItem)
-              console.log(resp)
-              this.resetDialogReferences();
-              this.saving = false;
-              this.message = 'Patient Invoice Updated Succesfully';
-              this.snackbar = true;
-            })
-            .catch(error => {
-              console.log(error.response)
-            })
-            this.close()
-          }
-        }
-      },
-     editItem (item) {
-        this.editedIndex = this.patient.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-        deleteItem (item) {
-
-        confirm('Are you sure you want to delete this item?') && (this.delete = true)
-
-        if (this.delete) {
-          const index = this.patient.indexOf(item)
-         this.patient.splice(index, 1)
-          apiCall({url: '/api/invoice/'+item.id, method: 'DELETE' })
-          .then(resp => {
-              this.message = 'Invoice Deleted Succesfully';
-              this.snackbar = true;
-         
-            console.log(resp)
-          })
-          .catch(error => {
-            console.log(error.response)
-          })
-        }
-
+        console.log("invoce is",invoice)
       }
     },
-    
     computed: {
         total: function(){
           console.log(this.data);
@@ -393,11 +323,7 @@
         },
         length: function() {
           return Math.ceil(this.pagination.total / this.pagination.per_page);
-        }
-        
-
+        },
       }
-
-     
   }
 </script>

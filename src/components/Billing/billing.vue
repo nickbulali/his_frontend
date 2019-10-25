@@ -63,6 +63,43 @@
                     required>
                   </v-textarea>
                 </v-flex>
+            
+          ></v-text-field>
+          </v-flex>
+                   <v-flex xs12 sm12 md12>
+                <v-autocomplete
+                    outline
+                    :items="patient"
+                    item-text="name.text"
+                    item-value="id"
+                    label="Patient"
+                    :rules="[v => !!v || 'Patient Name is Required']"
+                    v-model="invoice.patient_id"
+                    >
+                </v-autocomplete>
+                </v-flex>
+                <v-flex xs4 sm4 md4>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Created Is Required']" :value="invoice.date" slot="activator" label="Date Created"></v-text-field>
+                      <v-date-picker v-model="invoice.date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                  <v-flex xs4 sm4 md4>
+                    <v-menu>
+                      <v-text-field  outline :rules="[v => !!v || 'Date Due Is Required']" :value="invoice.due_date" slot="activator" label="Date Due"></v-text-field>
+                      <v-date-picker v-model="invoice.due_date"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                <v-flex xs12>
+                  <v-textarea
+                    v-model="invoice.description"
+                    :rules="[v => !!v || 'Description is Required']"
+                    outline
+                    label="Description"
+                    required>
+                  </v-textarea>
+                </v-flex>
+
                 <v-flex xs12 sm12 md12>
           <v-select
             label="Status"
@@ -91,12 +128,12 @@
           
             <v-autocomplete
 
-            outline
             :items="details"
             item-text="description"
-            item-value="id"
+            
             v-bind:value="details.id"
             v-model="invoice.item_id"
+
 
             @change="addItem()"
 
@@ -120,7 +157,7 @@
         <td class="total" >           <v-input
             color="success" loading  v-model="invoice.sub_total"
           >
-         <b>  {{item.unit_price*item.quantity}}</b>
+         <b>  {{item.unit_price*item.qty}}</b>
           </v-input></td>
         <!--       <td>${{ item.price * item.quantity | currency }}</td> -->
       </tr>
@@ -264,7 +301,8 @@
          message:new Date().toJSON().slice(0,10).replace(/-/g,'/'),
         selected: {},
         items: [],
-        invoice: {
+        
+        invoice:{
         number: '',
         patient_id: '',
         date: '',
@@ -309,9 +347,9 @@
         },
         
       addRow() {
-        this.items.push({ description: "", quantity: 1, unit_price: 0, total:'' });
+        this.items.push({ item_id: "", qty: 1, unit_price: 0, total:'' });
       },
-       addItem(){
+        addItem(){
         var i =0
         for (i; i <= this.details.length; i++) {
           if(this.details[i].id == this.items[i].item_id){
@@ -325,11 +363,11 @@
       getSubTotal(){
         var i =0
         for (i; i <= this.details.length; i++) {
-          if(this.details[i].id == this.items[i].description){
+          if(this.details[i].id == this.items[i].item_id){
             //console.log("details is", this.details[i])
-            console.log("quantity is", this.items[i].quantity*this.details[i].unit_price)
+            console.log("quantity is", this.items[i].qty*this.details[i].unit_price)
             console.log("result", this.item[i].total)
-            this.item[i].total=this.details[i].unit_price*this.item[i].quantity
+            this.item[i].total=this.details[i].unit_price*this.item[i].qty
           }
         }
       },
@@ -438,7 +476,7 @@
         // },
         total() {
           return this.items.reduce(
-            (acc, item) => acc + item.unit_price * item.quantity,
+            (acc, item) => acc + item.unit_price * item.qty,
             0
             );
         },

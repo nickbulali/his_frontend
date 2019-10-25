@@ -32,7 +32,7 @@
                 <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                 <v-autocomplete
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -42,56 +42,77 @@
                     >
                 </v-autocomplete>
                 </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-select
-                      outline
-                      :items="visitTypes"
-                      v-model="testRequest.encounter_class_id"
-                      item-text="display"
-                      item-value="id"
-                      :rules="[v => !!v || 'Visit Type is Required']"
-                      label="Visit Type"
-                      >
-                    </v-select>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-select
-                     outline
-                      :items="locations"
-                      v-model="testRequest.location_id"
-                      item-text="name"
-                      item-value="id"
-                      label="Location">
-                    </v-select>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field
-                    outline
-                      v-model="testRequest.practitioner_name"
-                      :rules="[v => !!v || 'Requesting Physician is Required']"
-                      label="Requesting Physician">
-                    </v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-autocomplete
-                      outline
-                      v-bind:items="testTypes"
-                      v-model="testRequest.testTypeIds"
-                      label="Tests"
-                      item-text="name"
-                      item-value="id"
-                      multiple chips
-                      :rules="[value => !!value || 'A test is Required']">
-                    </v-autocomplete>
-                  </v-flex>
-                  <v-flex xs3 offset-xs9 text-xs-right>
-                    <v-btn round outline xs12 sm6 color="blue darken-1" :disabled="!valid" @click.native="save" :loading="loading">
-                      Save <v-icon right dark>cloud_upload</v-icon>
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
+
+                <v-flex xs12 sm12 md12>
+                <v-text-field
+                 
+                  single-line
+                  v-model="generateBill.patient_id"
+                  item-text="name.text"
+                  item-value="id"
+                  :rules="[v => !!v || 'Patient Name is Required']"
+                  label="Patient">    
+                </v-text-field>
+              </v-flex>
+                <v-flex xs12 sm12 md12>
+                <v-autocomplete
+                
+                    single-line
+                    :items="drugs"
+                    item-text="generic_name"
+                    item-value="id"
+                    label="Drugs"
+                    :rules="[v => !!v || 'Drug Name is Required']"
+                    v-model="generateBill.drug_id"
+                    >
+                </v-autocomplete>
+                </v-flex>
+                <v-flex xs12 sm12 md12>
+                <v-text-field
+                
+                  single-line
+                  v-model="generateBill.quantity"
+                  :rules="[v => !!v || 'Quantity is Required']"
+                  label="Quantity">    
+                </v-text-field>
+              </v-flex>
+
+            <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
+                        <v-text-field
+                      
+                  single-line
+                  v-model="input.one"
+                  :rules="[v => !!v || 'Quantity is Required']"
+                  label="Drug">    
+                </v-text-field>
+      
+                <v-text-field
+                      
+                  single-line
+                  v-model="input.two"
+                  :rules="[v => !!v || 'Quantity is Required']"
+                  label="Quantity">    
+                </v-text-field>
+
+ 
+              </v-flex>
+
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+              <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
+                  Add row <v-icon right dark>cloud_upload</v-icon>
+                </v-btn>
+            <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
+              Cancel
+              <v-icon right dark>close</v-icon>
+            </v-btn>
+            <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid" @click.native="bill">
+              Bill <v-icon right dark>payment</v-icon>
+            </v-btn>
+          </v-card-actions>
         </v-form>
       </v-card>
     </v-dialog>
@@ -106,40 +127,110 @@
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <v-flex xs12 sm12 md12>
-                  <v-select
-                    :items="categories"
-                    :rules="[v => !!v || 'Unit is Required']"
-                    v-model="editedItem.category"
-                    item-text="name"
+                   <v-flex xs12 sm12 md12>
+                <v-select
+                    single-line
+                    :items="patient"
+                    item-text="name.text"
                     item-value="id"
-                    label="Category"
-                    outline
-                  ></v-select>
+                    label="Patients"
+                    :rules="[v => !!v || 'Patient Name is Required']"
+                    v-model="editedItem.patient_id"
+                    autocomplete>
+                </v-select>
+                </v-flex>
+                    <v-flex xs12 sm12 md12>
+                <v-select
+                    single-line
+                    v-bind:items="drugs"
+                    item-text="generic_name"
+                    item-value="generic_name"
+                    label="Drugs"
+                    :rules="[v => !!v || 'Drug Name is Required']"
+                    v-model="editedItem.drugs"
+                       multiple
+                    autocomplete>
+                </v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
-                  <v-text-field
-                    outline
-                    v-model="editedItem.item_code"
-                    :rules="[v => !!v || 'Item Code is Required']"
-                    label="Item Code">
-                  </v-text-field>
+                <v-text-field
+                  single-line
+                  v-model="editedItem.price"
+                  :rules="[v => !!v || 'Quantity is Required']"
+                  label="Price">    
+                </v-text-field>
+              </v-flex>
+               <v-flex xs12 sm12 md12>
+                <v-select
+                     single-line
+                    :items="dosages"
+                    item-text="description"
+                    item-value="id"
+                    label="Dosages"
+                    :rules="[v => !!v || 'Dosages is Required']"
+                    v-model="editedItem.dosage_id"
+                    >
+                </v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
-                  <v-text-field
-                    outline
-                    v-model="editedItem.description"
-                    :rules="[v => !!v || 'Name is Required']"
-                    label="Name">
-                  </v-text-field>
+                <v-select
+                    single-line
+                    :items="medication"
+                    item-text="display"
+                    item-value="id"
+                    label="Medication Status"
+                    :rules="[v => !!v || 'Medication Status is Required']"
+                    v-model="editedItem.medication_status_id"
+                    >
+                </v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
-                  <v-text-field
-                    outline
-                    v-model="editedItem.unit_price"
-                    :rules="[v => !!v || 'Unit Price is Required']"
-                    label="Unit Price">
-                  </v-text-field>
+                <v-text-field
+                  single-line
+                  v-model="editedItem.quantity"
+                  :rules="[v => !!v || 'Quantity is Required']"
+                  label="Quantity">    
+                </v-text-field>
+                     </v-flex>
+                      <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
+                        <v-text-field
+                      
+                  single-line
+                  v-model="input.one"
+                  :rules="[v => !!v || 'Quantity is Required']"
+                  label="Drug">    
+                </v-text-field>
+      
+                <v-text-field
+                      
+                  single-line
+                  v-model="input.two"
+                  :rules="[v => !!v || 'Quantity is Required']"
+                  label="Quantity">    
+                </v-text-field>
+
+ 
+              </v-flex>
+                 <v-flex xs12 sm12 md12>
+                    <v-menu>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.start_time" slot="activator" label="Start Time "></v-text-field>
+                      <v-date-picker v-model="editedItem.start_time"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                  <v-flex xs12 sm12 md12>
+                    <v-menu>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.end_time" slot="activator" label="End Time "></v-text-field>
+                      <v-date-picker v-model="editedItem.end_time"></v-date-picker>
+                    </v-menu>
+                  </v-flex>
+                  <v-flex xs12>
+                  <v-textarea
+                    v-model="editedItem.drugs"
+                   
+                    single-line
+                    label="Comments"
+                    required>
+                  </v-textarea>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -201,12 +292,14 @@
         >
   
         <template v-slot:items="props">
-          <td>{{ props.item.id}}</td>
-          <td class="text-xs-left">{{ props.item.encounter.patient.name.text }}</td>
-          <td class="text-xs-left">{{ props.item.created_at}}</td>
-          <td class="text-xs-left">{{ props.item.test_type.name }}</td>
-          <td class="text-xs-left">{{ props.item.requested_by}}</td>
-          <td class="text-xs-left">{{ props.item.test_status.name}}</td>
+          <td>{{ props.item.id }}</td>
+          <td class="text-xs-left">{{ props.item.patient.name.text}}</td>
+          <td class="text-xs-left">{{ props.item.drugs.generic_name}}</td>
+          <td class="text-xs-left">{{ props.item.medication_status.display }}</td>
+          <td class="text-xs-left">{{ props.item.quantity }}</td>
+          <td class="text-xs-left">{{ props.item.dosage.description}}</td>
+          <td class="text-xs-left">{{ props.item.start_time }}</td>
+          <td class="text-xs-left">{{ props.item.end_time }}</td>
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -217,6 +310,14 @@
             @click="editItem(props.item)">
             Edit
             <v-icon right dark>edit</v-icon>
+          </v-btn>
+          <v-btn 
+            color="primary" 
+            @click = "BillItem(props.item)" 
+            flat 
+            small 
+            outline>Bill
+            <v-icon right dark>payment</v-icon>
           </v-btn>
           <v-btn
             outline

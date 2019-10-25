@@ -33,7 +33,7 @@
               <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                   <v-select
-                     outline
+                     single-line
                      :items="items"
                     :rules="[v => !!v || 'Instrument is Required']"
                     v-model="editedItem.item_id"
@@ -44,7 +44,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.curr_bal"
                     :rules="[v => !!v || 'Current Balance is Required']"
                     label="Current Balance">
@@ -53,7 +53,7 @@
 
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.quantity_requested"
                     :rules="[v => !!v || 'Quantity Requested. is Required']"
                     label="Quantity Requested.">
@@ -61,7 +61,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field 
-                   outline
+                   single-line
                     v-model="editedItem.remarks"
                     :rules="[v => !!v || 'Remarks is Required']"
                     label="Remarks">

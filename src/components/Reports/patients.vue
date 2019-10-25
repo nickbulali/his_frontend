@@ -142,7 +142,7 @@
             <v-text-field
               hide-details
               prepend-icon="search"
-              single-line
+              outline
               v-model="search"
               label="Search"
               v-on:keyup.enter="initialize()"

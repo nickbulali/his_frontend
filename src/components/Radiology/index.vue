@@ -34,7 +34,7 @@
                   <v-text-field
                     v-model="category.testname"
                     :rules="[v => !!v || 'Name is Required']"
-                    outline
+                    single-line
                     label="Test Name"
                     required>
                   </v-text-field>
@@ -43,7 +43,7 @@
                   <v-text-field
                     v-model="category.shortname"
                     :rules="[v => !!v || 'Name is Required']"
-                    outline
+                    single-line
                     label="Short Name"
                     required>
                   </v-text-field>
@@ -52,7 +52,7 @@
                   <v-text-field
                     v-model="category.testtype"
                     :rules="[v => !!v || 'Name is Required']"
-                    outline
+                    single-line
                     label="Test Type"
                     required>
                   </v-text-field>
@@ -61,7 +61,7 @@
                   <v-text-field
                     v-model="category.category"
                     :rules="[v => !!v || 'Name is Required']"
-                    outline
+                    single-line
                     label="Category"
                     required>
                   </v-text-field>
@@ -70,7 +70,7 @@
                   <v-text-field
                     v-model="category.charge"
                     :rules="[v => !!v || 'Name is Required']"
-                    outline
+                    single-line
                     label="Charge"
                     required>
                   </v-text-field>
@@ -111,12 +111,12 @@
                     item-text="name"
                     item-value="id"
                     label="Category"
-                    outline
+                    single-line
                   ></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.item_code"
                     :rules="[v => !!v || 'Item Code is Required']"
                     label="Item Code">
@@ -124,7 +124,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.description"
                     :rules="[v => !!v || 'Name is Required']"
                     label="Name">
@@ -132,7 +132,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.unit_price"
                     :rules="[v => !!v || 'Unit Price is Required']"
                     label="Unit Price">
@@ -189,6 +189,7 @@
           </v-flex>
         </v-layout>
     		<v-data-table
+          hide-actions
           :headers="headers"
           :items="item"
           :loading="loader"

@@ -17,9 +17,6 @@
       </v-card>
     </v-dialog>
 
-<<<<<<< HEAD
-  
-=======
     <v-dialog v-model="billDialog" max-width="500px">
       <template v-slot:activator="{ on }">
       <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
@@ -36,7 +33,7 @@
               <v-layout wrap>
                    <v-flex xs12 sm12 md12>
                 <v-autocomplete
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -48,9 +45,22 @@
                 </v-flex>
 
                 <v-flex xs12 sm12 md12>
+
+                <v-text-field
+                 
+                  single-line
+                  v-model="generateBill.patient_id"
+                  item-text="name.text"
+                  item-value="id"
+                  :rules="[v => !!v || 'Patient Name is Required']"
+                  label="Patient">    
+                </v-text-field>
+              </v-flex>
+                <v-flex xs12 sm12 md12>
+
                 <v-autocomplete
                 
-                    outline
+                    single-line
                     :items="drugs"
                     item-text="generic_name"
                     item-value="id"
@@ -63,7 +73,7 @@
                 <v-flex xs12 sm12 md12>
                 <v-text-field
                 
-                  outline
+                  single-line
                   v-model="generateBill.quantity"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Quantity">    
@@ -73,7 +83,7 @@
                                     <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
                         <v-text-field
                       
-                  outline
+                  single-line
                   v-model="input.one"
                   :rules="[v => !!v || 'Drug Name is Required']"
                   label="Drug">    
@@ -81,7 +91,7 @@
       
                 <v-text-field
                       
-                  outline
+                  single-line
                   v-model="input.two"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Quantity">    
@@ -95,9 +105,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-              <v-btn v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
-                  Add row <v-icon right dark>cloud_upload</v-icon>
-                </v-btn>
+              <v-btn round outline xs12 sm6 color="primary darken-1" :disabled="!valid"  @click="addRow">
+                Add row <v-icon right dark>cloud_upload</v-icon>
+              </v-btn>
             <v-btn round outline color="blue lighten-1" flat @click="billDialog = false">
               Cancel
               <v-icon right dark>close</v-icon>
@@ -109,7 +119,7 @@
         </v-form>
       </v-card>
     </v-dialog>
->>>>>>> ac124dff924de7fcc282bf0e676dae3262d3b53a
+
 
 
     <v-dialog v-model="dialog" max-width="600px">
@@ -128,7 +138,7 @@
               <v-layout wrap>
                    <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -140,7 +150,7 @@
                 </v-flex>
                     <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     v-bind:items="drugs"
                     item-text="generic_name"
                     item-value="generic_name"
@@ -152,9 +162,18 @@
                 </v-select>
                 </v-flex>
 
+                <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="editedItem.price"
+                  :rules="[v => !!v || 'Quantity is Required']"
+                  label="Price">    
+                </v-text-field>
+              </v-flex>
+
                <v-flex xs12 sm12 md12>
                 <v-select
-                     outline
+                     single-line
                     :items="dosages"
                     item-text="description"
                     item-value="id"
@@ -166,7 +185,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="medication"
                     item-text="display"
                     item-value="id"
@@ -178,7 +197,7 @@
                 </v-flex>
 <!--                 <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.quantity"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Quantity">    
@@ -187,7 +206,7 @@
                       <v-flex xs12 sm12 md12   v-for="(input, index) in inputs">
                         <v-text-field
                       
-                  outline
+                  single-line
                   v-model="input.one"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Drug">    
@@ -195,7 +214,7 @@
       
                 <v-text-field
                       
-                  outline
+                  single-line
                   v-model="input.two"
                   :rules="[v => !!v || 'Quantity is Required']"
                   label="Quantity">    
@@ -205,13 +224,13 @@
               </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.start_time" slot="activator" label="Start Time "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.start_time" slot="activator" label="Start Time "></v-text-field>
                       <v-date-picker v-model="editedItem.start_time"></v-date-picker>
                     </v-menu>
                   </v-flex>
                   <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.end_time" slot="activator" label="End Time "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.end_time" slot="activator" label="End Time "></v-text-field>
                       <v-date-picker v-model="editedItem.end_time"></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -219,7 +238,7 @@
                   <v-textarea
                     v-model="editedItem.Comments"
                    
-                    outline
+                    single-line
                     label="Comments"
                     required>
                   </v-textarea>
@@ -267,6 +286,7 @@
           </v-flex>
         </v-layout>
         <v-data-table
+          hide-actions
           :headers="headers"
           :items="prescription"
           :loading="loader"
@@ -296,13 +316,13 @@
           </v-btn>
 
           <v-btn 
-          color="primary" 
-          @click = "BillItem(props.item)" 
-          flat 
-          small 
-          outline>Bill
-                  <v-icon right dark>payment</v-icon>
-                </v-btn>
+            color="primary" 
+            @click = "BillItem(props.item)" 
+            flat 
+            small
+            outline>Bill
+              <v-icon right dark>payment</v-icon>
+          </v-btn>
           <v-btn
             outline
             small

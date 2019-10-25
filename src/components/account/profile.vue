@@ -57,7 +57,7 @@
 							<v-flex xs6 sm6>
 								<v-alert
 									v-model="mainalert"
-									outline
+									single-line
 									align-right
 									icon="done"
 									transition="scale-transition"
@@ -164,7 +164,7 @@
 											<v-layout wrap>
 												<v-alert
 													v-model="alert"
-													outline
+													single-line
 													align-right
 													icon="warning"
 													transition="scale-transition"
@@ -174,7 +174,7 @@
 												</v-alert>
 												<v-alert
 													v-model="successalert"
-													outline
+													single-line
 													align-right
 													icon="done"
 													transition="scale-transition"
@@ -238,8 +238,6 @@
 </template>
 <script>
 import apiCall from "../../utils/api";
-// const base_url =process.env.VUE_APP_API_URL v
-
 export default {
   name: "Profile",
   data: () => ({

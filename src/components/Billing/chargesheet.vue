@@ -8,18 +8,7 @@
       >
         {{ message }}
     </v-snackbar>
-    <v-dialog v-model="loadingDialog.loading" hide-overlay persistent width="300">
-      <v-card color="primary" dark>
-        <v-card-text>
-          {{ loadingDialog.message }}
-          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-      </template>
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
@@ -34,7 +23,7 @@
                   <v-text-field
                     v-model="category.name"
                     :rules="[v => !!v || 'Name is Required']"
-                    outline
+                    single-line
                     label="Name"
                     required>
                   </v-text-field>
@@ -43,7 +32,7 @@
                   <v-textarea
                     v-model="category.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    outline
+                    single-line
                     label="Description"
                     required>
                   </v-textarea>
@@ -83,12 +72,12 @@
                     item-text="name"
                     item-value="id"
                     label="Category"
-                    outline
+                    single-line
                   ></v-select>
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.item_code"
                     :rules="[v => !!v || 'Item Code is Required']"
                     label="Item Code">
@@ -96,7 +85,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.description"
                     :rules="[v => !!v || 'Name is Required']"
                     label="Name">
@@ -104,7 +93,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.unit_price"
                     :rules="[v => !!v || 'Unit Price is Required']"
                     label="Unit Price">
@@ -126,7 +115,7 @@
         </v-form>
       </v-card>
     </v-dialog>
-  	<v-container class="my-5">
+    <v-container class="my-5">
       <span class="title">Charge Sheet</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
@@ -160,10 +149,11 @@
              </v-toolbar>
           </v-flex>
         </v-layout>
-    		<v-data-table
+        <v-data-table
           :headers="headers"
           :items="item"
           :loading="loader"
+          hide-actions
           class="elevation-1"
         >
         <template v-slot:items="props">
@@ -205,7 +195,7 @@
           circle>
         </v-pagination>
       </div>
-  	</v-container>
+    </v-container>
 
   </div>
 </template>

@@ -34,7 +34,7 @@
                   <v-text-field
                     v-model="category.name"
                     :rules="[v => !!v || 'Name is Required']"
-                    outline
+                    single-line
                     label="Name"
                     required>
                   </v-text-field>
@@ -43,7 +43,7 @@
                   <v-textarea
                     v-model="category.description"
                     :rules="[v => !!v || 'Description is Required']"
-                    outline
+                    single-line
                     label="Description"
                     required>
                   </v-textarea>
@@ -77,7 +77,7 @@
              <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                  v-model="editedItem.name"
                   :rules="[v => !!v || 'Name is Required' ,
                   v => /^[a-zA-Z\s]+$/.test(v)  || 'Name should have alphabetic chars only']"
@@ -86,7 +86,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.phone"
                     :rules="[v => !!v || 'Phone is Required']"
                     label="Phone">
@@ -94,7 +94,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                   v-model="editedItem.email"
                   :rules="[v => !!v || 'Email is Required',v => /.+@.+/.test(v)  || 'Email not valid' ]"
                   label="Email Address">
@@ -102,7 +102,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md12>
                   <v-text-field
-                    outline
+                    single-line
                     v-model="editedItem.address"
                     :rules="[v => !!v || 'Address is Required']"
                     label="Address">
@@ -155,6 +155,7 @@
           </v-flex>
         </v-layout>
         <v-data-table
+          hide-actions
           :headers="headers"
           :items="item"
           :loading="loader"

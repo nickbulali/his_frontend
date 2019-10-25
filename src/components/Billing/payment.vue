@@ -285,7 +285,7 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-container class="my-5">
+    <v-container class="my-8">
       <span class="title">Payment</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
@@ -333,7 +333,7 @@
           <td class="text-xs-left">{{ props.item.invoice.number }}</td>
           <td class="text-xs-left">{{ props.item.date }}</td>
           <td class="text-xs-left">{{ props.item.method }}</td>
-          <td class="text-xs-left">{{ props.item.description }}</td>
+    <!--       <td class="text-xs-left">{{ props.item.description }}</td> -->
           <td class="text-xs-left">{{ props.item.status }}</td>
           <td class="text-xs-left">{{ props.item.balance }}</td>
           <td class="text-xs-left">{{ props.item.amount }}</td>
@@ -412,7 +412,7 @@
           { text: 'Invoice Number', align: 'left', value: 'invoice_id' },
           { text: 'Date', align: 'left', value: 'date' },
           { text: 'Method', align: 'left', value: 'method' },
-          { text: 'Description', align: 'left', value: 'description' },
+          // { text: 'Description', align: 'left', value: 'description' },
           { text: 'Status', align: 'left', value: 'status' },
           { text: 'Balance', align: 'left', value: 'balance' },
           { text: 'Amount', align: 'left', value: 'amount' },

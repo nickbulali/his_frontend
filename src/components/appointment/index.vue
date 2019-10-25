@@ -23,7 +23,7 @@
              
               <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -35,7 +35,7 @@
                
                  <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="users"
                     label="Staff"
                     item-text="username"
@@ -47,13 +47,13 @@
                 </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Date Received is Required']" :value="editedItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
                       <v-date-picker v-model="editedItem.appointment_date"></v-date-picker>
                     </v-menu>
                   </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_time" slot="activator" label="Appointment Time "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_time" slot="activator" label="Appointment Time "></v-text-field>
                       <v-time-picker v-model="editedItem.appointment_time"></v-time-picker>
                     </v-menu>
                   </v-flex>
@@ -94,7 +94,7 @@
               <v-layout wrap>
                  <v-flex xs12 sm12 md12>
                 <v-select
-                    outline
+                    single-line
                     :items="patient"
                     item-text="name.text"
                     item-value="id"
@@ -108,7 +108,7 @@
                 <v-flex xs12 sm12 md12>
                   
                 <v-select
-                   outline
+                   single-line
                    :items="users"
                    item-text="username"
                    item-value="id"
@@ -119,13 +119,13 @@
                 </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_date" slot="activator" label="Appointment Date "></v-text-field>
                       <v-date-picker v-model="editedItem.appointment_date"></v-date-picker>
                     </v-menu>
                   </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
-                      <v-text-field  outline :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_time" slot="activator" label="Appointment Date "></v-text-field>
+                      <v-text-field  single-line :rules="[v => !!v || 'Time Received is Required']" :value="editedItem.appointment_time" slot="activator" label="Appointment Date "></v-text-field>
                       <v-time-picker v-model="editedItem.appointment_time"></v-time-picker>
                     </v-menu>
                   </v-flex>
@@ -512,7 +512,7 @@
           this.loadingMethod(true, "Appointment Added Succesfully")
           if(this.$refs.productform.validate()){
             this.loading = true
-            apiCall({url: '/api/appointment', data: this.defaultItem, method: 'POST' })
+            apiCall({url: '/api/appointment', data: this.editedItem, method: 'POST' })
             .then(resp => {
           
               // this.item.push(resp)
