@@ -136,7 +136,7 @@
             this.query = this.query+'&search='+this.search;
         }
 
-        apiCall({url: '/api/user?' + this.query, method: 'GET' })
+        apiCall({url: '/api/users?' + this.query, method: 'GET' })
         .then(resp => {
           console.log(resp.data)
           this.users = resp.data;

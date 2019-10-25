@@ -467,7 +467,7 @@
                       >
                       </v-progress-circular>
                     <div class="his_card_footer">
-                      <v-btn dark class="his_card_button" small title="Edit" color="black" flat outline round @click="">
+                      <v-btn dark class="his_card_button" small title="Edit" color="black" flat outline  @click="">
                         <v-icon left dark>directions_walk</v-icon>
                           View All Visits
                       </v-btn>

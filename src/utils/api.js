@@ -1,5 +1,7 @@
 import axios from 'axios'
-const apiurl = process.env.VUE_APP_API_URL;
+
+const base_url = 'http://127.0.0.1:8000';
+
 const apiCall = ({url, data, method}) => new Promise((resolve, reject) => {
   console.log(url)
   url = apiurl+url

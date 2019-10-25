@@ -45,6 +45,7 @@
                 </v-flex>
 
                 <v-flex xs12 sm12 md12>
+
                 <v-text-field
                  
                   single-line
@@ -56,6 +57,7 @@
                 </v-text-field>
               </v-flex>
                 <v-flex xs12 sm12 md12>
+
                 <v-autocomplete
                 
                     single-line
@@ -83,7 +85,7 @@
                       
                   single-line
                   v-model="input.one"
-                  :rules="[v => !!v || 'Quantity is Required']"
+                  :rules="[v => !!v || 'Drug Name is Required']"
                   label="Drug">    
                 </v-text-field>
       
@@ -117,6 +119,7 @@
         </v-form>
       </v-card>
     </v-dialog>
+
 
 
     <v-dialog v-model="dialog" max-width="600px">
@@ -158,6 +161,7 @@
                     autocomplete>
                 </v-select>
                 </v-flex>
+
                 <v-flex xs12 sm12 md12>
                 <v-text-field
                   single-line
@@ -166,6 +170,7 @@
                   label="Price">    
                 </v-text-field>
               </v-flex>
+
                <v-flex xs12 sm12 md12>
                 <v-select
                      single-line
@@ -190,7 +195,7 @@
                     >
                 </v-select>
                 </v-flex>
-                <v-flex xs12 sm12 md12>
+<!--                 <v-flex xs12 sm12 md12>
                 <v-text-field
                   single-line
                   v-model="editedItem.quantity"
@@ -215,7 +220,7 @@
                   label="Quantity">    
                 </v-text-field>
 
- 
+  -->
               </v-flex>
                  <v-flex xs12 sm12 md12>
                     <v-menu>
@@ -231,7 +236,7 @@
                   </v-flex>
                   <v-flex xs12>
                   <v-textarea
-                    v-model="editedItem.drugs"
+                    v-model="editedItem.Comments"
                    
                     single-line
                     label="Comments"
@@ -290,7 +295,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.patient.name.text}}</td>
-               <td class="text-xs-left">{{ props.item.drugs.generic_name}}</td>
+          <td class="text-xs-left">{{ props.item.drugs.generic_name}}</td>
           <td class="text-xs-left">{{ props.item.medication_status.display }}</td>
           <td class="text-xs-left">{{ props.item.quantity }}</td>
           <td class="text-xs-left">{{ props.item.dosage.description}}</td>
@@ -367,7 +372,7 @@
           message: ""
         },
         dialog: false,
-              generateBill: {
+        generateBill: {
         
         patient_id: '',
         date: '',
@@ -424,6 +429,7 @@
         end_time:'',
         start_time:''
       },
+      
         inputs: [],
         pagination: {
           page: 1,
@@ -437,13 +443,19 @@
       this.initialize();
     },
     methods: {
-          addRow() {
-      this.inputs.push({
-        one: '',
-        two: ''
-      })
-
-    },
+      addRow() {
+        this.items.push({ description: "", quantity: 1, unit_price: 0, total:'' });
+      },
+      addItem(){
+        var i =0
+        for (i; i <= this.details.length; i++) {
+          if(this.details[i].id == this.items[i].description){
+            console.log("found")
+            this.items[i].unit_price = this.details[i].unit_price
+          }
+        }
+         
+      },
       loadingMethod(load, message="") {
         this.loadingDialog.loading = load;
         this.loadingDialog.message = message

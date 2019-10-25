@@ -147,11 +147,6 @@
            <td class="text-xs-left">{{ props.item.due_date }}</td>
            <td class="text-xs-left">{{ props.item.number }}</td>
           <td class="text-xs-left">{{ props.item.patient.name.text }} {{ props.item.patient.name.family }}</td>
-
-          <td class="text-xs-left">{{ props.item.due_date }}</td>
-          <td class="text-xs-right">{{ props.item.total }}</td>
-    <td class="justify-center layout px-0">
-
           <td class="text-xs-right">{{ props.item.status }}</td>
           <td class="text-xs-right">{{ props.item.description }}</td>
           <td class="text-xs-right">{{ props.item.discount }}</td>

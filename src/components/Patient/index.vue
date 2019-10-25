@@ -16,9 +16,9 @@
 			<v-text-field class="his_search" v-model="search" append-icon="search" label="Search" single-line v-on:keyup.enter="initialize" hide-details>
 			</v-text-field>
   	</v-container>
-  	<v-container>
+<!--   	<v-container>
 			<line-chart title="patients-by-month" :categories="genders" :stats="frequencyOfPatients.monthly" />
-  	</v-container>
+  	</v-container> -->
 		<v-container class="my-2">
 	    <v-layout row wrap>
 	    	<v-flex sm12 md6 lg4>

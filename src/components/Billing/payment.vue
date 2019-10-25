@@ -84,6 +84,7 @@
           <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
+                  prefix="Ksh"
                   v-model="paymentNew.amount"
                   :rules="[v => !!v || 'Amount is Required']"
                   label="Amount">    
@@ -92,6 +93,7 @@
               <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
+                  prefix="Ksh"
                   v-model="paymentNew.balance"
                   :rules="[v => !!v || 'Balance is Required']"
                   label="Balance">    
@@ -155,6 +157,7 @@
           v-model="payment.amount"
           :rules="[v => !!v || 'Amount is Required']"
           outline
+          prefix="Ksh"
           label="Amount"
           hint="Auto Generated"
           required>
@@ -251,6 +254,7 @@
           <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
+                  prefix="Ksh"
                   v-model="editPayment.amount"
                   :rules="[v => !!v || 'Amount is Required']"
                   label="Amount">    
@@ -259,6 +263,7 @@
               <v-flex xs12 sm12 md12>
                  <v-text-field  
                   outline
+                  prefix="Ksh"
                   v-model="editPayment.balance"
                   :rules="[v => !!v || 'Balance is Required']"
                   label="Balance">    
@@ -286,16 +291,18 @@
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Make Payment
+
+
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Make Payment</v-btn>
+
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
-              <div>
                       <v-flex sm12 md6>
           <v-btn color="green" @click = "mpesadialog = true" dark class="mb-2" outline>M-Pesa Payment
             <v-icon right dark>playlist_add</v-icon>
           </v-btn>
-        </v-flex></div>
+        </v-flex>
             </v-layout>
           </v-flex>
           <v-flex sm12 md6 offset-md2 text-xs-right>
@@ -425,8 +432,6 @@
          balance: '',
          date: null,
        },
-
-
         paymentNew: {
           invoice_id: '',
           description: '',
@@ -437,10 +442,10 @@
           amount: '',
           balance: ''
         },
+
                 confirmMpesa: false,
         confirmMpesaLoader: false,
            stkLoader: false,
-
 
         editPayment: {
           invoice_id: '',
@@ -529,6 +534,7 @@
         this.editedIndex = -1
       },
 
+
        requestSTK(){
         if(this.$refs.mpesaForm.validate()){
           this.stkLoader = true
@@ -572,8 +578,6 @@
         });
         
       },
-
-
 
      
           save(){
@@ -628,7 +632,7 @@
 
       },
     
- deleteItem (item) {
+deleteItem (item) {
 
         confirm('Are you sure you want to delete this Payment Entry?') && (this.delete = true)
 
@@ -648,6 +652,8 @@
         }
 
       },
+
+
 
    
     },
