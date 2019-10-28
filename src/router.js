@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import store from './store/index'
-import Router from 'vue-router'
+import router from 'vue-router'
 
 import Home from './components/index.vue'
-import Login from './components/Auth/login.vue'
-import Register from './components/Auth/register.vue'
-import Patient from './components/Patient/index.vue'
-import patientProfile from './components/Patient/patientProfile.vue'
+import login from './components/auth/login.vue'
+import register from './components/auth/register.vue'
+import patient from './components/patient/index.vue'
+import patientProfile from './components/patient/patientProfile.vue'
 import Profile from './components/account/profile'
 import Queue from './components/Queue/index.vue'
 import UserAccounts from './components/accesscontrol/useraccounts'
@@ -31,7 +31,7 @@ import Appointment from './components/appointment/index.vue'
 import Radiology from './components/Radiology/index.vue'
 import AppointmentReport from './components/Reports/appointments.vue'
 import PatientReport from './components/Reports/patients.vue'
-Vue.use(Router)
+Vue.use(router)
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
@@ -49,18 +49,18 @@ const ifAuthenticated = (to, from, next) => {
   next('/login')
 }
 
-export default new Router({
+export default new router({
   routes: [
     {
       path: '/login',
-      name: 'Login',
-      component: Login,
+      name: 'login',
+      component: login,
       beforeEnter: ifNotAuthenticated,
     },
     {
       path: '/register',
-      name: 'Register',
-      component: Register,
+      name: 'register',
+      component: register,
       beforeEnter: ifNotAuthenticated,
     },
     {
@@ -76,11 +76,11 @@ export default new Router({
       component: Queue,
       beforeEnter: ifAuthenticated,
     },
-    //Patient
+    //patient
     {
       path: '/patients',
-      name: 'Patient',
-      component: Patient,
+      name: 'patient',
+      component: patient,
       beforeEnter: ifAuthenticated,
     },
     {

@@ -86,7 +86,7 @@
 				        </v-layout>
 				    </v-form>
 		        <div class="his_card_footer">
-		          <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="save">
+		          <v-btn depressed class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="save">
 		            <v-icon left dark>add_circle</v-icon>
 		            Add
 		          </v-btn>
@@ -96,11 +96,11 @@
 		    <v-flex sm12 md3 lg4 v-for="(patient,index) in allPatients.data" :key="patient.id">
 		      <div class="his_card">
 		        <div class="his_card_top_right">
-		        	<v-btn single-line fab small color="red" @click="deletePatient(patient.id)">
-		            	<v-icon dark>delete</v-icon>
+		        	<v-btn depressed single-line fab small color="red" @click="deletePatient(patient.id)">
+		            	<v-icon dark class="white--text">delete</v-icon>
 		          	</v-btn>
-		          <v-btn single-line fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
-		            <v-icon dark>visibility</v-icon>
+		          <v-btn depressed single-line fab small title="View History" color="green" router :to="{ name: 'patientProfile', params: { id: patient.id } }">
+		            <v-icon dark class="white--text">visibility</v-icon>
 		          </v-btn>
 		        </div>
 		        <p class="his_card_main_heading">{{ patient.name.given }} {{ patient.name.family }}</p>
@@ -116,12 +116,12 @@
 		        <p class="his_card_title">Number of Visits</p>
 		        <p class="his_card_description">!!x visits!!</p>
 		        <div class="his_card_footer">
-		          <v-btn dark class="his_card_button" small title="Edit" color="green" round @click="addToQueue(patient)">
+		          <v-btn depressed dark class="his_card_button" small title="Edit" color="green" round @click="addToQueue(patient)">
 		            <v-icon left dark>launch</v-icon>
 		            New Visit
 		          </v-btn>
 		          <div class="his_card_footer_right">
-		            <v-btn dark class="his_card_button" small title="Edit" color="blue" round @click="requestTest(patient)">
+		            <v-btn depressed dark class="his_card_button" small title="Edit" color="blue" round @click="requestTest(patient)">
 			        	<v-icon left dark>add_circle</v-icon>
 			            View Report
 			        </v-btn>
