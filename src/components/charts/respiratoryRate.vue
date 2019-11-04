@@ -15,6 +15,7 @@
         },
       ]
       }, {responsive: true, maintainAspectRatio: false})
+    
     }
   }
 </script>

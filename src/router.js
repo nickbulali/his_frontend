@@ -183,7 +183,6 @@ export default new router({
       name: 'Appointment',
       component: Appointment,
       beforeEnter: ifAuthenticated,
-
     },
     //radiology
     {

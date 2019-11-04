@@ -246,8 +246,7 @@
           console.log(resp)
           this.user = resp.data;
           this.loader = false
-          this.pagination.per_page = resp.per_page;
-          this.pagination.total = resp.total;
+       
         })
         .catch(error => {
           console.log(error.response)
@@ -265,6 +264,8 @@
         this.editedIndex = this.user.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
+        console.log("My Edited Info",item)
+
       },
       resetDialogReferences() {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -359,7 +360,7 @@
         if (this.delete) {
           const index = this.item.indexOf(item)
           this.item.splice(index, 1)
-          apiCall({url: '/api/item/'+item.id, method: 'DELETE' })
+          apiCall({url: '/api/users/'+item.id, method: 'DELETE' })
           .then(resp => {
             console.log(resp)
           })

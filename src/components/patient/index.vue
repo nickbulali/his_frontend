@@ -8,7 +8,6 @@
       >
         {{ message }}
     </v-snackbar>
-		
 		<v-layout justify-center row wrap mt-3>
 			<p class="his_page_title">Patients</p>
 		</v-layout>
