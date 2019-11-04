@@ -1,6 +1,6 @@
 <script>
   import { Line } from 'vue-chartjs'
-   
+
   export default {
     extends: Line,
     props: ['dataset'],
@@ -23,7 +23,7 @@
             data: this.dataset
           }
         ]
-        }, {responsive: true, maintainAspectRatio: false})
+      }, {responsive: true, maintainAspectRatio: false})
     }
   }
 </script>

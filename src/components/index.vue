@@ -73,7 +73,11 @@
     >
       <v-card-text>
         <v-sheet color="rgba(0, 0, 0, .12)">
-          <v-sparkline
+
+                  <v-card-text>
+        <div class="display-1 font-weight-thin">Revenue</div>
+      </v-card-text>
+    <!--       <v-sparkline
             :value="value"
             color="rgba(255, 255, 255, .7)"
             height="100"
@@ -84,14 +88,14 @@
             <template v-slot:label="item">
               ${{ item.value }}
             </template>
-          </v-sparkline>
+          </v-sparkline> -->
         </v-sheet>
       </v-card-text>
-  
-      <v-card-text>
-        <div class="display-1 font-weight-thin">Revenue</div>
+   <v-card-text>
+        <div class="display-1 font-weight-thin">Kshs.1125000</div>
       </v-card-text>
-  
+
+    
       <v-divider></v-divider>
   
       <v-card-actions class="justify-center">
@@ -112,7 +116,11 @@
       >
       <v-card-text>
         <v-sheet color="rgba(0, 0, 0, .12)">
-          <v-sparkline
+
+            <v-card-text>
+        <div class="display-1 font-weight-thin">Expenses</div>
+      </v-card-text>
+      <!--     <v-sparkline
             :value="value"
             color="rgba(255, 255, 255, .7)"
             height="100"
@@ -122,15 +130,15 @@
           >
             <template v-slot:label="item">
               ${{ item.value }}
-            </template>
+            </template> -->
           </v-sparkline>
         </v-sheet>
       </v-card-text>
   
-      <v-card-text>
-        <div class="display-1 font-weight-thin">Expenses</div>
+   
+  <v-card-text>
+        <div class="display-1 font-weight-thin">Kshs.85500</div>
       </v-card-text>
-  
       <v-divider></v-divider>
   
       <v-card-actions class="justify-center">
