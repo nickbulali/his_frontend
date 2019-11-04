@@ -1,37 +1,37 @@
 import Vue from 'vue'
 import store from './store/index'
-import Router from 'vue-router'
+import router from 'vue-router'
 
 import Home from './components/index.vue'
-import Login from './components/Auth/login.vue'
-import Register from './components/Auth/register.vue'
-import Patient from './components/Patient/index.vue'
-import patientProfile from './components/Patient/patientProfile.vue'
+import login from './components/auth/login.vue'
+import register from './components/auth/register.vue'
+import patient from './components/patient/index.vue'
+import patientProfile from './components/patient/patientProfile.vue'
 import Profile from './components/account/profile'
-import Queue from './components/Queue/index.vue'
-import UserAccounts from './components/accesscontrol/useraccounts'
-import ThirdPartyApps from './components/accesscontrol/thirdpartyapps'
-import Permissions from './components/accesscontrol/permissions'
+import Queue from './components/queue/index.vue'
+import UserAccounts from './components/accessControl/userAccounts'
+import ThirdPartyApps from './components/accessControl/thirdPartyApps'
+import Permissions from './components/accessControl/permissions'
 import Role from './components/accesscontrol/role'
 import RoleUser from './components/accesscontrol/roleusers'
-import Invoice from './components/Billing/index.vue'
-import ShowInvoice from './components/Billing/show.vue'
-import ShowPayment from './components/Billing/showpayment.vue'
-import ChargeSheet from './components/Billing/chargesheet.vue'
-import Payment from './components/Billing/payment.vue'
-import Bill from './components/Billing/billing.vue'
-import Expenses from './components/Billing/expenses.vue'
-import Pharmacy from './components/Pharmacy/index.vue'
-import Prescription from './components/Pharmacy/prescription.vue'
-import InventoryItem from './components/Inventory/supplies'
-import InventoryRequest from './components/Inventory/request'
-import InventorySupplier from './components/Inventory/supplier'
+import Invoice from './components/billing/index.vue'
+import ShowInvoice from './components/billing/show.vue'
+import ShowPayment from './components/billing/showpayment.vue'
+import ChargeSheet from './components/billing/chargesheet.vue'
+import Payment from './components/billing/payment.vue'
+import Bill from './components/billing/billing.vue'
+import Expenses from './components/billing/expenses.vue'
+import Pharmacy from './components/pharmacy/index.vue'
+import Prescription from './components/pharmacy/prescription.vue'
+import InventoryItem from './components/inventory/supplies'
+import InventoryRequest from './components/inventory/request'
+import InventorySupplier from './components/inventory/supplier'
 import Tests from './components/test/index.vue'
 import Appointment from './components/appointment/index.vue'
-import Radiology from './components/Radiology/index.vue'
-import AppointmentReport from './components/Reports/appointments.vue'
-import PatientReport from './components/Reports/patients.vue'
-Vue.use(Router)
+import Radiology from './components/radiology/index.vue'
+import AppointmentReport from './components/reports/appointments.vue'
+import PatientReport from './components/reports/patients.vue'
+Vue.use(router)
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
@@ -49,18 +49,18 @@ const ifAuthenticated = (to, from, next) => {
   next('/login')
 }
 
-export default new Router({
+export default new router({
   routes: [
     {
       path: '/login',
-      name: 'Login',
-      component: Login,
+      name: 'login',
+      component: login,
       beforeEnter: ifNotAuthenticated,
     },
     {
       path: '/register',
-      name: 'Register',
-      component: Register,
+      name: 'register',
+      component: register,
       beforeEnter: ifNotAuthenticated,
     },
     {
@@ -76,11 +76,11 @@ export default new Router({
       component: Queue,
       beforeEnter: ifAuthenticated,
     },
-    //Patient
+    //patient
     {
       path: '/patients',
-      name: 'Patient',
-      component: Patient,
+      name: 'patient',
+      component: patient,
       beforeEnter: ifAuthenticated,
     },
     {
@@ -89,7 +89,7 @@ export default new Router({
       component: patientProfile,
       beforeEnter: ifAuthenticated,
     },
-    //Billing
+    //billing
     {
       path: '/billing/invoice',
       name: 'Invoice',
@@ -164,7 +164,7 @@ export default new Router({
       component: ThirdPartyApps,
       beforeEnter: ifAuthenticated,
     },
-    //Pharmacy
+    //pharmacy
     {
       path: '/pharmacy',
       name: 'Pharmacy',
@@ -185,7 +185,7 @@ export default new Router({
       beforeEnter: ifAuthenticated,
 
     },
-    //Radiology
+    //radiology
     {
       path: '/radiology',
       name: 'Radiology',
@@ -200,7 +200,7 @@ export default new Router({
       component: Tests,
       beforeEnter: ifAuthenticated,
     },
-    //Reports
+    //reports
     {
       path: '/reports/appointments',
       name: 'AppointmentReport',
@@ -215,7 +215,7 @@ export default new Router({
       beforeEnter: ifAuthenticated,
 
     },
-   //Inventory
+   //inventory
     {
       path: '/inventory/supplier',
       name: 'Supplier',

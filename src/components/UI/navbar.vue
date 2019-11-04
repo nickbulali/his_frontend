@@ -12,9 +12,6 @@
 				<v-icon left>notifications</v-icon>
 			</v-btn>
 			<!--dropdown menu-->
-
-
-
    	<v-menu left transition="slide-y-reverse-transition">
         <v-btn primary flat slot="activator">
           <v-flex
