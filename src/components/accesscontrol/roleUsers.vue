@@ -6,7 +6,7 @@
         <v-icon>chevron_right</v-icon>
       </template>
     </v-breadcrumbs>
-      <span class="title">Permissions</span>
+      <span class="title">Assign Role</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
@@ -24,7 +24,7 @@
             <v-text-field
               hide-details
               prepend-icon="search"
-              outline
+              single-line
               v-model="search"
               label="Search"
               v-on:keyup.enter="initialize()"
@@ -35,18 +35,18 @@
         <v-data-table
           hide-actions
           :headers="headers"
-          :items="permissions"
+          :items="users"
           :loading="loader"
           class="elevation-1"
         >
         <template v-slot:items="props">
         <tr :key="props.item.id">
-          <td class="text-xs-left">{{ props.item.display_name }}</td>
-            <td
+          <td class="text-xs-left">{{ props.item.name }}</td>
+         <td
             v-for="role in roles"
             :key="role.id">
               <v-checkbox
-                v-model="permissionRoleIds"
+                v-model="roleUserIds"
                 :value="getAssignment(props.item,role)"
                 v-on:click="toggleAssignment(props.item,role)">
               </v-checkbox>
@@ -75,14 +75,13 @@
   import _ from 'lodash';
 
   export default {
-    name: 'Permissions',
+     name: 'RoleUser',
     data: () => ({
       valid: true,
       search: '',
       query: '',
-      loader: false,
       headers: [
-        { text: 'Permissions', value: 'permissions' },
+        { text: 'Users', value: 'users' },
       ],
       pagination: {
         page: 1,
@@ -100,14 +99,14 @@
            to: { name: 'accesscontrol' }
           },
           {
-           text: 'Permission',
-           to: { name: 'Permission' }
+           text: 'Assign Role',
+           to: { name: 'RoleUser' }
           }
            
         ],
-      permissionsroles: [],
-      permissionRoleIds: [],
-      permissions: [],
+      rolesusers: [],
+      roleUserIds: [],
+      users: [],
       roles: [],
     }),
 
@@ -118,7 +117,7 @@
       },
     },
 
-    beforeCreate() {
+   beforeCreate() {
       apiCall({url: '/api/role', method: 'GET' })
         .then(resp => {
           console.log(resp)
@@ -134,11 +133,11 @@
           console.log(error.response)
         })
 
-        apiCall({url: '/api/permissionrole', method: 'GET' })
+        apiCall({url: '/api/roleuser', method: 'GET' })
         .then(resp => {
           console.log(resp)
-          this.permissionsroles = resp;
-          this.permissionRoleIds = _.map(this.permissionsroles, 'id');
+          this.rolesusers = resp;
+          this.roleUserIds = _.map(this.rolesusers, 'id');
         })
         .catch(error => {
           console.log(error.response)
@@ -148,76 +147,78 @@
     created () {
       this.initialize()
     },
-
     methods: {
 
       initialize () {
-     this.loader=true
+        this.loader=true
         this.query = 'page='+ this.pagination.page;
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
 
-        apiCall({url: '/api/permission?' + this.query, method: 'GET' })
+        apiCall({url: '/api/users?' + this.query, method: 'GET' })
         .then(resp => {
           console.log(resp.data)
-          this.permissions = resp.data;
-              this.loader=false
-          this.pagination.total = resp.total;
+          this.users = resp.data;
+             this.loader=false
           this.pagination.per_page = resp.per_page;
+          this.pagination.total = resp.total;
         })
         .catch(error => {
           console.log(error.response)
         })
       },
 
-      getAssignment (permission, role) {
+      getAssignment (user, role) {
           var value = 0;
-          for (var i = this.permissionsroles.length - 1; i >= 0; i--) {
-            if (permission.id == this.permissionsroles[i].permission_id &&
-              role.id == this.permissionsroles[i].role_id) {
+          for (var i = this.rolesusers.length - 1; i >= 0; i--) {
+            if (user.id == this.rolesusers[i].user_id &&
+              role.id == this.rolesusers[i].role_id) {
 
-              value = this.permissionsroles[i].id;
+              value = this.rolesusers[i].id;
               break;
             }else{
-              value = permission.id+'_'+role.id;
+              value = user.id+'_'+role.id;
             }
           }
           return value;
       },
 
-      toggleAssignment (permission,role) {
+      toggleAssignment (user,role) {
 
-        this.query = 'permission_id='+ permission.id+'&&role_id='+ role.id;
+        this.query = 'user_id='+ user.id+'&&role_id='+ role.id;
 
-        var permissionRoleId = this.getAssignment(permission, role);
+        var roleUserId = this.getAssignment(user, role);
         // if attached
-        if (_.includes(this.permissionRoleIds, permissionRoleId)) {
+        if (_.includes(this.roleUserIds, roleUserId)) {
 
-          console.log('dettach permission-role')
+          console.log('dettach role-user')
           // detach
           apiCall({
-            url: '/api/permissionrole/detach?'+this.query,
+            url: '/api/roleuser/detach?'+this.query,
             method: 'GET'
           })
           .then(response => {
             console.log(response)
-            _.remove(this.permissionRoleIds, item => item === permissionRoleId);
+            _.remove(this.roleUserIds, item => item === roleUserId);
+
           })
           .catch(error => {
             console.log(error.response)
           })
         } else {
 
-          console.log('attach permission-role')
+          console.log('attach role-user')
           // attach
           apiCall({
-            url: '/api/permissionrole/attach?'+this.query,
+            url: '/api/roleuser/attach?'+this.query,
             method: 'GET'
           })
           .then(response => {
             console.log(response)
-            this.permissionRoleIds.push(response.id);
+            let roleUserIds = this.roleUserIds
+            roleUserIds.push(response.id)
+            Vue.set(this,"roleUserIds",roleUserIds)
           })
           .catch(error => {
             console.log(error.response)

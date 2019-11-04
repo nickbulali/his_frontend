@@ -16,6 +16,158 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="addStock" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Receive New Pharmacy Stock</span>
+        </v-card-title>
+        <v-form ref="stockform" v-model="valid" lazy-validation>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="stockItem.lot_no"
+                  :rules="[v => !!v || 'Lot no. is Required']"
+                  label="Lot no.">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="stockItem.batch_no"
+                  :rules="[v => !!v || 'Batch no. is Required']"
+                  label="Batch no.">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-menu>
+                  <v-text-field :rules="[v => !!v || 'Expiry Date is Required']" :value="stockItem.expiry_date" slot="activator" label="Expiry Date" single-line></v-text-field>
+                  <v-date-picker v-model="stockItem.expiry_date"></v-date-picker>
+                </v-menu>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="stockItem.manufacturer"
+                  :rules="[v => !!v || 'Manufacturer is Required']"
+                  label="Manufacturer">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-select
+                  single-line
+                  :items="suppliers"
+                  v-model="stockItem.supplier_id"
+                  :rules="[v => !!v || 'Supplier is Required']"
+                  item-text="name"
+                  item-value="id"
+                  label="Supplier"
+                ></v-select>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="stockItem.quantity_supplied"
+                  :rules="[v => !!v || 'Quantity Supplied is Required']"
+                  label="Quantity Supplied">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="stockItem.cost_per_unit"
+                  :rules="[v => !!v || 'Cost Per Unit is Required']"
+                  label="Cost Per Unit">
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-menu>
+                  <v-text-field :rules="[v => !!v || 'Date Received is Required']" :value="stockItem.date_received" slot="activator" label="Date Received" single-line></v-text-field>
+                  <v-date-picker v-model="stockItem.date_received"></v-date-picker>
+                </v-menu>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="stockItem.remarks"
+                  :rules="[v => !!v || 'Remarks is Required']"
+                  label="Remarks">
+                </v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn outline color="blue darken-1" flat @click.native="resetStockDialogReferences">Cancel</v-btn>
+          <v-btn outline color="blue darken-1" :disabled="!valid" flat @click.native="saveStock" :loading="loading">Save</v-btn>
+        </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
+       <v-dialog v-model="receiveDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click.native="receiveDialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark flat @click.native="addStock = true">Add new Stock</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-data-table
+          :headers="stockheaders"
+          :items="stock"
+          hide-actions
+          class="elevation-1"
+        >
+          <template slot="items" slot-scope="props">
+            <td>{{ props.item.lot_no }}</td>
+            <td class="text-xs-left">{{ props.item.batch_no }}</td>
+            <td class="text-xs-left">{{ props.item.manufacturer }}</td>
+            <td class="text-xs-left">{{ props.item.quantity_supplied }}</td>
+            <td class="text-xs-left">{{ props.item.quantity_issued}}</td>
+            <td class="text-xs-left">{{ props.item.balance }}</td>
+            <td class="text-xs-left">{{ props.item.expiry_date }}</td>
+            <td class="justify-left layout px-0">
+              <v-btn
+                outline
+                small
+                title="Edit"
+                color="teal"
+                flat
+                @click="editStockItem(props.item)">
+                Edit
+                <v-icon right dark>edit</v-icon>
+              </v-btn>
+            <v-btn
+            outline
+            small
+            title="Edit"
+            color="green"
+            flat
+            @click="itemStock(props.item)">
+            Log Stock Usage
+            <v-icon right dark>book</v-icon>
+          </v-btn>
+              <v-btn
+                outline
+                small
+                title="Edit"
+                color="warning"
+                flat
+                @click="issueItem(props.item)">
+                Issue Stock
+                <v-icon right dark>done_all</v-icon>
+              </v-btn>
+            </td>
+          </template>
+        </v-data-table>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
       <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
@@ -32,7 +184,7 @@
               <v-layout wrap>
                 <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.generic_name"
                   :rules="[v => !!v || 'Generic Name is Required']"
                   label="Generic Name">    
@@ -40,7 +192,7 @@
               </v-flex>
                 <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.trade_name"
                   :rules="[v => !!v || 'Trade Name is Required']"
                   label="Trade Name">    
@@ -48,7 +200,7 @@
               </v-flex>
                <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.strength_value"
                   :rules="[v => !!v || 'Strength Value is Required']"
                   label="Strength Value">    
@@ -56,7 +208,7 @@
               </v-flex>
                 <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.strength_unit"
                   :rules="[v => !!v || 'Strength Unit is Required']"
                   label="Strength Unit">    
@@ -64,7 +216,7 @@
               </v-flex>
                  <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.dosage_form"
                   :rules="[v => !!v || 'Dosage Form is Required']"
                   label="Dosage Form">    
@@ -72,13 +224,20 @@
               </v-flex>
                <v-flex xs12 sm12 md12>
                 <v-text-field
-                  outline
+                  single-line
                   v-model="editedItem.administration_route"
                   :rules="[v => !!v || 'Adminstration Route is Required']"
                   label="Adminstration Route ">    
                 </v-text-field>
               </v-flex>
-             
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="editedItem.price"
+                  :rules="[v => !!v || 'Price is Required']"
+                  label="Price">    
+                </v-text-field>
+              </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -132,6 +291,7 @@
           </v-flex>
         </v-layout>
         <v-data-table
+          hide-actions
           :headers="headers"
           :items="drugs"
           :loading="loader"
@@ -145,6 +305,7 @@
          <td class="text-xs-left">{{ props.item.strength_unit }}</td>
          <td class="text-xs-left">{{ props.item.dosage_form }}</td>
           <td class="text-xs-left">{{ props.item.administration_route }}</td>
+          <td class="text-xs-left">{{ props.item.price }}</td>
           <td class="justify-center layout px-0">
           <v-btn
             outline
@@ -155,6 +316,16 @@
             @click="editItem(props.item)">
             Edit
             <v-icon right dark>edit</v-icon>
+          </v-btn>
+          <v-btn
+            outline
+            small
+            title="Edit"
+            color="green"
+            flat
+            @click="itemStock(props.item)">
+            Log Stock Usage
+            <v-icon right dark>book</v-icon>
           </v-btn>
           <v-btn
             outline
@@ -179,9 +350,7 @@
         </v-pagination>
       </div>
     </v-container>
-
   </div>
-  
 </template>
 
 <script>
@@ -189,11 +358,11 @@
   import apiCall from "../../utils/api";
   import Dashboard from '@/views/Dashboard.vue'
   export default {
-   
     data () {
       return {
         search: '',
         query: '',
+        addStock: false,
         snackbar: false,
         message:'',
         y: 'top',
@@ -219,23 +388,35 @@
         inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],
-   
-      
-       headers: [
-              {
-                text: 'ID',
-                align: 'left',
-                sortable: false,
-                value: 'id'
-              },
-              { text: 'Generic Name', align: 'left', value: 'generic_name' },
-              { text: 'Trade Name', align: 'left', value: 'trade_name' },
-              { text: 'Value', align: 'left', value: 'strength_value' },
-              { text: 'Unit', align: 'left', value: 'strength_unit' },
-              { text: 'Dosage Form', align: 'right', value: 'dosage_form' },
-              { text: 'Adminstration Route', align: 'right', value: 'administration_route' },
-              { text: 'Actions', align: 'center', value: 'actions' },
-            ],
+        receiveDialog: false,
+        stock: [],
+        suppliers: [],
+        headers: [
+          {
+            text: 'ID',
+            align: 'left',
+            sortable: false,
+            value: 'id'
+          },
+          { text: 'Generic Name', align: 'left', value: 'generic_name' },
+          { text: 'Trade Name', align: 'left', value: 'trade_name' },
+          { text: 'Value', align: 'left', value: 'strength_value' },
+          { text: 'Unit', align: 'left', value: 'strength_unit' },
+          { text: 'Dosage Form', align: 'right', value: 'dosage_form' },
+          { text: 'Adminstration Route', align: 'right', value: 'administration_route' },
+          { text: 'Price', align: 'right', value: 'price' },
+          { text: 'Actions', align: 'center', value: 'actions' },
+      ],
+      stockheaders: [
+        { text: 'Lot No.', value: 'lot_no' },
+        { text: 'Batch No.', value: 'batch_no' },
+        { text: 'Manufacturer', value: 'manufacturer' },
+        { text: 'Quantity Supplied', value: 'quantity_supplied' },
+        { text: 'Quantity Issued', value: 'quantity_issued' },
+        { text: 'Balance', value: 'balance' },
+        { text: 'Expiry Date', value: 'expiry_date' },
+        { text: 'Actions', value: 'name', sortable: false }
+      ],
       drugs: [],
       editedIndex: -1,
       editedItem: {
@@ -244,7 +425,8 @@
         strength_value: '',
         strength_unit:'',
         dosage_form:'',
-        administration_route:''
+        administration_route:'',
+        price:''
       },
       items: [
           {
@@ -259,15 +441,28 @@
            text: 'Pharmacy',
            to: { name: 'Pharmacy' }
           }
-           
-        ],
+      ],
       defaultItem: {
         generic_name: '',
         trade_name: '',
         strength_value: '',
         strength_unit:'',
         dosage_form:'',
-        administration_route:''
+        administration_route:'',
+        price:''
+      },
+      stockItem: {
+        stock_id: '',
+        item_id: '',
+        lot_no: '',
+        batch_no: '',
+        expiry_date: '',
+        manufacturer: '',
+        supplier_id: '',
+        quantity_supplied: '',
+        cost_per_unit: '',
+        date_received: '',
+        remarks: '',
       },
         pagination: {
           page: 1,
@@ -302,6 +497,14 @@
         .catch(error => {
           console.log(error.response)
         })
+        apiCall({url: '/api/supplier', method: 'GET' })
+        .then(resp => {
+          console.log(resp)
+          this.suppliers = resp.data;
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
       },
        close () {
         this.dialog = false
@@ -311,6 +514,48 @@
           this.resetDialogReferences();
         }
       },
+      saveStock () {
+        if(this.$refs.stockform.validate()){
+          this.loading = true
+          apiCall({url: '/api/stock', data: this.stockItem, method: 'POST' })
+            .then(resp => {
+              this.stock.push(resp)
+              console.log(resp)
+              this.resetStockDialogReferences();
+              //this.saving = false;
+              this.loading = false
+              this.message = 'Stock Added Succesfully';
+            this.snackbar = true;
+            })
+            .catch(error => {
+              this.loading = false
+              console.log(error.response)
+          })
+        }
+      },
+      itemStock(item){
+        this.stockItem.item_id = item.id
+
+        apiCall({url: '/api/stockDetails/'+item.id, method: 'GET' })
+        .then(resp => {
+          let stock = resp
+          
+          console.log("Stock history response is:",resp) 
+          Vue.set(this,"stock",stock)
+          //this.request = resp.data.request;
+          //console.log('requests')
+          //console.log(resp)
+          //this.pagination.total = resp.total;
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+        this.itemdetails = item
+        console.log("item")
+        console.log(this.itemdetails)
+        this.receiveDialog = true
+      },
+
       editItem (item) {
         this.editedIndex = this.drugs.indexOf(item)
         this.editedItem = Object.assign({}, item)
@@ -324,8 +569,10 @@
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       },
-
-    
+      // resetStockDialogReferences() {
+      //   this.stockItem = Object.assign({}, this.defaultstockItem)
+      //   this.addStock = false
+      // },
       save () {
 
         this.saving = true;
@@ -384,11 +631,10 @@
 
       },
 
-       next () {
+      next () {
         const active = parseInt(this.active)
         this.active = (active < 2 ? active + 1 : 0)
       }
-
     },
     computed: {
       formTitle () {

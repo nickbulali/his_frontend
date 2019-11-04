@@ -25,19 +25,27 @@
     </v-dialog>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-   <!--      <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
+      <!--   <v-btn color="primary" dark v-on="on">Open Dialog</v-btn> -->
       </template>
       <v-card>
         <v-toolbar dark color="primary" class="elevation-0">
           <v-spacer></v-spacer>
-            <v-toolbar-title>New Role</v-toolbar-title>
+            <v-toolbar-title>Add User</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-            
+                <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="editedItem.username"
+                  :rules="[v => !!v || 'Username is Required']"
+                  label="Username"
+                  >    
+                </v-text-field>
+              </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field
                   single-line
@@ -47,8 +55,29 @@
                   label="Name">
                 </v-text-field>
               </v-flex>
-            
-            
+              <v-flex xs12 sm12 md12>
+                <v-text-field
+                  single-line
+                  v-model="editedItem.email"
+                  :rules="[v => !!v || 'Email is Required',v => /.+@.+/.test(v)  || 'Email not valid' ]"
+                  label="Email Address">
+                </v-text-field>
+              </v-flex>
+              <div>
+                <v-btn small color="primary" dark @click.native="passordReset">Reset Password</v-btn>
+              </div>
+              <v-flex xs12 sm12 md12
+                v-if="showPasswordField">
+                <v-text-field
+                  v-model="password"
+                    single-line
+                  :rules="[v => !!v || 'New Password is Required']"
+                  type = "text"
+                  append-icon="autorenew"
+                  @click:append="generate"
+                  label="New Password">
+                </v-text-field>
+              </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -66,12 +95,12 @@
       </v-card>
     </v-dialog>
     <v-container class="my-5">
-      <span class="title">Roles</span>
+      <span class="title">Users</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
             <v-layout row wrap>
               <v-flex sm12 md6>
-                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add Role
+                <v-btn color="primary" @click = "dialog = true" dark class="mb-2" outline>Add User
                   <v-icon right dark>playlist_add</v-icon>
                 </v-btn>
               </v-flex>
@@ -97,14 +126,13 @@
         <v-data-table
           hide-actions
           :headers="headers"
-          :items="roles"
+          :items="user"
           :loading="loader"
-          class="elevation-1"
         >
         <template v-slot:items="props">
-          
+          <td>{{ props.item.username }}</td>
           <td class="text-xs-left">{{ props.item.name }}</td>
-     
+          <td class="text-xs-left">{{ props.item.email }}</td>
       
           <td class="justify-center layout px-0">
           <v-btn
@@ -156,6 +184,7 @@
         message:'',
         y: 'top',
         color: 'success',
+        
         valid: true,
         delete: false,
         loader: false,
@@ -165,15 +194,31 @@
           message: ""
         },
         dialog: false,
-     
-    headers: [
+        productDialog: false,
+        invoice: {
+          patient: '',
+          number: '',
+          reference: '',
+          date: null,
+          due: null,
+        },
+        inputRules: [
+          v => v.length >= !v  || 'Field is required'
+        ],
+   
+      
+     headers: [
+        { text: 'Username', align: 'left', value: 'username' },
         { text: 'Name', value: 'name' },
-        { text: 'Actions', value: 'name', sortable: false }
+        { text: 'Email Address', value: 'email' },
+        { text: 'Actions', sortable: false, value: 'action' }
       ],
-      roles: [],
+      user: [],
       editedIndex: -1,
-        editedItem: {
+      editedItem: {
+        username: '',
         name: '',
+        email: ''
       },
       items: [
           {
@@ -185,13 +230,15 @@
            to: { name: 'accesscontrol' }
           },
           {
-           text: 'Role',
-           to: { name: 'Role' }
+           text: 'User Account',
+           to: { name: 'UserAccount' }
           }
            
         ],
       defaultItem: {
+        username: '',
         name: '',
+        email: ''
       },
         pagination: {
           page: 1,
@@ -204,33 +251,30 @@
     created() {
       this.initialize();
     },
-      
     methods: {
       loadingMethod(load, message="") {
         this.loadingDialog.loading = load;
         this.loadingDialog.message = message
       },
-      initialize() {
-        this.loader=true
+     initialize () {
+         this.loader = true
         this.query = 'page='+ this.pagination.page;
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
         }
-        apiCall({ url: "/api/role?" + this.query, method: "GET" })
-          .then(resp => {
-            console.log(resp)
-          this.roles = resp;
-            this.loader=false
-            this.pagination.total = resp.total;
-            this.pagination.per_page = resp.per_page;
-          })
-          .catch(error => {
-            console.log(error.response);
-          });
 
+        apiCall({url: '/api/users?' + this.query, method: 'GET' })
+        .then(resp => {
+          console.log(resp)
+          this.user = resp.data;
+          this.loader = false
+       
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
       },
-
-        close () {
+       close () {
         this.dialog = false
 
         // if not saving reset dialog references to datatables
@@ -238,27 +282,11 @@
           this.resetDialogReferences();
         }
       },
-       editItem (item) {
-        this.editedIndex = this.roles.indexOf(item)
+      editItem (item) {
+        this.editedIndex = this.user.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
-      },
-
-      deleteItem (item) {
-
-        confirm('Are you sure you want to delete this item?') && (this.delete = true)
-
-        if (this.delete) {
-          const index = this.roles.indexOf(item)
-          this.roles.splice(index, 1)
-          apiCall({url: '/api/role/'+item.id, method: 'DELETE' })
-          .then(resp => {
-            console.log(resp)
-          })
-          .catch(error => {
-            console.log(error.response)
-          })
-        }
+        console.log("My Edited Info",item)
 
       },
       resetDialogReferences() {
@@ -268,25 +296,59 @@
            resetDialogReferences() {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
-       ''
+        this.showPasswordField = false
+        this.password = ''
       },
 
-  
-   
-      
+      passordReset () {
+        if (this.showPasswordField){
+          this.showPasswordField = false
+          this.password = ''
+        }else{
+          this.showPasswordField = true;
+        }
+      },
+      generate: function() {
+        let charactersArray = this.characters.split(',');  
+        let CharacterSet = '';
+        let password = '';
+        
+        if( charactersArray.indexOf('a-z') >= 0) {
+          CharacterSet += 'abcdefghijklmnopqrstuvwxyz';
+        }
+        if( charactersArray.indexOf('A-Z') >= 0) {
+          CharacterSet += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        }
+        if( charactersArray.indexOf('0-9') >= 0) {
+          CharacterSet += '0123456789';
+        }
+        if( charactersArray.indexOf('#') >= 0) {
+          CharacterSet += '![]{}()%&*$#^<>~@|';
+        }
+        
+        for(let i=0; i < this.size; i++) {
+          password += CharacterSet.charAt(Math.floor(Math.random() * CharacterSet.length));
+        }
+        this.password = password;
+      },
+     
       save () {
 
         this.saving = true;
         // update
         if (this.editedIndex > -1) {
           if(this.$refs.form.validate()){
-            apiCall({url: '/api/role/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
+            if(this.showPasswordField){
+              this.editedItem.adminPasswordChange = true
+              this.editedItem.password = this.password
+            }
+            apiCall({url: '/api/users/'+this.editedItem.id, data: this.editedItem, method: 'PUT' })
             .then(resp => {
-              Object.assign(this.roles[this.editedIndex], this.editedItem)
+              Object.assign(this.user[this.editedIndex], this.editedItem)
               console.log(resp)
               this.resetDialogReferences();
               this.saving = false;
-              this.message = 'Role Updated Succesfully';
+              this.message = 'User Information Updated Succesfully';
               this.snackbar = true;
             })
             .catch(error => {
@@ -297,13 +359,13 @@
         // store
         } else {
           if(this.$refs.form.validate()){
-            apiCall({url: '/api/role', data: this.editedItem, method: 'POST' })
+            apiCall({url: '/api/users', data: this.editedItem, method: 'POST' })
             .then(resp => {
-              this.roles.push(resp)
+              this.user.push(resp)
               console.log(resp)
               this.resetDialogReferences();
               this.saving = false;
-              this.message = 'New Role Added Succesfully';
+              this.message = 'New User Added Succesfully';
               this.snackbar = true;
             })
             .catch(error => {
@@ -313,7 +375,23 @@
           }
         }
       },
-  
+      deleteItem (item) {
+
+        confirm('Are you sure you want to delete this item?') && (this.delete = true)
+
+        if (this.delete) {
+          const index = this.item.indexOf(item)
+          this.item.splice(index, 1)
+          apiCall({url: '/api/users/'+item.id, method: 'DELETE' })
+          .then(resp => {
+            console.log(resp)
+          })
+          .catch(error => {
+            console.log(error.response)
+          })
+        }
+
+      },
 
     },
     computed: {
