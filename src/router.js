@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import store from './store/index'
 import router from 'vue-router'
-
 import Home from './components/index.vue'
 import login from './components/auth/login.vue'
 import register from './components/auth/register.vue'
@@ -14,6 +13,8 @@ import ThirdPartyApps from './components/accessControl/thirdPartyApps'
 import Permissions from './components/accessControl/permissions'
 import Role from './components/accesscontrol/role'
 import RoleUser from './components/accesscontrol/roleusers'
+import Pharmacy from './components/pharmacy/index.vue'
+import Prescription from './components/pharmacy/prescription.vue'
 import Invoice from './components/billing/index.vue'
 import ShowInvoice from './components/billing/show.vue'
 import ShowPayment from './components/billing/showpayment.vue'
@@ -69,6 +70,7 @@ export default new router({
       component: Home,
       beforeEnter: ifAuthenticated,
     },
+
     //Queue
     {
       path: '/queue',
@@ -96,7 +98,7 @@ export default new router({
       component: Invoice,
       beforeEnter: ifAuthenticated,
     },
-        {
+    {
       path: '/billing/billing',
       name: 'Bill',
       component: Bill,
@@ -156,6 +158,39 @@ export default new router({
       path: '/accesscontrol/roleusers',
       name: 'RoleUser',
       component: RoleUser,
+      beforeEnter: ifAuthenticated,
+    },
+    //Pharmacy
+      {
+        path: '/pharmacy/index',
+        name: 'Pharmacy',
+        component: Pharmacy,
+        beforeEnter: ifAuthenticated,
+      },
+      {
+        path: '/pharmacy/prescription',
+        name: 'Prescription',
+        component: Prescription,
+        beforeEnter: ifAuthenticated,
+      },
+ 
+   //Inventory
+    {
+      path: '/inventory/supplier',
+      name: 'Supplier',
+      component: InventorySupplier,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/inventory/supplies',
+      name: 'Supplies',
+      component: InventoryItem,
+      beforeEnter: ifAuthenticated,
+    },
+    {
+      path: '/inventory/request',
+      name: 'Request',
+      component: InventoryRequest,
       beforeEnter: ifAuthenticated,
     },
     {

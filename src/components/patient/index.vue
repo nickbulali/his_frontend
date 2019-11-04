@@ -161,33 +161,53 @@
         valid: true,
       	loading: false,
       	snackbar: false,
-				loadingDialog: {
-						loading: false,
-					message: ""
-				},
-				message:'',
-				y: 'top',
-				color: 'success',
-				newpatient: {
-					identifier: '',
-					given_name: '',
-					family_name: '',
-					gender_id: '',
-					maritalstatus_id: '',
-					birth_date: null
-				},
-				defaultpatient: {
-					identifier: ' ',
-					given_name: ' ',
-					family_name: ' ',
-					gender_id: ' ',
-					maritalstatus_id: ' ',
-					birth_date: ' '
-				},
-				inputRules: [
-						v => v.length >= !v  || 'Field is required'
-					],
-			}
+	    loadingDialog: {
+	        loading: false,
+	    	message: ""
+	    },
+	    patient: [],
+	    marital: [],
+	    
+	    message:'',
+	    y: 'top',
+	    color: 'success',
+	    pagination: {
+	        page: 1,
+	        per_page: 0,
+	        total: 0,
+	        visible: 10
+	    },
+	    newpatient: {
+	    	identifier: '',
+	    	given_name: '',
+	    	family_name: '',
+	    	gender_id: '',
+	    	maritalstatus_id: '',
+	    	birth_date: null
+	    },
+	    items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Patients',
+           to: { name: 'Patient' }
+          }
+           
+        ],
+	    defaultpatient: {
+	    	identifier: ' ',
+	    	given_name: ' ',
+	    	family_name: ' ',
+	    	gender_id: ' ',
+	    	maritalstatus_id: ' ',
+	    	birth_date: ' '
+	    },
+	    inputRules: [
+          v => v.length >= !v  || 'Field is required'
+        ],
+	  }
   	},
   	created () {
       	
@@ -238,5 +258,4 @@
 			console.log("All Patients are", this.allPatients)
 		}
   }
-
 </script>

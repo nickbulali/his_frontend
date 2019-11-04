@@ -238,7 +238,6 @@
                   label="Price">    
                 </v-text-field>
               </v-flex>
-             
               </v-layout>
             </v-container>
           </v-card-text>
@@ -255,7 +254,14 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-container class="my-5">
+    <v-container>
+  <v-breadcrumbs :items="items">
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
+  </v-container>
+    <v-container>
       <span class="title">Drugs</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
@@ -344,20 +350,19 @@
         </v-pagination>
       </div>
     </v-container>
-
   </div>
 </template>
 
 <script>
   import format from 'date-fns/format'
   import apiCall from "../../utils/api";
+  import Dashboard from '@/views/Dashboard.vue'
   export default {
     data () {
       return {
         search: '',
         query: '',
-       
-           addStock: false,
+        addStock: false,
         snackbar: false,
         message:'',
         y: 'top',
@@ -370,33 +375,39 @@
           loading: false,
           message: ""
         },
+        active: null,
         dialog: false,
-        receiveDialog: false,
         productDialog: false,
-        stock: [],
+        invoice: {
+          patient: '',
+          number: '',
+          reference: '',
+          date: null,
+          due: null,
+        },
         inputRules: [
           v => v.length >= !v  || 'Field is required'
         ],
-   suppliers: [],
-      
-       headers: [
-              {
-                text: 'ID',
-                align: 'left',
-                sortable: false,
-                value: 'id'
-              },
-              { text: 'Generic Name', align: 'left', value: 'generic_name' },
-              { text: 'Trade Name', align: 'left', value: 'trade_name' },
-              { text: 'Value', align: 'left', value: 'strength_value' },
-              { text: 'Unit', align: 'left', value: 'strength_unit' },
-              { text: 'Dosage Form', align: 'right', value: 'dosage_form' },
-              { text: 'Adminstration Route', align: 'right', value: 'administration_route' },
-              { text: 'Price', align: 'right', value: 'price' },
-              { text: 'Actions', align: 'center', value: 'actions' },
-            ],
-
-                  stockheaders: [
+        receiveDialog: false,
+        stock: [],
+        suppliers: [],
+        headers: [
+          {
+            text: 'ID',
+            align: 'left',
+            sortable: false,
+            value: 'id'
+          },
+          { text: 'Generic Name', align: 'left', value: 'generic_name' },
+          { text: 'Trade Name', align: 'left', value: 'trade_name' },
+          { text: 'Value', align: 'left', value: 'strength_value' },
+          { text: 'Unit', align: 'left', value: 'strength_unit' },
+          { text: 'Dosage Form', align: 'right', value: 'dosage_form' },
+          { text: 'Adminstration Route', align: 'right', value: 'administration_route' },
+          { text: 'Price', align: 'right', value: 'price' },
+          { text: 'Actions', align: 'center', value: 'actions' },
+      ],
+      stockheaders: [
         { text: 'Lot No.', value: 'lot_no' },
         { text: 'Batch No.', value: 'batch_no' },
         { text: 'Manufacturer', value: 'manufacturer' },
@@ -417,6 +428,20 @@
         administration_route:'',
         price:''
       },
+      items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Pharmacy',
+           to: { name: 'pharmacy' }
+          },
+          {
+           text: 'Pharmacy',
+           to: { name: 'Pharmacy' }
+          }
+      ],
       defaultItem: {
         generic_name: '',
         trade_name: '',
@@ -424,9 +449,9 @@
         strength_unit:'',
         dosage_form:'',
         administration_route:'',
-            price:''
+        price:''
       },
-            stockItem: {
+      stockItem: {
         stock_id: '',
         item_id: '',
         lot_no: '',
@@ -489,8 +514,7 @@
           this.resetDialogReferences();
         }
       },
-
-            saveStock () {
+      saveStock () {
         if(this.$refs.stockform.validate()){
           this.loading = true
           apiCall({url: '/api/stock', data: this.stockItem, method: 'POST' })
@@ -509,7 +533,7 @@
           })
         }
       },
-            itemStock(item){
+      itemStock(item){
         this.stockItem.item_id = item.id
 
         apiCall({url: '/api/stockDetails/'+item.id, method: 'GET' })
@@ -549,7 +573,6 @@
       //   this.stockItem = Object.assign({}, this.defaultstockItem)
       //   this.addStock = false
       // },
-    
       save () {
 
         this.saving = true;
@@ -590,7 +613,6 @@
           }
         }
       },
-
       deleteItem (item) {
 
         confirm('Are you sure you want to delete this item?') && (this.delete = true)
@@ -609,6 +631,10 @@
 
       },
 
+      next () {
+        const active = parseInt(this.active)
+        this.active = (active < 2 ? active + 1 : 0)
+      }
     },
     computed: {
       formTitle () {

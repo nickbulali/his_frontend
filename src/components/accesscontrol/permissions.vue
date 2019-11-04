@@ -1,6 +1,11 @@
 <template>
    <div class="invoice">
     <v-container class="my-5">
+      <v-breadcrumbs :items="items">
+      <template v-slot:divider>
+        <v-icon>chevron_right</v-icon>
+      </template>
+    </v-breadcrumbs>
       <span class="title">Permissions</span>
         <v-layout row justify-right>
           <v-flex sm12 md6>
@@ -85,6 +90,21 @@
         total: 0,
         visible: 10
       },
+       items: [
+          {
+           text: 'Dashboard',
+           to: { name: 'dashboard' }
+          },
+          {
+           text: 'Access Control',
+           to: { name: 'accesscontrol' }
+          },
+          {
+           text: 'Permission',
+           to: { name: 'Permission' }
+          }
+           
+        ],
       permissionsroles: [],
       permissionRoleIds: [],
       permissions: [],
