@@ -363,10 +363,6 @@
           user_id: '',
           appointment_date: '',
           appointment_time:'',
-<<<<<<< HEAD
-        },
-        patient: [],
-=======
           status:'',
         },
         patient: [],
@@ -375,17 +371,12 @@
         'Waiting',
         'Confirmed'
         ],
->>>>>>> appointment
         defaultItem: {
           patient_id:'',
           user_id: '',
           appointment_date: '',
           appointment_time:'',
-<<<<<<< HEAD
-=======
           status:'Waiting',
->>>>>>> appointment
-         
         },
         searchInput: '',
         appointment_details: {
@@ -509,11 +500,7 @@
         this.saving = true;
         // update
         // if (this.editedIndex > -1) {
-<<<<<<< HEAD
-          this.loadingMethod(true, "Updating Appointments")
-=======
           this.loadingMethod(true, "Updating Appointment")
->>>>>>> appointment
           if(this.$refs.productform.validate()){
 
             this.loading = true
@@ -539,17 +526,10 @@
 
       },
       add(){
-<<<<<<< HEAD
-          this.loadingMethod(true, "Appointment Added Succesfully")
-          if(this.$refs.productform.validate()){
-            this.loading = true
-            apiCall({url: '/api/appointment', data: this.editedItem, method: 'POST' })
-=======
           this.loadingMethod(true, "Adding Appointment")
           if(this.$refs.productform.validate()){
             this.loading = true
             apiCall({url: '/api/appointment', data: this.defaultItem, method: 'POST' })
->>>>>>> appointment
             .then(resp => {
           
               // this.item.push(resp)
@@ -680,8 +660,4 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
-<<<<<<< HEAD
 </style>
-=======
-</style>
->>>>>>> appointment
