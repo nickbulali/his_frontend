@@ -52,8 +52,8 @@ export default new router({
   routes: [
     {
       path: '/login',
-      name: 'login',
-      component: login,
+      name: 'Login',
+      component: Login,
       beforeEnter: ifNotAuthenticated,
     },
     {
