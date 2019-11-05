@@ -282,7 +282,7 @@
 
 <script>
 	import apiCall from '../../utils/api'
-	import PatientQueue from '@/components/Charts/PatientQueue.vue'
+	import PatientQueue from '@/components/charts/patientQueue.vue'
 	import Vue from 'vue'
 	import VueMoment from 'vue-moment'
 	Vue.use(VueMoment);

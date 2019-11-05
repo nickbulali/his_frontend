@@ -148,7 +148,7 @@
   import { EventBus } from './../../main.js'
   import {mapGetters, mapActions} from 'vuex'
   import Vue from 'vue'
-	import LineChart from '@/components/Statistics/LineChart.vue'
+  import LineChart from '@/components/statistics/lineChart.vue'
 
   export default {
 		components: {

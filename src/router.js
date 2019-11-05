@@ -2,27 +2,26 @@ import Vue from 'vue'
 import store from './store/index'
 import router from 'vue-router'
 import Home from './components/index.vue'
-import login from './components/auth/login.vue'
-import register from './components/auth/register.vue'
-import patient from './components/patient/index.vue'
-import patientProfile from './components/patient/patientProfile.vue'
+import Login from './components/auth/login.vue'
+import Register from './components/auth/register.vue'
+import Patient from './components/patient/index.vue'
+import PatientProfile from './components/patient/patientProfile.vue'
 import Profile from './components/account/profile'
 import Queue from './components/queue/index.vue'
 import UserAccounts from './components/accessControl/userAccounts'
 import ThirdPartyApps from './components/accessControl/thirdPartyApps'
 import Permissions from './components/accessControl/permissions'
-import Role from './components/accesscontrol/role'
-import RoleUser from './components/accesscontrol/roleusers'
+import Role from './components/accessControl/role'
+import RoleUser from './components/accessControl/roleUsers'
 import Pharmacy from './components/pharmacy/index.vue'
-import Prescription from './components/pharmacy/prescription.vue'
+// import Prescription from './components/pharmacy/prescription.vue'
 import Invoice from './components/billing/index.vue'
 import ShowInvoice from './components/billing/show.vue'
-import ShowPayment from './components/billing/showpayment.vue'
-import ChargeSheet from './components/billing/chargesheet.vue'
+import ShowPayment from './components/billing/showPayment.vue'
+import ChargeSheet from './components/billing/chargeSheet.vue'
 import Payment from './components/billing/payment.vue'
 import Bill from './components/billing/billing.vue'
 import Expenses from './components/billing/expenses.vue'
-import Prescription from './components/pharmacy/prescription.vue'
 import InventoryItem from './components/inventory/supplies'
 import InventoryRequest from './components/inventory/request'
 import InventorySupplier from './components/inventory/supplier'
@@ -59,13 +58,13 @@ export default new router({
     },
     {
       path: '/register',
-      name: 'register',
-      component: register,
+      name: 'Register',
+      component: Register,
       beforeEnter: ifNotAuthenticated,
     },
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home,
       beforeEnter: ifAuthenticated,
     },
@@ -73,21 +72,21 @@ export default new router({
     //Queue
     {
       path: '/queue',
-      name: 'queue',
+      name: 'Queue',
       component: Queue,
       beforeEnter: ifAuthenticated,
     },
     //patient
     {
       path: '/patients',
-      name: 'patient',
-      component: patient,
+      name: 'Patient',
+      component: Patient,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/patient/:id',
-      name: 'patientProfile',
-      component: patientProfile,
+      name: 'PatientProfile',
+      component: PatientProfile,
       beforeEnter: ifAuthenticated,
     },
     //billing
@@ -166,12 +165,14 @@ export default new router({
         component: Pharmacy,
         beforeEnter: ifAuthenticated,
       },
+      /*
       {
         path: '/pharmacy/prescription',
         name: 'Prescription',
         component: Prescription,
         beforeEnter: ifAuthenticated,
       },
+      */
  
    //Inventory
     {
@@ -205,12 +206,14 @@ export default new router({
       component: Pharmacy,
       beforeEnter: ifAuthenticated,
     },
+    /*
     {
       path: '/pharmacy/prescription',
       name: 'Prescription',
       component: Prescription,
       beforeEnter: ifAuthenticated,
     },
+    */
     //Appointment
     {
       path: '/appointment',

@@ -426,10 +426,10 @@
 <script>
 
   import apiCall from '../../utils/api'
-  import HeartRate from '@/components/Charts/HeartRate.vue'
-  import BloodPressure from '@/components/Charts/BloodPressure.vue'
-  import BodyTemp from '@/components/Charts/BodyTemp.vue'
-  import RespiratoryRate from '@/components/Charts/RespiratoryRate.vue'
+  import HeartRate from '@/components/charts/heartRate.vue'
+  import BloodPressure from '@/components/charts/bloodPressure.vue'
+  import BodyTemp from '@/components/charts/bodyTemp.vue'
+  import RespiratoryRate from '@/components/charts/respiratoryRate.vue'
   import Vue from 'vue'
   import VueMoment from 'vue-moment'
   Vue.use(VueMoment);
@@ -462,7 +462,6 @@
         screenDialog: false,
         patient:{},
         allergies: [],
-<<<<<<< HEAD:src/components/Patient/patientProfile.vue
          items: [
           {
            text: 'Dashboard',
@@ -478,9 +477,7 @@
           },
            
         ],
-=======
         vitals:[],
->>>>>>> master:src/components/patient/patientProfile.vue
         newallergy: '',
         visitsPagination: {
           page: 1,

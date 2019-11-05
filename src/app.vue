@@ -10,8 +10,8 @@
 </template>
 
 <script>
-  import Navbar from '@/components/UI/Navbar'
-  import Footer from '@/components/UI/Footer'
+  import Navbar from '@/components/UI/navbar'
+  import Footer from '@/components/UI/footer'
   import { mapState, mapGetters } from 'vuex'
 
   export default {

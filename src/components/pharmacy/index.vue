@@ -356,7 +356,7 @@
 <script>
   import format from 'date-fns/format'
   import apiCall from "../../utils/api";
-  import Dashboard from '@/views/Dashboard.vue'
+  // import Dashboard from '@/views/Dashboard.vue'
   export default {
     data () {
       return {

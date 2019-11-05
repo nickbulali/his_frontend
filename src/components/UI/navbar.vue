@@ -74,7 +74,7 @@
 </template>
 
 <script>
-	import Sidebar from '@/components/UI/Sidebar'
+	import Sidebar from '@/components/UI/sidebar'
   	import { AUTH_LOGOUT } from '../../store/actions/auth'
 export default {
 	components: {
