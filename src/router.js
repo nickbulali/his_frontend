@@ -52,19 +52,19 @@ export default new router({
   routes: [
     {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: Login,
       beforeEnter: ifNotAuthenticated,
     },
     {
       path: '/register',
-      name: 'Register',
+      name: 'register',
       component: Register,
       beforeEnter: ifNotAuthenticated,
     },
     {
       path: '/',
-      name: 'Home',
+      name: 'home',
       component: Home,
       beforeEnter: ifAuthenticated,
     },
@@ -72,63 +72,63 @@ export default new router({
     //Queue
     {
       path: '/queue',
-      name: 'Queue',
+      name: 'queue',
       component: Queue,
       beforeEnter: ifAuthenticated,
     },
     //patient
     {
       path: '/patients',
-      name: 'Patient',
+      name: 'patient',
       component: Patient,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/patient/:id',
-      name: 'PatientProfile',
+      name: 'patientProfile',
       component: PatientProfile,
       beforeEnter: ifAuthenticated,
     },
     //billing
     {
       path: '/billing/invoice',
-      name: 'Invoice',
+      name: 'invoice',
       component: Invoice,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/billing/billing',
-      name: 'Bill',
+      name: 'bill',
       component: Bill,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/billing/chargesheet',
-      name: 'ChargeSheet',
+      name: 'chargeSheet',
       component: ChargeSheet,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/billing/payment',
-      name: 'Payment',
+      name: 'payment',
       component: Payment,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/billing/expenses',
-      name: 'Expenses',
+      name: 'expenses',
       component: Expenses,
       beforeEnter: ifAuthenticated,
     },
     /* {
       path: '/billing/invoice/show/:id',
-      name: 'ShowInvoice',
+      name: 'showInvoice',
       component: ShowInvoice,
       beforeEnter: ifAuthenticated,
     },
      {
       path: '/billing/payment/show/:id',
-      name: 'ShowPayment',
+      name: 'showPayment',
       component: ShowPayment,
       beforeEnter: ifAuthenticated,
      },
@@ -136,95 +136,60 @@ export default new router({
      // Access Control
     {
       path: '/accesscontrol/useraccounts',
-      name: 'UserAccount',
+      name: 'userAccount',
       component: UserAccounts,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/accesscontrol/permissions',
-      name: 'Permission',
+      name: 'permission',
       component: Permissions,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/accesscontrol/role',
-      name: 'Role',
+      name: 'role',
       component: Role,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/accesscontrol/roleusers',
-      name: 'RoleUser',
+      name: 'roleUser',
       component: RoleUser,
       beforeEnter: ifAuthenticated,
     },
     //Pharmacy
       {
         path: '/pharmacy/index',
-        name: 'Pharmacy',
+        name: 'pharmacy',
         component: Pharmacy,
         beforeEnter: ifAuthenticated,
       },
       /*
       {
         path: '/pharmacy/prescription',
-        name: 'Prescription',
+        name: 'prescription',
         component: Prescription,
         beforeEnter: ifAuthenticated,
       },
       */
- 
-   //Inventory
-    {
-      path: '/inventory/supplier',
-      name: 'Supplier',
-      component: InventorySupplier,
-      beforeEnter: ifAuthenticated,
-    },
-    {
-      path: '/inventory/supplies',
-      name: 'Supplies',
-      component: InventoryItem,
-      beforeEnter: ifAuthenticated,
-    },
-    {
-      path: '/inventory/request',
-      name: 'Request',
-      component: InventoryRequest,
-      beforeEnter: ifAuthenticated,
-    },
     {
       path: '/accesscontrol/thirdpartyapps',
-      name: 'ThirdPartyApps',
+      name: 'thirdPartyApps',
       component: ThirdPartyApps,
       beforeEnter: ifAuthenticated,
     },
-    //pharmacy
-    {
-      path: '/pharmacy',
-      name: 'Pharmacy',
-      component: Pharmacy,
-      beforeEnter: ifAuthenticated,
-    },
-    /*
-    {
-      path: '/pharmacy/prescription',
-      name: 'Prescription',
-      component: Prescription,
-      beforeEnter: ifAuthenticated,
-    },
-    */
     //Appointment
     {
       path: '/appointment',
-      name: 'Appointment',
+      name: 'appointment',
       component: Appointment,
       beforeEnter: ifAuthenticated,
     },
     //radiology
     {
       path: '/radiology',
-      name: 'Radiology',
+      name: 'radiology',
       component: Radiology,
       beforeEnter: ifAuthenticated,
 
@@ -232,21 +197,21 @@ export default new router({
     //Tests
     {
       path: '/test',
-      name: 'Tests',
+      name: 'tests',
       component: Tests,
       beforeEnter: ifAuthenticated,
     },
     //reports
     {
       path: '/reports/appointments',
-      name: 'AppointmentReport',
+      name: 'appointmentReport',
       component: AppointmentReport,
       beforeEnter: ifAuthenticated,
 
     },
    {
       path: '/reports/patients',
-      name: 'PatientReport',
+      name: 'patientReport',
       component: PatientReport,
       beforeEnter: ifAuthenticated,
 
@@ -254,26 +219,26 @@ export default new router({
    //inventory
     {
       path: '/inventory/supplier',
-      name: 'Supplier',
+      name: 'supplier',
       component: InventorySupplier,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/inventory/supplies',
-      name: 'Supplies',
+      name: 'supplies',
       component: InventoryItem,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/inventory/request',
-      name: 'Request',
+      name: 'request',
       component: InventoryRequest,
       beforeEnter: ifAuthenticated,
     },
     // User Profile
     {
       path: '/account/profile',
-      name: 'Profile',
+      name: 'profile',
       component: Profile,
       beforeEnter: ifAuthenticated,
     },

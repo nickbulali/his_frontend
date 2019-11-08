@@ -19,12 +19,10 @@
       v-model="screenDialog"
       hide-overlay
       persistent
-      width="300"
-    >
+      width="300">
       <v-card
         color="primary"
-        dark
-      >
+        dark>
         <v-card-text>
           {{message}}
           <v-progress-linear
@@ -44,8 +42,7 @@
               <v-img
               max-width = "250"
               aspect-ratio=1.05
-              src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
-            >
+              src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png">
               <div class="his_card_top_right">
                 <v-btn outline fab small color="blue">
                   <v-icon dark>add</v-icon>
@@ -138,15 +135,11 @@
             v-model="active"
             color="white"
             light
-            slider-color="primary"
-          >
-            <v-tab
-              ripple
-            >
+            slider-color="primary">
+            <v-tab ripple>
               Vitals
             </v-tab>
-            <v-tab-item
-            >
+            <v-tab-item>
               <div class="his_card_no_shadow mt-3">
                 <v-card-title>
                   <p class="headline">
@@ -165,38 +158,99 @@
                   <v-flex sm12 md3>
                     <blood-pressure
                       :bloodPressure="bloodPressure"
-                      :dates="vitalDates"
-                    />
+                      :dates="vitalDates"/>
                   </v-flex>
                   <v-flex sm12 md3>
                     <body-temp 
                       :bodyTemperature="bodyTemperature"
-                      :dates="vitalDates"
-                    />
+                      :dates="vitalDates"/>
                   </v-flex>
                   <v-flex sm12 md3>
                     <heart-rate 
                       :heartRate="heartRate"
-                      :dates="vitalDates"
-                    />
+                      :dates="vitalDates"/>
                   </v-flex>
                   <v-flex sm12 md3>
                     <respiratory-rate
                       :respiratoryRate="respiratoryRate"
-                      :dates="vitalDates"
-                    />
+                      :dates="vitalDates"/>
                   </v-flex>
                   
                 </v-layout>
               </div>
             </v-tab-item>
-            <v-tab
-              ripple
-            >
-              Visits
+            <v-tab ripple>
+              Tests
             </v-tab>
-            <v-tab-item
-            >
+            <v-tab-item>
+
+
+
+
+
+
+              <div class="his_card_no_shadow mt-3 pa-2">
+                <v-layout row wrap>
+                  <v-flex sm12 md4 lg4>
+                    <div class="his_card_new_patient">
+                      <p class="his_card_main_heading">Add New</p>
+                        <v-form
+                            ref="form"
+                            v-model="valid"
+                            lazy-validation>
+                          <v-layout row wrap>
+
+                            <v-flex sm12 md12>
+                              <v-select
+                                :items="testTypeCategories"
+                                v-model="testTypeCategory"
+                                item-value="id"
+                                item-text="name"
+                                label="Test Type Categeroy">
+                              </v-select>
+                            </v-flex>
+                            <v-flex sm12 md12>
+                              <v-select
+                                :items="testTypeCategory"
+                                v-model="testType"
+                                item-value="id"
+                                item-text="name"
+                                label="Test Type">
+                              </v-select>
+                            </v-flex>
+                          </v-layout>
+                      </v-form>
+                      <div class="his_card_footer">
+                        <v-btn class="his_card_button white--text" small title="Edit" color="green" :loading="loading" :disabled="!valid" round @click="saveAllergy">
+                          <v-icon left dark>add_circle</v-icon>
+                          Add
+                        </v-btn>
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 sm12 md4 v-for="(allergy,index) in patient.allergies" :key="allergy.id">
+                    <div class="his_card">
+                      <p class="his_card_main_heading">{{ allergy.substance }}</p>
+                      <p class="his_card_title">Type</p>
+                      <p class="his_card_description" v-if="allergy.is_drug == 1">Drug</p>
+                      <p class="his_card_description" v-if="allergy.is_drug == 0">Other</p>
+                      <p class="his_card_title">Date Added</p>
+                      <p class="his_card_description">{{allergy.created_at | moment("from", true)}}</p>
+                    </div>
+                  </v-flex>
+                </v-layout>
+              </div>
+
+
+
+
+
+
+
+
+            </v-tab-item>
+            <v-tab ripple>Visits</v-tab>
+            <v-tab-item>
             <v-layout
               row
               wrap
@@ -334,52 +388,37 @@
             </v-layout>
               
             </v-tab-item>
-            <v-tab
-              ripple
-            >
+            <v-tab ripple>
               History
             </v-tab>
-            <v-tab-item
-            >
+            <v-tab-item>
 
             </v-tab-item>
-            <v-tab
-              ripple
-            >
+            <v-tab ripple>
               Diagnoses
             </v-tab>
-            <v-tab-item
-            >
+            <v-tab-item>
 
             </v-tab-item>
-            <v-tab
-              ripple
-            >
+            <v-tab ripple>
               Medication
             </v-tab>
-            <v-tab-item
-            >
+            <v-tab-item>
 
             </v-tab-item>
-            <v-tab
-              ripple
-            >
+            <v-tab ripple>
               Allergies
             </v-tab>
-            <v-tab-item
-            >
+            <v-tab-item>
               <div class="his_card_no_shadow mt-3 pa-2">
-                <v-layout
-                  row
-                  wrap>
+                <v-layout row wrap>
                   <v-flex sm12 md4 lg4>
                     <div class="his_card_new_patient">
                       <p class="his_card_main_heading">Add New</p>
                         <v-form
                             ref="form"
                             v-model="valid"
-                            lazy-validation
-                        >
+                            lazy-validation>
                           <v-layout row wrap>
                             <v-flex sm12 md12>
                               <v-select
@@ -387,8 +426,8 @@
                                 v-model="newallergy"
                                 item-value="id"
                                 item-text="substance"
-                                label="Allergy"
-                              ></v-select>
+                                label="Allergy">
+                              </v-select>
                             </v-flex>
                           </v-layout>
                       </v-form>
@@ -455,6 +494,9 @@
         valid: false,
         interval: {},
         visits: 30,
+        testTypeCategories: [],
+        testTypeCategory: {},
+        testType: {},
         snackbar: false,
         y: 'top',
         color: 'success',
@@ -496,6 +538,7 @@
         this.screenDialog = true
         apiCall({url: '/api/patient/' + this.$route.params.id, method: 'GET' })
         .then(resp => {
+// console.log('booh')
           console.log(resp)
           this.patient = resp;
           this.screenDialog = false
@@ -514,9 +557,10 @@
           console.log(error.response)
         })
 
-         apiCall({url: '/api/vitalsigns/' + this.$route.params.id, method: 'GET' })
+        apiCall({url: '/api/vitalsigns/' + this.$route.params.id, method: 'GET' })
         .then(resp => {
           console.log("Vitals", resp)
+          console.log(resp)
           this.vitals = resp[0];
           //console.log("bloodPressure is", Object.keys(resp).length)
           var i;
@@ -528,12 +572,16 @@
             this.vitalDates[Object.keys(resp)[i]] = resp[Object.keys(resp)[i]].created_at;
             //console.log("bloodPressure is", this.bloodPressure)
           }
-
-
-
         })
         .catch(error => {
           console.log(error.response)
+        })
+        apiCall({url: '/api/labtesttypecategory', method: 'GET' })
+          .then(resp => {
+            console.log("Test Type categories are: ",resp.data)
+            this.testTypeCategories = resp.data;
+        }).catch(error => {
+            console.log(error.response)
         })
       },
       getVisits(){
@@ -545,6 +593,23 @@
           this.encounters = resp.data;
           this.visitsPagination.total = resp.total;
           this.visitsPagination.per_page = resp.per_page;
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      },
+      requestTest(){
+        this.requestTestQuery = 'patient_id='+this.patient.id
+          'location_id='+this.location.id
+          'encounter_class_id='+this.encounter_class_id
+          'practitioner_name='+this.practitioner_name
+          'testTypeIds='+this.testTypeIds;
+        apiCall({url: '/api/patient/testrequest?' + this.requestTestQuery, method: 'GET' })
+        .then(resp => {
+          console.log(resp)
+          // this.encounters = resp.data;
+          // this.visitsPagination.total = resp.total;
+          // this.visitsPagination.per_page = resp.per_page;
         })
         .catch(error => {
           console.log(error.response)
