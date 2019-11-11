@@ -446,17 +446,17 @@
             this.query = this.query+'&search='+this.search;
         }
         apiCall({ url: "/api/item?" + this.query, method: "GET" })
-          .then(resp => {
-            console.log("item is",resp);
-            this.item = resp.data;
-            this.loader=false
-            this.pagination.total = resp.total;
-            this.pagination.per_page = resp.per_page;
-          })
-          .catch(error => {
-            console.log(error.response);
-          });
-      apiCall({url: '/api/patient?' , method: 'GET' })
+        .then(resp => {
+          console.log("item is",resp);
+          this.item = resp.data;
+          this.loader=false
+          this.pagination.total = resp.total;
+          this.pagination.per_page = resp.per_page;
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+        apiCall({url: '/api/patient?' , method: 'GET' })
         .then(resp => {
           console.log(resp.data)
           this.patient = resp.data;
@@ -468,18 +468,18 @@
           console.log(error.response)
         })
 
-          apiCall({ url: "/api/test?", method: "GET" })
-          .then(resp => {
-            console.log("Tests are",resp.data);
-            this.tests = resp.data;
-            this.pagination.total = resp.total;
-            this.pagination.per_page = resp.per_page;
-          })
-          .catch(error => {
-            console.log(error.response);
-          });
+        apiCall({ url: "/api/test?", method: "GET" })
+        .then(resp => {
+          console.log("Tests are",resp.data);
+          this.tests = resp.data;
+          this.pagination.total = resp.total;
+          this.pagination.per_page = resp.per_page;
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
 
-          apiCall({url: '/api/labtesttype', method: 'GET' })
+        apiCall({url: '/api/labtesttype', method: 'GET' })
           .then(resp => {
             console.log("Test Types are: ",resp)
             this.testTypes = resp.data;
