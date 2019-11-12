@@ -1,37 +1,36 @@
 import Vue from 'vue'
 import store from './store/index'
-import Router from 'vue-router'
-
+import router from 'vue-router'
 import Home from './components/index.vue'
-import Login from './components/Auth/login.vue'
-import Register from './components/Auth/register.vue'
-import Patient from './components/Patient/index.vue'
-import patientProfile from './components/Patient/patientProfile.vue'
+import Login from './components/auth/login.vue'
+import Register from './components/auth/register.vue'
+import Patient from './components/patient/index.vue'
+import PatientProfile from './components/patient/patientProfile.vue'
 import Profile from './components/account/profile'
-import Queue from './components/Queue/index.vue'
-import UserAccounts from './components/accesscontrol/useraccounts'
-import ThirdPartyApps from './components/accesscontrol/thirdpartyapps'
-import Permissions from './components/accesscontrol/permissions'
-import Role from './components/accesscontrol/role'
-import RoleUser from './components/accesscontrol/roleusers'
-import Invoice from './components/Billing/index.vue'
-import ShowInvoice from './components/Billing/show.vue'
-import ShowPayment from './components/Billing/showpayment.vue'
-import ChargeSheet from './components/Billing/chargesheet.vue'
-import Payment from './components/Billing/payment.vue'
-import Bill from './components/Billing/billing.vue'
-import Expenses from './components/Billing/expenses.vue'
-import Pharmacy from './components/Pharmacy/index.vue'
-import Prescription from './components/Pharmacy/prescription.vue'
-import InventoryItem from './components/Inventory/supplies'
-import InventoryRequest from './components/Inventory/request'
-import InventorySupplier from './components/Inventory/supplier'
+import Queue from './components/queue/index.vue'
+import UserAccounts from './components/accessControl/userAccounts'
+import ThirdPartyApps from './components/accessControl/thirdPartyApps'
+import Permissions from './components/accessControl/permissions'
+import Role from './components/accessControl/role'
+import RoleUser from './components/accessControl/roleUsers'
+import Pharmacy from './components/pharmacy/index.vue'
+// import Prescription from './components/pharmacy/prescription.vue'
+import Invoice from './components/billing/index.vue'
+import ShowInvoice from './components/billing/show.vue'
+import ShowPayment from './components/billing/showPayment.vue'
+import ChargeSheet from './components/billing/chargeSheet.vue'
+import Payment from './components/billing/payment.vue'
+import Bill from './components/billing/billing.vue'
+import Expenses from './components/billing/expenses.vue'
+import InventoryItem from './components/inventory/supplies'
+import InventoryRequest from './components/inventory/request'
+import InventorySupplier from './components/inventory/supplier'
 import Tests from './components/test/index.vue'
 import Appointment from './components/appointment/index.vue'
-import Radiology from './components/Radiology/index.vue'
-import AppointmentReport from './components/Reports/appointments.vue'
-import PatientReport from './components/Reports/patients.vue'
-Vue.use(Router)
+import Radiology from './components/radiology/index.vue'
+import AppointmentReport from './components/reports/appointments.vue'
+import PatientReport from './components/reports/patients.vue'
+Vue.use(router)
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
@@ -49,17 +48,17 @@ const ifAuthenticated = (to, from, next) => {
   next('/login')
 }
 
-export default new Router({
+export default new router({
   routes: [
     {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: Login,
       beforeEnter: ifNotAuthenticated,
     },
     {
       path: '/register',
-      name: 'Register',
+      name: 'register',
       component: Register,
       beforeEnter: ifNotAuthenticated,
     },
@@ -69,6 +68,7 @@ export default new Router({
       component: Home,
       beforeEnter: ifAuthenticated,
     },
+
     //Queue
     {
       path: '/queue',
@@ -76,59 +76,59 @@ export default new Router({
       component: Queue,
       beforeEnter: ifAuthenticated,
     },
-    //Patient
+    //patient
     {
       path: '/patients',
-      name: 'Patient',
+      name: 'patient',
       component: Patient,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/patient/:id',
       name: 'patientProfile',
-      component: patientProfile,
+      component: PatientProfile,
       beforeEnter: ifAuthenticated,
     },
-    //Billing
+    //billing
     {
       path: '/billing/invoice',
-      name: 'Invoice',
+      name: 'invoice',
       component: Invoice,
       beforeEnter: ifAuthenticated,
     },
-        {
+    {
       path: '/billing/billing',
-      name: 'Bill',
+      name: 'bill',
       component: Bill,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/billing/chargesheet',
-      name: 'ChargeSheet',
+      name: 'chargeSheet',
       component: ChargeSheet,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/billing/payment',
-      name: 'Payment',
+      name: 'payment',
       component: Payment,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/billing/expenses',
-      name: 'Expenses',
+      name: 'expenses',
       component: Expenses,
       beforeEnter: ifAuthenticated,
     },
     /* {
       path: '/billing/invoice/show/:id',
-      name: 'ShowInvoice',
+      name: 'showInvoice',
       component: ShowInvoice,
       beforeEnter: ifAuthenticated,
     },
      {
       path: '/billing/payment/show/:id',
-      name: 'ShowPayment',
+      name: 'showPayment',
       component: ShowPayment,
       beforeEnter: ifAuthenticated,
      },
@@ -136,59 +136,60 @@ export default new Router({
      // Access Control
     {
       path: '/accesscontrol/useraccounts',
-      name: 'UserAccount',
+      name: 'userAccount',
       component: UserAccounts,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/accesscontrol/permissions',
-      name: 'Permission',
+      name: 'permission',
       component: Permissions,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/accesscontrol/role',
-      name: 'Role',
+      name: 'role',
       component: Role,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/accesscontrol/roleusers',
-      name: 'RoleUser',
+      name: 'roleUser',
       component: RoleUser,
       beforeEnter: ifAuthenticated,
     },
+    //Pharmacy
+      {
+        path: '/pharmacy/index',
+        name: 'pharmacy',
+        component: Pharmacy,
+        beforeEnter: ifAuthenticated,
+      },
+      /*
+      {
+        path: '/pharmacy/prescription',
+        name: 'prescription',
+        component: Prescription,
+        beforeEnter: ifAuthenticated,
+      },
+      */
     {
       path: '/accesscontrol/thirdpartyapps',
-      name: 'ThirdPartyApps',
+      name: 'thirdPartyApps',
       component: ThirdPartyApps,
-      beforeEnter: ifAuthenticated,
-    },
-    //Pharmacy
-    {
-      path: '/pharmacy',
-      name: 'Pharmacy',
-      component: Pharmacy,
-      beforeEnter: ifAuthenticated,
-    },
-    {
-      path: '/pharmacy/prescription',
-      name: 'Prescription',
-      component: Prescription,
       beforeEnter: ifAuthenticated,
     },
     //Appointment
     {
       path: '/appointment',
-      name: 'Appointment',
+      name: 'appointment',
       component: Appointment,
       beforeEnter: ifAuthenticated,
-
     },
-    //Radiology
+    //radiology
     {
       path: '/radiology',
-      name: 'Radiology',
+      name: 'radiology',
       component: Radiology,
       beforeEnter: ifAuthenticated,
 
@@ -196,48 +197,48 @@ export default new Router({
     //Tests
     {
       path: '/test',
-      name: 'Tests',
+      name: 'tests',
       component: Tests,
       beforeEnter: ifAuthenticated,
     },
-    //Reports
+    //reports
     {
       path: '/reports/appointments',
-      name: 'AppointmentReport',
+      name: 'appointmentReport',
       component: AppointmentReport,
       beforeEnter: ifAuthenticated,
 
     },
    {
       path: '/reports/patients',
-      name: 'PatientReport',
+      name: 'patientReport',
       component: PatientReport,
       beforeEnter: ifAuthenticated,
 
     },
-   //Inventory
+   //inventory
     {
       path: '/inventory/supplier',
-      name: 'Supplier',
+      name: 'supplier',
       component: InventorySupplier,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/inventory/supplies',
-      name: 'Supplies',
+      name: 'supplies',
       component: InventoryItem,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '/inventory/request',
-      name: 'Request',
+      name: 'request',
       component: InventoryRequest,
       beforeEnter: ifAuthenticated,
     },
     // User Profile
     {
       path: '/account/profile',
-      name: 'Profile',
+      name: 'profile',
       component: Profile,
       beforeEnter: ifAuthenticated,
     },
