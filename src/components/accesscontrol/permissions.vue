@@ -34,21 +34,21 @@
           :loading="loader"
           class="elevation-1"
         >
-        <template v-slot:items="props">
-        <tr :key="props.item.id">
-          <td class="text-xs-left">{{ props.item.display_name }}</td>
-            <td
-            v-for="role in roles"
-            :key="role.id">
-              <v-checkbox
-                v-model="permissionRoleIds"
-                :value="getAssignment(props.item,role)"
-                v-on:click="toggleAssignment(props.item,role)">
-              </v-checkbox>
-            </td>
-      
-        </tr>
-        </template>
+       <template slot="items" slot-scope="row">
+              <tr :key="row.item.id">
+                <td>{{row.item.display_name}}</td>
+                <td
+                  v-for="role in roles"
+                  :key="role.id">
+                    <v-checkbox
+                      v-model="permissionRoleIds"
+                      :value="getAssignment(row.item,role)"
+                      v-on:click="toggleAssignment(row.item,role)">
+                    </v-checkbox>
+                  </td>
+                </tr>
+            </template>
+
       </v-data-table>
       <div v-if="length" class="text-xs-center">
         <v-pagination
@@ -75,7 +75,6 @@
       valid: true,
       search: '',
       query: '',
-      loader: false,
       headers: [
         { text: 'Permissions', value: 'permissions' },
       ],
@@ -132,7 +131,7 @@
     methods: {
 
       initialize () {
-     this.loader=true
+
         this.query = 'page='+ this.pagination.page;
         if (this.search != '') {
             this.query = this.query+'&search='+this.search;
@@ -142,7 +141,6 @@
         .then(resp => {
           console.log(resp.data)
           this.permissions = resp.data;
-              this.loader=false
           this.pagination.total = resp.total;
           this.pagination.per_page = resp.per_page;
         })
