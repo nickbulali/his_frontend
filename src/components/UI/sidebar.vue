@@ -29,12 +29,19 @@
         </v-list-tile-action>
         <v-list-tile-title>Appointment</v-list-tile-title>
       </v-list-tile>
+      <v-list-tile to="/bed/bed">
+        <v-list-tile-action>
+          <v-icon><!-- event --></v-icon>
+        </v-list-tile-action>
+        <v-list-tile-title>Beds</v-list-tile-title>
+      </v-list-tile>
                <v-list-tile to="/test">
         <v-list-tile-action>
           <v-icon>settings_input_component</v-icon>
         </v-list-tile-action>
         <v-list-tile-title>Tests</v-list-tile-title>
       </v-list-tile>
+      
       <v-list-group prepend-icon="security" no-action>
         <v-list-tile slot="activator">
           <v-list-tile-title>Access Control</v-list-tile-title>

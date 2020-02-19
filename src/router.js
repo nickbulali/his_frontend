@@ -14,7 +14,7 @@ import Permissions from './components/accessControl/permissions'
 import Role from './components/accessControl/role'
 import RoleUser from './components/accessControl/roleUsers'
 import Pharmacy from './components/pharmacy/index.vue'
-// import Prescription from './components/pharmacy/prescription.vue'
+import Prescription from './components/pharmacy/prescription.vue'
 import Invoice from './components/billing/index.vue'
 import ShowInvoice from './components/billing/show.vue'
 import ShowPayment from './components/billing/showPayment.vue'
@@ -30,6 +30,8 @@ import Appointment from './components/appointment/index.vue'
 import Radiology from './components/radiology/index.vue'
 import AppointmentReport from './components/reports/appointments.vue'
 import PatientReport from './components/reports/patients.vue'
+import Beds from './components/bed/bed.vue'
+import Anc from './components/anc/index.vue'
 Vue.use(router)
 
 const ifNotAuthenticated = (to, from, next) => {
@@ -89,6 +91,13 @@ export default new router({
       component: PatientProfile,
       beforeEnter: ifAuthenticated,
     },
+  {
+      path: '/bed/bed',
+      name: 'Beds',
+      component: Beds,
+      beforeEnter: ifAuthenticated,
+    },
+
     //billing
     {
       path: '/billing/invoice',
@@ -165,14 +174,14 @@ export default new router({
         component: Pharmacy,
         beforeEnter: ifAuthenticated,
       },
-      /*
+      
       {
         path: '/pharmacy/prescription',
         name: 'prescription',
         component: Prescription,
         beforeEnter: ifAuthenticated,
       },
-      */
+      
     {
       path: '/accesscontrol/thirdpartyapps',
       name: 'thirdPartyApps',
@@ -242,5 +251,14 @@ export default new router({
       component: Profile,
       beforeEnter: ifAuthenticated,
     },
+
+    // Anc 
+    {
+      path: '/anc/index',
+      name: 'anc',
+      component: Anc,
+      beforeEnter: ifAuthenticated,
+    },
+    
   ]
 })

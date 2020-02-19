@@ -186,6 +186,7 @@
             Delete
             <v-icon right dark>delete</v-icon>
           </v-btn>
+        
         </td>
       </template>
     </v-data-table>
